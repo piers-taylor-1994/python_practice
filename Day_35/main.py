@@ -2,6 +2,10 @@ import requests
 import os
 from twilio.rest import Client
 
+WEATHER_API_KEY = "f76ea27ce95055a543e422e50f97ef5e"
+account_sid = 'AC94ce5605d0c3c1d00784d761b8019d74'
+auth_token = '27c4c37de9e41f217c316e6c1fe375fd'
+
 client = Client(account_sid, auth_token)
 
 message = client.messages.create(
