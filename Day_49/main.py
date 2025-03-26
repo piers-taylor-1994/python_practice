@@ -52,4 +52,4 @@ for job in jobs:
     except NoSuchElementException:
         continue
 
-driver.quit()
+# driver.quit()

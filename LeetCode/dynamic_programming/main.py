@@ -53,16 +53,44 @@ class Solution:
         :rtype: int
         """
         #[2,7,9,3,1]
-        n = len(nums)
-        if n == 1:
-            return nums[0]
-        memo = {}
-        memo[0] = nums[0] #2
-        memo[1] = max(nums[0], nums[1]) 
+        def rob_dp(nums, n, memo):
+            if n in memo:
+                return memo[n]
+            elif n == 0:
+                return nums[0]
+            elif n == 1:
+                return max(nums[0], nums[1])
+            memo[n] = max(rob_dp(nums, n-1, memo), nums[n] + rob_dp(nums, n-2, memo))
+            return memo[n]
+        return rob_dp(nums, len(nums) - 1, {})
+    
+    def rob_2(self, nums, memo = {}):
+        def rob_dp(nums, n, memo):
+            if n in memo:
+                return memo[n]
+            elif n == 0:
+                return nums[0]
+            elif n == 1:
+                return max(nums[0], nums[1])
+            
+            memo[n] = max(rob_dp(nums, n - 1, memo), nums[n] + rob_dp(nums, n - 2, memo))
+            return memo[n]
 
-        for i in range (2, n):
-            memo[i] = max(memo[i - 1], nums[i] + memo[i - 2])
-        return memo[n-1]
+        for i in range(2, len(nums)):
+            memo[i] = rob_dp(nums, i, {})
+        return memo[len(nums) - 1]
+    
+    def unique_paths(self, m, n):
+        above_row = [1] * n
+
+        #Skip 1st row
+        for _ in range(1, m):
+            current_row = [1] * n
+            #Skip 1st column 
+            for i in range(1, n):
+                current_row[i] = current_row[i-1] + above_row[i]
+            above_row = current_row
+        return above_row[-1]
 
         
     
@@ -74,3 +102,5 @@ print(solution.minCostClimbingStairs([1,100,1,1,1,100,1,1,100,1]))
 print(solution.climbStairs(4))
 # print(solution.rob([1,2,3,1]))
 print(solution.rob([2,7,9,3,1]))
+print(solution.rob_2([2,7,9,3,1]))
+print(solution.unique_paths(3, 2))
