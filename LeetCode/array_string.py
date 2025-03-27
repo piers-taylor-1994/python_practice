@@ -1,3 +1,4 @@
+import random
 class Solution:
     def merge_alternatively(self, word1, word2) -> str:
         merged_word = ""
@@ -54,6 +55,44 @@ class Solution:
                 flowerbed[i] = 1
                 n -= 1
         return n <= 0
+    
+    def reverseVowels(self, s):
+        """
+        :type s: str
+        :rtype: str
+        """
+        vowels = ["a", "e", "i", "o", "u"]
+        s = list(s)
+
+        new_word = [n for n in s[::-1] if n.lower() in vowels]
+        count = 0
+        for i,n in enumerate(s):
+            if n.lower() in vowels:
+                s[i] = new_word[count]
+                count += 1
+        return "".join(s)
+    
+    def reverseVowels_2(self, s):
+        """
+        :type s: str
+        :rtype: str
+        """
+        vowels = ["a", "e", "i", "o", "u"]
+        word = list(s)
+        start = 0
+        end = len(s) - 1
+
+        while start < end:
+            while start < end and not word[start].lower() in vowels:
+                start += 1
+            while start < end and not word[end].lower() in vowels:
+                end -= 1
+
+            word[start], word[end] = word[end], word[start]
+            start += 1
+            end -= 1
+        return "".join(word)
+        
         
 
 solution = Solution()
@@ -72,3 +111,5 @@ print(solution.canPlaceFlowers([1,0,0,0,1], 1))
 print(solution.canPlaceFlowers([1,0,0,0,1], 2))
 print(solution.canPlaceFlowers([1,0,0,0,0,1], 2))
 print(solution.canPlaceFlowers([1,0,0,0,0,0,1], 2))
+print(solution.reverseVowels("IceCreAm"))
+print(solution.reverseVowels_2("IceCreAm"))
