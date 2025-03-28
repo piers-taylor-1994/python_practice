@@ -92,6 +92,11 @@ class Solution:
             start += 1
             end -= 1
         return "".join(word)
+    
+    def reverse_words(self, s: str):
+        s_list = s.split()
+        s_list = s_list[::-1]
+        return " ".join(s_list)
         
         
 
@@ -113,3 +118,6 @@ print(solution.canPlaceFlowers([1,0,0,0,0,1], 2))
 print(solution.canPlaceFlowers([1,0,0,0,0,0,1], 2))
 print(solution.reverseVowels("IceCreAm"))
 print(solution.reverseVowels_2("IceCreAm"))
+print(solution.reverse_words("the sky is blue"))
+print(solution.reverse_words("  hello world  "))
+print(solution.reverse_words("a good   example"))
