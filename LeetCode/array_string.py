@@ -1,4 +1,9 @@
+import enum
 import random
+import math
+from functools import reduce
+import operator
+
 class Solution:
     def merge_alternatively(self, word1, word2) -> str:
         merged_word = ""
@@ -97,6 +102,24 @@ class Solution:
         s_list = s.split()
         s_list = s_list[::-1]
         return " ".join(s_list)
+    
+    def productExceptSelf(self, nums: list):
+        if len(nums) <= 1:
+            return []
+        ans = [1] * len(nums)
+        left_product, right_product = 1, 1
+
+        for i in range(len(nums)):
+            ans[i] *= left_product
+            if i < len(nums) - 1:
+                left_product *= nums[i]
+        
+        for i in range(len(nums) - 1, -1, -1):
+            ans[i] *= right_product
+            if i > 0:
+                right_product *= nums[i]
+
+        return ans            
         
         
 
@@ -121,3 +144,5 @@ print(solution.reverseVowels_2("IceCreAm"))
 print(solution.reverse_words("the sky is blue"))
 print(solution.reverse_words("  hello world  "))
 print(solution.reverse_words("a good   example"))
+print(solution.productExceptSelf([1,2,3,4]))
+print(solution.productExceptSelf([-1,1,0,-3,3]))
