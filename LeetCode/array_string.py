@@ -119,8 +119,41 @@ class Solution:
             if i > 0:
                 right_product *= nums[i]
 
-        return ans            
-        
+        return ans      
+
+    def compress(self, chars):
+        """
+        :type chars: List[str]
+        :rtype: int
+        """
+        read, write = 0, 0
+        while read < len(chars):
+            char = chars[read]
+            count = 0
+
+            while read < len(chars) and chars[read] == char:
+                read += 1
+                count += 1
+
+            chars[write] = char
+            write += 1
+
+            if count > 1:
+                for digit in str(count):
+                    chars[write] = digit
+                    write += 1
+        return write
+    
+    def moveZeroes(self, nums: list):
+        """
+        :type nums: List[int]
+        :rtype: None Do not return anything, modify nums in-place instead.
+        """
+        if 0 in nums:
+            zero_count = nums.count(0)
+            for _ in range(zero_count):
+                nums.remove(0)
+                nums.append(0)
         
 
 solution = Solution()
@@ -146,3 +179,5 @@ print(solution.reverse_words("  hello world  "))
 print(solution.reverse_words("a good   example"))
 print(solution.productExceptSelf([1,2,3,4]))
 print(solution.productExceptSelf([-1,1,0,-3,3]))
+print(solution.compress(["a","a","b","b","c","c","c"]))
+print(solution.moveZeroes([0,1,0,3,12]))
