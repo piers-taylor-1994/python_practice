@@ -153,28 +153,6 @@ class Solution:
                     chars[write] = digit
                     write += 1
         return write
-
-    
-    def moveZeroes(self, nums: list):
-        """
-        :type nums: List[int]
-        :rtype: None Do not return anything, modify nums in-place instead.
-        """
-        left = 0
-        for right in range(len(nums)):
-            if nums[right] != 0:
-                nums[left], nums[right] = nums[right], nums[left]
-                left += 1
-        return nums
-    
-    def isPalindrome(self, s:str):
-        s = "".join([c.lower() for c in s if c.isalnum()])
-        left, right = 0, len(s) - 1
-        
-        while left < right:
-            if s[left] != s[right]:
-                return False
-        return True
         
 
 solution = Solution()
@@ -204,6 +182,3 @@ print(solution.increasingTriplets([1,2,3,4,5]))
 print(solution.increasingTriplets([5,4,3,2,1]))
 print(solution.increasingTriplets([2,1,5,0,4,6]))
 print(solution.compress(["a","a","b","b","c","c","c"]))
-print(solution.moveZeroes([0,1,0,3,12]))
-print(solution.moveZeroes([0]))
-print(solution.isPalindrome(".,"))
