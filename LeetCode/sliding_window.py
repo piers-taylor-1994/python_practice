@@ -1,4 +1,11 @@
 class Solution:
+    """
+    Maintain a subset of elements (the "window") that slides through a data structure, such as an array or string.
+    Optimize problems involving contiguous subarrays or substrings by reducing time complexity, often from \(O(n^2)\) to \(O(n)\).
+    The window can be fixed-size or variable-size, expanding or contracting based on problem-specific conditions.
+    Use two pointers to define the window's boundaries, adjusting them as needed to meet the problem's criteria.
+    Continuously update results (e.g., maximum sum, minimum length) as the window slides.
+    """
     def findMaxAverage(self, nums:list, k):
         """
         :type nums: List[int]
