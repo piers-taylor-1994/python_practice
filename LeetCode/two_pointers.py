@@ -9,65 +9,90 @@ class Solution:
 
     -You evaluate a condition as the pointers move, such as checking if the sum of elements equals a target value, or finding subsequences that satisfy a constraint.
     """
-    def isPalindrome(self, s:str):
-        s = "".join([c.lower() for c in s if c.isalnum()])
-        left, right = 0, len(s) - 1
-        
-        while left < right:
-            if s[left] != s[right]:
-                return False
-            left += 1
-            right -= 1
-        return True
-
     def moveZeroes(self, nums: list):
-        """
-        :type nums: List[int]
-        :rtype: None Do not return anything, modify nums in-place instead.
-        """
+        #loop through each number
+        #if we find a 0, move it to the end
         left = 0
+        current_min = -1
         for right in range(len(nums)):
+            if right <= current_min:
+                continue
             if nums[right] != 0:
                 nums[left], nums[right] = nums[right], nums[left]
+                current_min = right
                 left += 1
         return nums
     
     def isSubsequence(self, s, t):
-        """
-        :type s: str
-        :type t: str
-        :rtype: bool
-        """
-        right = 0
-        for left in range(len(s)):
-            while right < len(t) and s[left] != t[right]:
-                right += 1
-            if right >= len(t) or len(s[left:]) > len(t[right:]):
-                return False
-            right += 1
-        return True
-    
-    def maxArea(self, height:list[int]) -> int:
-        """
-        :type height: List[int]
-        :rtype: int
-        """
-        max_area = left = 0
-        right = len(height) - 1
-        while left < right:
-            area = min(height[left], height[right]) * (right - left)
-            max_area = max(max_area, area)
+        #loop through first word
+        #loop through second word
+        #keep count of each letter found
+        #if count is == len of first word, return True
+        #else return False
 
-            if height[left] < height[right]:
+        #edge cases
+        #if s is empty, return True
+        #if t is empty, return False
+        s_pointer = 0
+        for t_pointer in range(len(t)):
+            if s[s_pointer] == t[t_pointer]:
+                s_pointer += 1
+            if s_pointer >= len(s):
+                return True
+        return False
+    
+    def maxArea(self, height:list):
+        #loop through each number
+        #find the area from each number to the end
+        #use the minimum height of the 2 numbers
+        #multiply that by the distance between the numbers
+        #record the current max by using Max(current_max, new_max)
+
+        #edge-cases
+        #if there are only 2 numbers skip the loop
+        left, right, max_area = 0, len(height) - 1, 0
+        while left < right:
+            current_area = min(height[left], height[right]) * (right - left)
+            max_area = max(max_area, current_area)
+            if height[left] <= height[right]:
                 left += 1
             else:
                 right -= 1
-        return max_area                
+        return max_area
+    
+    def maxOperations(self, nums: list, k):
+        #loop through each number
+        #check if current number minus target is in array
+        #If so, remove both from array and += to operations_count
+        #else, continue on
+        nums.sort()
+        left = 0
+        right = len(nums) - 1
+        operations = 0
+        
+        while left < right:
+            left_letter = nums[left]
+            right_letter = nums[right]
+            total = left_letter + right_letter
+            if total == k:
+                operations += 1
+                left += 1
+                right -= 1
+            elif total < k:
+                while left < right and nums[left] == left_letter:
+                    left += 1
+            else:
+                while left < right and nums[right] == right_letter:
+                    right -= 1
+        return operations
 
         
 solution = Solution()
 print(solution.moveZeroes([0,1,0,12,13]))
-print(solution.isPalindrome("A man, a plan, a canal: Panama"))
+# print(solution.isPalindrome("A man, a plan, a canal: Panama"))
 print(solution.isSubsequence("abc", "adebasdc"))
 print(solution.maxArea([1,8,6,2,5,4,8,3,7]))
 print(solution.maxArea([1,2,1]))
+print(solution.maxOperations([1,2,3,4], 5))
+# print(solution.maxOperations([3,1,3,4,3], 6))
+print(solution.maxOperations([63,10,28,31,90,53,75,77,72,47,45,6,49,13,77,61,68,43,33,1,14,62,55,55,38,54,8,79,89,14,50,68,85,12,42,57,4,67,75,6,71,8,61,26,11,20,22,3,70,52,82,70,67,18,66,79,84,51,78,23,19,84,46,61,63,73,80,61,15,12,58,3,21,66,42,55,7,58,85,60,23,69,41,61,35,64,58,84,61,77,45,14,1,38,4,8,42,16,79,60,80,39,67,10,24,15,6,37,68,76,30,53,63,87,11,71,86,82,77,76,37,21,85,7,75,83,80,8,19,25,11,10,41,66,70,14,23,74,33,76,35,89,68,85,83,57,6,72,34,21,57,72,79,29,65,3,67,8,24,24,18,26,27,68,78,64,57,55,68,28,9,11,38,45,61,37,81,89,38,43,45,26,84,62,22,37,51,15,30,67,75,24,66,40,81,74,48,43,78,14,33,19,73,5,1,2,53,29,49,73,23,5], 59))
