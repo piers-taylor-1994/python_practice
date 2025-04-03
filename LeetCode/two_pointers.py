@@ -61,10 +61,11 @@ class Solution:
         return max_area
     
     def maxOperations(self, nums: list, k):
+        #Sort array
         #loop through each number
         #check if current number minus target is in array
-        #If so, remove both from array and += to operations_count
-        #else, continue on
+        #If so, increment operations and move pointers
+        #else, move each pointer depending if we're too high/low
         nums.sort()
         left = 0
         right = len(nums) - 1
