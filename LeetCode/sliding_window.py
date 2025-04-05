@@ -33,7 +33,7 @@ class Solution:
                 current_vowels -= 1
             if s[j] in vowels:
                 current_vowels += 1
-                max_vowels = max(max_vowels, current_vowels)
+                max_vowels = max(max_vowels, current_vowels) #there's only a new max if the vowels has increased
         return max_vowels
 
         
