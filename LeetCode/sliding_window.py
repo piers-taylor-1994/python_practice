@@ -6,17 +6,13 @@ class Solution:
     Continuously update results (e.g., maximum sum, minimum length) as the window slides.
     """
     def findMaxAverage(self, nums:list, k):
-        """
-        :type nums: List[int]
-        :type k: int
-        :rtype: float
-        """
-        current_average = max_average = float(sum(nums[:k]))
+        current_sum = max_sum = float(sum(nums[:k]))
 
         for i in range(k, len(nums)):
-            current_average = current_average + nums[i] - nums[i - k]
-            max_average = max(max_average, current_average)
-        return max_average / k
+            current_sum = current_sum - nums[i-k] + nums[i]
+            if current_sum > max_sum:
+                max_sum = current_sum
+        return max_sum / k
     
     def maxVowels(self, s: str, k: int):
         vowels = "aeiou"
@@ -33,8 +29,37 @@ class Solution:
                 current_vowels -= 1
             if s[j] in vowels:
                 current_vowels += 1
-                max_vowels = max(max_vowels, current_vowels) #there's only a new max if the vowels has increased
+                if current_vowels > max_vowels:
+                    max_vowels = current_vowels
         return max_vowels
+    
+    def longestOnes(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: int
+        """
+        left = 0
+        max_length = 0
+        zeros_count = 0
+
+        for right in range(len(nums)):
+            if nums[right] == 0:
+                zeros_count += 1
+            
+            while zeros_count > k:
+                if nums[left] == 0:
+                    zeros_count -= 1
+                left += 1
+            
+            if right - left + 1 > max_length:
+                max_length = right - left + 1
+        return max_length
+
+
+
+            
+
 
         
 solution = Solution()
@@ -43,4 +68,8 @@ print(solution.findMaxAverage([5], 1))
 print(solution.findMaxAverage([3,3,4,3,0], 3))
 print(solution.findMaxAverage([0,1,1,3,3], 4))
 print(solution.findMaxAverage([-1], 1))
+print(solution.findMaxAverage([0,4,0,3,2], 1))
 print(solution.maxVowels("abciiidef", 3))
+print(solution.longestOnes([1,1,1,0,0,0,1,1,1,1,0], 2))
+# print(solution.longestOnes([0,0,1,1,0,0,1,1,1,0,1,1,0,0,0,1,1,1,1], 3))
+# print(solution.longestOnes([0,0,1,1,1,0,0], 0))
