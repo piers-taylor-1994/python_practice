@@ -4,6 +4,9 @@ class Solution:
     The window can be fixed-size or variable-size, expanding or contracting based on problem-specific conditions.
     Use two pointers to define the window's boundaries, adjusting them as needed to meet the problem's criteria.
     Continuously update results (e.g., maximum sum, minimum length) as the window slides.
+
+    If there's a preset subarray, we add/subtract from the beginning and end
+    If there isn't, we use pointers at the beginning
     """
     def findMaxAverage(self, nums:list, k):
         current_sum = max_sum = float(sum(nums[:k]))
