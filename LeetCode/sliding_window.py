@@ -42,22 +42,22 @@ class Solution:
         :type k: int
         :rtype: int
         """
-        left = 0
-        max_length = 0
-        zeros_count = 0
+        max_count = zero_count = left = 0
 
         for right in range(len(nums)):
             if nums[right] == 0:
-                zeros_count += 1
+                zero_count += 1
             
-            while zeros_count > k:
+            while zero_count > k:
                 if nums[left] == 0:
-                    zeros_count -= 1
+                    zero_count -= 1
                 left += 1
             
-            if right - left + 1 > max_length:
-                max_length = right - left + 1
-        return max_length
+            current_count = right - left + 1
+            if current_count > max_count:
+                max_count = current_count
+
+        return max_count
 
 
 
