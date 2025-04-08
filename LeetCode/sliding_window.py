@@ -58,12 +58,27 @@ class Solution:
                 max_count = current_count
 
         return max_count
+    
+    def longestSubarray(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        max_count = numbers_deleted = left = 0
 
-
-
+        for right in range(len(nums)):
+            if nums[right] == 0:
+                numbers_deleted += 1
+            while numbers_deleted > 1:
+                if nums[left] == 0:
+                    numbers_deleted -= 1
+                left += 1
             
-
-
+            current_count = right - left
+            
+            if current_count > max_count:
+                max_count = current_count
+        return max_count
         
 solution = Solution()
 print(solution.findMaxAverage([1,12,-5,-6,50,3], 4))
@@ -74,5 +89,8 @@ print(solution.findMaxAverage([-1], 1))
 print(solution.findMaxAverage([0,4,0,3,2], 1))
 print(solution.maxVowels("abciiidef", 3))
 print(solution.longestOnes([1,1,1,0,0,0,1,1,1,1,0], 2))
-# print(solution.longestOnes([0,0,1,1,0,0,1,1,1,0,1,1,0,0,0,1,1,1,1], 3))
-# print(solution.longestOnes([0,0,1,1,1,0,0], 0))
+print(solution.longestOnes([0,0,1,1,0,0,1,1,1,0,1,1,0,0,0,1,1,1,1], 3))
+print(solution.longestOnes([0,0,1,1,1,0,0], 0))
+print(solution.longestSubarray([1,1,0,1]))
+print(solution.longestSubarray([0,1,1,1,0,1,1,0,1]))
+print(solution.longestSubarray([1,1,1]))
