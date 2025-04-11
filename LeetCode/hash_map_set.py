@@ -1,6 +1,5 @@
 from typing import Counter
 
-
 class Solution:
     def findDifference(self, nums1, nums2):
         """
@@ -17,15 +16,11 @@ class Solution:
         :type arr: List[int]
         :rtype: bool
         """
-        number_of_occurences = []
+        freq = {}
         for n in set(arr):
-            n_count = 0
-            for j in arr:
-                if n == j:
-                    n_count += 1
-            if n_count in number_of_occurences:
+            if arr.count(n) in freq.values():
                 return False
-            number_of_occurences.append(n_count)
+            freq[n] = arr.count(n)
         return True
     
     def closeStrings(self, word1, word2):
@@ -34,30 +29,43 @@ class Solution:
         :type word2: str
         :rtype: bool
         """
-        if set(word1) != set(word2):
+        set1 = set(word1)
+        set2 = set(word2)
+        if set1 != set2:
             return False
         
-        freq1 = {n:word1.count(n) for n in word1}
-        freq2 = {n:word2.count(n) for n in word2}
-        
-        freq1_list = [i for i in freq1.values()]
-        freq2_list = [i for i in freq2.values()]
-        freq1_list.sort()
-        freq2_list.sort()
+        freq1 = [word1.count(l) for l in set1]
+        freq2 = [word2.count(l) for l in set2]
 
-        return freq1_list == freq2_list
+        freq1.sort()
+        freq2.sort()
+
+        return freq1 == freq2
     
     def closeStrings_2(self, word1, word2):
         if set(word1) != set(word2):
             return False
         
-        #More efficient way of turning list -> dict
         freq1 = Counter(word1)
         freq2 = Counter(word2)
 
-        #Basically .sort() but for any iterable thing
         return sorted(freq1.values()) == sorted(freq2.values())
+    
+    def equalPairs(self, grid):
+        """
+        :type grid: List[List[int]]
+        :rtype: int
+        """
+        row_tuple = [tuple(row) for row in grid]
+        row_count = Counter(row_tuple)
 
+        match_count = 0
+        for col_id in range(len(grid)):
+            col_tuple = tuple(grid[row_id][col_id] for row_id in range(len(grid)))
+
+            match_count += row_count.get(col_tuple, 0)
+        return match_count
+                
         
 
 solution = Solution()
@@ -69,3 +77,5 @@ print(solution.closeStrings("cabbba", "abbccc"))
 print(solution.closeStrings("aaabbbbccddeeeeefffff", "aaaaabbcccdddeeeeffff"))
 print(solution.closeStrings_2("cabbba", "abbccc"))
 print(solution.closeStrings_2("aaabbbbccddeeeeefffff", "aaaaabbcccdddeeeeffff"))
+# print(solution.equalPairs([[3,2,1],[1,7,6],[2,7,7]]))
+print(solution.equalPairs([[3,1,2,2],[1,4,4,5],[2,4,2,2],[2,4,2,2]]))
