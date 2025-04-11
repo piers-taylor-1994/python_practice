@@ -56,14 +56,15 @@ class Solution:
         :type grid: List[List[int]]
         :rtype: int
         """
-        row_tuple = [tuple(row) for row in grid]
-        row_count = Counter(row_tuple)
+        row_tuples = [tuple(row) for row in grid]
+        row_count = Counter(row_tuples)
 
         match_count = 0
         for col_id in range(len(grid)):
             col_tuple = tuple(grid[row_id][col_id] for row_id in range(len(grid)))
 
-            match_count += row_count.get(col_tuple, 0)
+            if col_tuple in row_tuples:
+                match_count += row_count.get(col_tuple)
         return match_count
                 
         
