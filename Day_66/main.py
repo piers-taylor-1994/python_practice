@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
-from sqlalchemy import Integer, String, Boolean
+from sqlalchemy import Integer, Select, String, Boolean, select
 import random
 
 '''
@@ -49,92 +49,72 @@ class Cafe(db.Model):
 with app.app_context():
     db.create_all()
 
-
 @app.route("/")
 def home():
     return render_template("index.html")
 
+@app.route("/random")
+def get_random_cafe():
+    all_cafes = db.session.execute(Select(Cafe))
+    all_cafes = all_cafes.scalars().all()
+    random_cafe = random.choice(all_cafes)
+    return jsonify(cafe=random_cafe.to_dict())
 
-# HTTP GET - Read Record
-@app.route("/random", methods=["GET"])
-def get_random():
-    if request.method == "GET":
-        result = db.session.execute(db.select(Cafe))
-        all_cafes = result.scalars().all()
-        random_cafe = random.choice(all_cafes)
-        random_cafe
-        return jsonify(cafe=random_cafe.to_dict())
+@app.route("/all")
+def get_all_cafes():
+    all_cafes = db.session.execute(Select(Cafe))
+    all_cafes = all_cafes.scalars().all()
+    return jsonify(cafes=[cafe.to_dict() for cafe in all_cafes])
 
-@app.route("/all", methods=["GET"])
-def get_all():
-    if request.method == "GET":
-        result = db.session.execute(db.select(Cafe))
-        all_cafes = result.scalars().all()
-        all_cafes_json = [cafe.to_dict() for cafe in all_cafes]
-        return jsonify(cafes=all_cafes_json)
-    
-@app.route("/search", methods=["GET"])
-def search_by_location():
-    if request.method == "GET":
-        location = request.args.get("loc")
-        result = db.session.execute(db.select(Cafe).where(Cafe.location == location))
-        filtered_cafes = result.scalars().all()
-        if not filtered_cafes:
-            return jsonify(error={"Not Found": "Sorry, we don't have a cafe at that location."})
-        filtered_cafes_json = [cafe.to_dict() for cafe in filtered_cafes]
-        return jsonify(cafes=filtered_cafes_json)
+@app.route("/search")
+def get_cafe_by_location():
+    location = request.args["loc"]
+    find_cafe = db.session.execute(Select(Cafe).where(Cafe.location == location))
+    cafe = find_cafe.scalar()
+    if cafe:
+        return jsonify(cafe=cafe.to_dict())
+    return jsonify(error={"Not Found": "Sorry, we don't have a cafe at that location."})
 
-
-# HTTP POST - Create Record
 @app.route("/add", methods=["POST"])
 def add_cafe():
-    if request.method == "POST":
-        form = request.form
-        db.session.add(Cafe(
-            name=form["name"],
-            map_url=form["map_url"],
-            img_url=form["img_url"],
-            location=form["location"],
-            seats=form["seats"],
-            has_toilet=bool(form["has_toilet"]),
-            has_wifi=bool(form["has_wifi"]),
-            has_sockets=bool(form["has_sockets"]),
-            can_take_calls=bool(form["can_take_calls"]),
-            coffee_price=form["coffee_price"]
-        ))
-        db.session.commit()
-        return jsonify(response={"success": "Successfully added the new cafe."})
+    data = request.form
+    db.session.add(Cafe(
+        name=data["name"],
+        map_url=data["map_url"],
+        img_url=data["img_url"],
+        location=data["location"],
+        seats=data["seats"],
+        has_toilet=bool(data["has_toilet"]),
+        has_wifi=bool(data["has_wifi"]),
+        has_sockets=bool(data["has_sockets"]),
+        can_take_calls=bool(data["can_take_calls"]),
+        coffee_price=data["coffee_price"],
+    ))
+    db.session.commit()
+    return jsonify(respose={"success": "Successfully added the new cafe."})
+
+@app.route("/update-price/<int:id>", methods=["PATCH"])
+def update_cafe_price(id):
+    new_price = request.args["new_price"]
+    cafe = db.session.get(Cafe, id)
+    if not cafe:
+        return jsonify(error={"Not Found": f"Sorry a cafe with id {id} was not find in the database."}), 404
+    cafe.coffee_price = new_price
+    db.session.commit()
+    return jsonify({"success":"Successfully updated the price."}), 200
+
+@app.route("/report-closed/<int:id>", methods=["DELETE"])
+def delete_cafe(id):
+    api_key = request.args["api-key"]
+    if api_key != "TopSecretAPIKey":
+        return jsonify({"error": f"Sorry, that's not allowed. Your api_key {api_key} is not the expected api_key."})
+    cafe = db.session.get(Cafe, id)
+    if not cafe:
+        return jsonify(error={"Not Found": f"Sorry a cafe with the id {id} was not found in the database."})
+    db.session.delete(cafe)
+    db.session.commit()
+    return jsonify(response={"Success": f"Cafe with id {id} has been deleted."})
     
-# HTTP PUT/PATCH - Update Record
-@app.route("/update-price/<int:cafe_id>", methods=["PATCH"])
-def patch_new_price(cafe_id):
-    new_price = request.args.get("new_price")
-    try:
-        cafe = db.get(Cafe, cafe_id)
-    except AttributeError:
-        return jsonify(error={"Not Found": "Sorry a cafe with that id was not found in the database."}), 404
-    else:
-        cafe.coffee_price = new_price
-        db.session.commit()
-        return jsonify(response={"success": "Successfully updated the price."}), 200
-
-
-# HTTP DELETE - Delete Record
-# Deletes a cafe with a particular id. Change the request type to "Delete" in Postman
-@app.route("/report-closed/<int:cafe_id>", methods=["DELETE"])
-def delete_cafe(cafe_id):
-    api_key = request.args.get("api-key")
-    if api_key == "TopSecretAPIKey":
-        try:
-            cafe = db.get(Cafe, cafe_id)
-        except AttributeError:
-            return jsonify(error={"Not Found": "Sorry a cafe with that id was not found in the database."}), 404
-        else:
-            db.session.delete(cafe)
-            db.session.commit()
-            return jsonify(response={"success": "Successfully deleted the cafe from the database."}), 200
-    else:
-        return jsonify(error={"Forbidden": "Sorry, that's not allowed. Make sure you have the correct api_key."}), 403
 
 if __name__ == '__main__':
     app.run(debug=True)

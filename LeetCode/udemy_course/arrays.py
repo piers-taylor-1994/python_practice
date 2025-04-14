@@ -6,7 +6,7 @@ class Solution:
                 if nums[right] == number_to_find:
                     return [left, right]
     def two_sum(self, nums, target):
-        numbers_to_find_dict = {target-nums[0]: 0}
+        numbers_to_find_dict = {target - nums[0]: 0}
         for i in range(1, len(nums)):
             current_number = nums[i]
             if current_number in numbers_to_find_dict:
