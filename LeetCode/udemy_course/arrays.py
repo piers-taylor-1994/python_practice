@@ -33,11 +33,7 @@ class Solution:
             height = min(heights[p1], heights[p2])
             width = p2 - p1
             current_area = height * width
-            if current_area > max_area:
-                max_area = current_area
-
-            if max(heights[p1:p2]) * (p2 - p1 - 1) < max_area:
-                break
+            max_area = max(max_area, current_area)
 
             if heights[p1] < heights[p2]:
                 p1 += 1
