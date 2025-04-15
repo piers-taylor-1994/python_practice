@@ -64,8 +64,8 @@ class Solution:
         trapped_water = 0
         left = 0
         right = len(heights) - 1
-        max_left = 0
-        max_right = 0
+        max_left = heights[left]
+        max_right = heights[right]
 
         while left < right:
             if heights[left] <= heights[right]:
