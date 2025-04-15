@@ -58,6 +58,28 @@ class Solution:
                 max_water += current_water
         return max_water
     
+    def trapping_rainwater(self, heights:list[int]):
+        max_water = 0
+        max_left = 0
+        max_right = 0
+        left = 0
+        right = len(heights) - 1
+        
+        while left < right:
+            if heights[left] <= heights[right]:
+                if heights[left] > max_left:
+                    max_left = heights[left]
+                else:
+                    max_water += max_left - heights[left]
+                left += 1
+            else:
+                if heights[right] > max_right:
+                    max_right = heights[right]
+                else:
+                    max_water += max_right - heights[right]
+                right -= 1
+        return max_water
+    
 solution = Solution()
 print(solution.two_sum_bf([1,3,7,9,2], 11))
 print(solution.two_sum_bf([3,2,4], 6))
