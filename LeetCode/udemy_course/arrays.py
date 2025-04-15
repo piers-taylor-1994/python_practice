@@ -61,7 +61,27 @@ class Solution:
         return trapped_water
     
     def trapping_rainwater(self, heights:list[int]):
-        pass
+        trapped_water = 0
+        left = 0
+        right = len(heights) - 1
+        max_left = 0
+        max_right = 0
+
+        while left < right:
+            if heights[left] <= heights[right]:
+                if heights[left] > max_left:
+                    max_left = heights[left]
+                else:
+                    trapped_water += max_left - heights[left]
+                left += 1
+            else:
+                if heights[right] > max_right:
+                    max_right = heights[right]
+                else:
+                    trapped_water += max_right - heights[right]
+                right -= 1
+        return trapped_water            
+
 
     
 solution = Solution()
