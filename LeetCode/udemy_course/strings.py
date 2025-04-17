@@ -51,7 +51,6 @@ class Solution:
                 substring += s[j]
             max_substring_length = max(max_substring_length, len(substring))
         return max_substring_length
-    
     def longest_substring_without_repeating(self, s:str):
         if len(s) <= 1:
             return len(s)
@@ -67,7 +66,18 @@ class Solution:
                 left = hash_map[s[right]] + 1
                 hash_map[s[right]] = right 
         return longest
+    def longest_substring_without_repeating(self, s:str):
+        left = 0
+        longest = 0
+        char_set = set()
+        for right in range(len(s)):
+            while s[right] in char_set:
+                char_set.remove(s[left])
+                left += 1
             
+            char_set.add(s[right])
+            longest = max(longest, right - left + 1)
+        return longest
 
 solution = Solution()
 print(solution.typed_out_strings_bf("ab#z", "az#z"))
