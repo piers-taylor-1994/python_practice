@@ -52,19 +52,15 @@ class Solution:
             max_substring_length = max(max_substring_length, len(substring))
         return max_substring_length
     def longest_substring_without_repeating(self, s:str):
-        if len(s) <= 1:
-            return len(s)
-        hash_map = {}
-        left = 0
         longest = 0
-
+        left = 0
+        letter_positions = {}
         for right in range(len(s)):
-            if s[right] not in hash_map or hash_map[s[right]] < left:
-                hash_map[s[right]] = right
-                longest = max(longest, right - left + 1)
+            if s[right] in letter_positions and left <= letter_positions[s[right]]:
+                left = letter_positions[s[right]] + 1
             else:
-                left = hash_map[s[right]] + 1
-                hash_map[s[right]] = right 
+                longest = max(longest, right - left + 1)
+            letter_positions[s[right]] = right
         return longest
     def longest_substring_without_repeating_v2(self, s:str):
         left = 0
