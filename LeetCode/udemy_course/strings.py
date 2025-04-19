@@ -73,6 +73,17 @@ class Solution:
             substring.add(s[right])
             longest = max(longest, right - left + 1)
         return longest         
+    
+    def is_palindrome(self, s:str):
+        new_word = ''.join(letter.lower() for letter in s if letter.isalpha())
+        left = 0
+        right = len(new_word) - 1
+        while left < right:
+            if new_word[left] != new_word[right]:
+                return False
+            left += 1
+            right -= 1
+        return True
 
 solution = Solution()
 print(solution.typed_out_strings_bf("ab#z", "az#z"))
@@ -97,3 +108,5 @@ print(solution.longest_substring_without_repeating("abcabcbb"))
 print(solution.longest_substring_without_repeating("pwwkew"))
 print(solution.longest_substring_without_repeating("au"))
 print(solution.longest_substring_without_repeating("tmmzuxt"))
+
+print(solution.is_palindrome("A man, a plan, a canal: Panama"))
