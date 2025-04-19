@@ -66,18 +66,17 @@ class Solution:
                 left = hash_map[s[right]] + 1
                 hash_map[s[right]] = right 
         return longest
-    def longest_substring_without_repeating(self, s:str):
+    def longest_substring_without_repeating_v2(self, s:str):
         left = 0
+        substring = []
         longest = 0
-        char_set = set()
         for right in range(len(s)):
-            while s[right] in char_set:
-                char_set.remove(s[left])
+            while s[right] in substring:
+                substring.remove(s[left])
                 left += 1
-            
-            char_set.add(s[right])
+            substring.append(s[right])
             longest = max(longest, right - left + 1)
-        return longest
+        return longest         
 
 solution = Solution()
 print(solution.typed_out_strings_bf("ab#z", "az#z"))
