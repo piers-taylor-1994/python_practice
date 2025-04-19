@@ -68,13 +68,13 @@ class Solution:
         return longest
     def longest_substring_without_repeating_v2(self, s:str):
         left = 0
-        substring = []
+        substring = set()
         longest = 0
         for right in range(len(s)):
             while s[right] in substring:
                 substring.remove(s[left])
                 left += 1
-            substring.append(s[right])
+            substring.add(s[right])
             longest = max(longest, right - left + 1)
         return longest         
 
