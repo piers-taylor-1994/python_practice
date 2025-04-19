@@ -84,7 +84,22 @@ class Solution:
             left += 1
             right -= 1
         return True
-
+    def is_almost_palindrome(self, s:str):
+        def palindrome_checker(string, left, right):
+            while left < right:
+                if string[left] != string[right]:
+                    return False
+                left += 1
+                right -= 1
+            return True
+        left = 0
+        right = len(s) - 1
+        while left < right:
+            if s[left] != s[right]:
+                return palindrome_checker(s, left + 1, right) or palindrome_checker(s, left, right - 1)
+            left += 1
+            right -= 1
+        return True
 solution = Solution()
 print(solution.typed_out_strings_bf("ab#z", "az#z"))
 print(solution.typed_out_strings_bf("a##", "a##"))
@@ -110,3 +125,6 @@ print(solution.longest_substring_without_repeating("au"))
 print(solution.longest_substring_without_repeating("tmmzuxt"))
 
 print(solution.is_palindrome("A man, a plan, a canal: Panama"))
+print(solution.is_palindrome("race car"))
+# print(solution.is_almost_palindrome("abca"))
+print(solution.is_almost_palindrome("aguokepatgbnvfqmgmlcupuufxoohdfpgjdmysgvhmvffcnqxjjxqncffvmhvgsymdjgpfdhooxfuupuculmgmqfvnbgtapekouga"))
