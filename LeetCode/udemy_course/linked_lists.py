@@ -80,13 +80,22 @@ class Solution:
             return head
         return new_reversed_list
     
-solution = Solution()
-linked_list = LinkedList()
-linked_list.append(1)
-linked_list.append(2)
-linked_list.append(3)
-linked_list.append(4)
-linked_list.append(5)
-linked_list.display()
-linked_list.reverse()
-linked_list.display()
+    def flatten_doubly_linked_List(self, head):
+        currentNode = head
+
+        while currentNode:
+            if currentNode.child:
+                child = currentNode.child
+                next = currentNode.next
+                currentNode.next = child
+                child.prev = currentNode
+
+                if next:
+                    while child.next:
+                        child = child.next
+                    tail = child
+                    tail.next = next
+                    next.prev = tail
+                currentNode.child = None
+            currentNode = currentNode.next
+        return head
