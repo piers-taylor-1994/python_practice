@@ -1,41 +1,3 @@
-class Node:
-    def __init__(self, value):
-        self.value = value  # Store the value of the node
-        self.next = None    # Point to the next node (initially None)
-
-class LinkedList:
-    def __init__(self):
-        self.head = None  # Head of the list (initially None)
-
-    def append(self, value):
-        new_node = Node(value)
-        if not self.head:  # If the list is empty
-            self.head = new_node
-            return
-        # Traverse to the end of the list
-        current = self.head
-        while current.next:
-            current = current.next
-        current.next = new_node
-
-    def display(self):
-        current = self.head
-        while current:
-            print(current.value, end=" -> ")
-            current = current.next
-        print("None")
-    
-    def reverse(self):
-        prev = None
-        current = self.head
-
-        while current:
-            next = current.next
-            current.next = prev
-            prev = current
-            current = next
-        self.head = prev
-
 class Solution:
     def reverse_linked_list(self, head):
         prev = None
@@ -80,7 +42,11 @@ class Solution:
             return head
         return new_reversed_list
     
-    def flatten_doubly_linked_List(self, head):
+    def flatten_doubly_linked_list(self, head):
+        #if linked list is null, return null
+        if not head:
+            return None
+        
         currentNode = head
 
         #loop through all the nodes
