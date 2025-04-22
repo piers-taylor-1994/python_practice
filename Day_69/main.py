@@ -10,7 +10,7 @@ from sqlalchemy import ForeignKey, Integer, String, Text, select
 from functools import wraps
 from werkzeug.security import generate_password_hash, check_password_hash
 # Import your forms from the forms.py
-from forms import CreatePostForm, LoginForm, RegisterForm
+from forms import CommentForm, CreatePostForm, LoginForm, RegisterForm
 
 
 '''
@@ -35,6 +35,15 @@ Bootstrap5(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 
+gravatar = Gravatar(app,
+                    size=100,
+                    rating='g',
+                    default='retro',
+                    force_default=False,
+                    force_lower=False,
+                    use_ssl=False,
+                    base_url=None)
+
 @login_manager.user_loader
 def load_user(user_id):
     return db.get_or_404(User, user_id)
@@ -55,6 +64,7 @@ class User(UserMixin, db.Model):
     password: Mapped[str] = mapped_column(String(100))
     name: Mapped[str] = mapped_column(String(1000))
     posts = relationship("BlogPost", back_populates="author")
+    comments = relationship("Comment", back_populates="author")
 
 class BlogPost(db.Model):
     __tablename__ = "blog_posts"
@@ -66,6 +76,17 @@ class BlogPost(db.Model):
     date: Mapped[str] = mapped_column(String(250), nullable=False)
     body: Mapped[str] = mapped_column(Text, nullable=False)
     img_url: Mapped[str] = mapped_column(String(250), nullable=False)
+    comments = relationship("Comment", back_populates="parent_post")
+
+class Comment(db.Model):
+    __tablename__ = "comments"
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    author: Mapped["User"] = relationship(back_populates="comments")
+    author_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
+    parent_post: Mapped["BlogPost"] = relationship(back_populates="comments")
+    post_id: Mapped[int] = mapped_column(ForeignKey("blog_posts.id"))
+    text: Mapped[str] = mapped_column(Text, nullable=False)
+    
 
 with app.app_context():
     db.create_all()
@@ -133,10 +154,23 @@ def get_all_posts():
 
 
 # TODO: Allow logged-in users to comment on posts
-@app.route("/post/<int:post_id>")
+@app.route("/post/<int:post_id>", methods=["GET", "POST"])
 def show_post(post_id):
     requested_post = db.get_or_404(BlogPost, post_id)
-    return render_template("post.html", post=requested_post)
+    comment_form = CommentForm()
+    if comment_form.validate_on_submit():
+        if not current_user.is_authenticated:
+            flash("You need to login or register to comment.")
+            return redirect(url_for("login"))
+
+        new_comment = Comment(
+            text=comment_form.text.data,
+            author=current_user,
+            parent_post=requested_post
+        )
+        db.session.add(new_comment)
+        db.session.commit()
+    return render_template("post.html", post=requested_post, current_user=current_user, form=comment_form)
 
 
 # TODO: Use a decorator so only an admin user can create a new post
