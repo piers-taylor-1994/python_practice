@@ -83,19 +83,25 @@ class Solution:
     def flatten_doubly_linked_List(self, head):
         currentNode = head
 
+        #loop through all the nodes
         while currentNode:
+            #if the current node has a child
             if currentNode.child:
+                #Initialise variables before we change current node's properties
                 child = currentNode.child
                 next = currentNode.next
+
+                #Set the before node (current node) and child head's node (child) next/prev
                 currentNode.next = child
                 child.prev = currentNode
 
+                #If there is a node after the current node, we need to worry about setting it's prev and the tail's next
                 if next:
                     while child.next:
                         child = child.next
-                    tail = child
+                    tail = child #could just be child but calling it tail is more readable
                     tail.next = next
                     next.prev = tail
-                currentNode.child = None
-            currentNode = currentNode.next
+                currentNode.child = None #Set the current node's child to null after we've dealt with it
+            currentNode = currentNode.next #Move onto next node
         return head
