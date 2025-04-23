@@ -2,6 +2,7 @@ from wsgiref import headers
 
 
 class Solution:
+    #time: o(n) space: o(1)
     def reverse_linked_list(self, head):
         prev = None
         current = head
@@ -12,6 +13,7 @@ class Solution:
             current = next #Move to the next node
         return prev
     
+    #time: o(n) space: o(1)
     def reverse_partial_linked_list(self, head, left, right):
         current_position = 1
         current_node = head
@@ -45,6 +47,7 @@ class Solution:
             return head
         return new_reversed_list
     
+    #time: o(n) space: o(1)
     def flatten_doubly_linked_list(self, head):
         #if linked list is null, return null
         if not head:
