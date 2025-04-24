@@ -119,3 +119,28 @@ class Solution:
             seen_nodes.add(current)
             current = current.next
         return current
+    
+    def has_cycle_2_floyd(self, head):
+        if not head or not head.next:
+            return None
+        
+        tort = head
+        hare = head
+
+        while True:
+            tort = tort.next
+            hare = hare.next
+
+            if not hare or not hare.next:
+                return None
+            hare = hare.next
+
+            if tort == hare:
+                break
+        
+        p1 = head
+        p2 = tort
+        while p1 != p2:
+            p1 = p1.next
+            p2 = p2.next
+        return p1
