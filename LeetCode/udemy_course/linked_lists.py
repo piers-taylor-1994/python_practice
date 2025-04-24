@@ -75,6 +75,7 @@ class Solution:
             currentNode = currentNode.next #Move onto next node
         return head
     
+    #time: o(n) space: o(n)
     def has_cycle(self, head):
         if not head:
             return False
@@ -88,6 +89,7 @@ class Solution:
             current = current.next
         return True
     
+    #time: o(n) space: o(1)
     def has_cycle_floyd(self, head):
         if not head or not head.next:
             return False
