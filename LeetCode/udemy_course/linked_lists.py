@@ -107,6 +107,7 @@ class Solution:
             if tort == hare:
                 return True
     
+    #time: o(n) space: o(n)
     def has_cycle_2(self, head):
         if not head:
             return None
@@ -120,6 +121,7 @@ class Solution:
             current = current.next
         return current
     
+    #time: o(n) space: o(1)
     def has_cycle_2_floyd(self, head):
         if not head or not head.next:
             return None
