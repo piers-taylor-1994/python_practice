@@ -1,3 +1,6 @@
+from wsgiref import headers
+
+
 class Solution:
     def reverse_linked_list(self, head):
         prev = None
@@ -71,3 +74,16 @@ class Solution:
                 currentNode.child = None #Set the current node's child to null after we've dealt with it
             currentNode = currentNode.next #Move onto next node
         return head
+    
+    def has_cycle(self, head):
+        if not head:
+            return None
+        current = head
+        seen_nodes = set()
+
+        while current not in seen_nodes:
+            if not current.next:
+                return False
+            seen_nodes.add(current)
+            current = current.next
+        return True
