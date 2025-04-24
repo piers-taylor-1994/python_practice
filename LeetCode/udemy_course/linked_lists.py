@@ -77,7 +77,7 @@ class Solution:
     
     def has_cycle(self, head):
         if not head:
-            return None
+            return False
         current = head
         seen_nodes = set()
 
@@ -87,6 +87,23 @@ class Solution:
             seen_nodes.add(current)
             current = current.next
         return True
+    
+    def has_cycle_floyd(self, head):
+        if not head or not head.next:
+            return False
+        tort = head
+        hare = head
+
+        while True:
+            tort = tort.next
+            hare = hare.next
+
+            if not hare or not hare.next:
+                return False
+            hare = hare.next
+
+            if tort == hare:
+                return True
     
     def has_cycle_2(self, head):
         if not head:
