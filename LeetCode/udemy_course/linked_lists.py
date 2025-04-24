@@ -87,3 +87,16 @@ class Solution:
             seen_nodes.add(current)
             current = current.next
         return True
+    
+    def has_cycle_2(self, head):
+        if not head:
+            return None
+        current = head
+        seen_nodes = set()
+
+        while current not in seen_nodes:
+            if not current.next:
+                return None
+            seen_nodes.add(current)
+            current = current.next
+        return current
