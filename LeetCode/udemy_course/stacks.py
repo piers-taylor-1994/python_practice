@@ -1,19 +1,20 @@
 class Solution:
     def valid_parentheses(self, s):
-        mappings = {"}": "{", "]": "[", ")": "("}
+        mappings = {"{": "}", "[": "]", "(": ")"}
         stack = []
 
-        for i in range(len(s)):
-            if s[i] in mappings.values():
-                stack.append(s[i])
+        for p in s:
+            if p in mappings.keys():
+                stack.append(p)
             else:
                 if stack:
                     open_bracket = stack.pop()
-                    if open_bracket != mappings[s[i]]:
+                    mapped_bracket = mappings[open_bracket]
+                    if mapped_bracket != p:
                         return False
                 else:
                     return False
-        return len(stack) == 0
+        return len(stack) == 0     
 
 solution = Solution()
 print(solution.valid_parentheses("()"))
