@@ -15,8 +15,30 @@ class Solution:
                 else:
                     return False
         return len(stack) == 0
-
+    
     def minimum_brackets_to_remove(self, s):
+        stack = []
+        s_list = list(s)
+        p1 = 0
+
+        while p1 < len(s_list):
+            if s_list[p1] in "()":
+                if s_list[p1] == "(":
+                    stack.append(p1)
+                else:
+                    if stack:
+                        stack.pop()
+                    else:
+                        s_list.pop(p1)
+                        continue
+            p1 += 1
+        
+        if stack:
+            for pos in stack[::-1]:
+                s_list.pop(pos)
+        return "".join(s_list)
+
+    def minimum_brackets_to_remove_v2(self, s):
         stack = []
         s_list = list(s)
 
