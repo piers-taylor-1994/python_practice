@@ -39,23 +39,23 @@ class Solution:
         return "".join(s_list)
 
     def minimum_brackets_to_remove_v2(self, s):
+        s = list(s)
         stack = []
-        s_list = list(s)
 
-        for pos in range(len(s_list)):
-            if s_list[pos] in "()":
-                if s_list[pos] == "(":
-                    stack.append(pos)
+        for i in range(len(s)):
+            if s[i] == ")":
+                if stack:
+                    stack.pop()
                 else:
-                    if stack:
-                        stack.pop()
-                    else:
-                        s_list[pos] = ""
+                    s[i] = ""
+            elif s[i] == "(":
+                stack.append(i)
         
         if stack:
-            for pos in stack:
-                s_list[pos] = ""
-        return "".join(s_list)
+            for i in stack:
+                s[i] = ""
+        
+        return "".join(s)
 
 
 
@@ -65,6 +65,7 @@ print(solution.minimum_brackets_to_remove("a)cbc(d)"))
 print(solution.minimum_brackets_to_remove("(ab(c)d"))
 print(solution.minimum_brackets_to_remove("))(("))
 print(solution.minimum_brackets_to_remove("())()((("))
-
-test = {0: "Hello", 1: "Test"}
-print(test.popitem())
+print(solution.minimum_brackets_to_remove_v2("a)cbc(d)"))
+print(solution.minimum_brackets_to_remove_v2("(ab(c)d"))
+print(solution.minimum_brackets_to_remove_v2("))(("))
+print(solution.minimum_brackets_to_remove_v2("())()((("))
