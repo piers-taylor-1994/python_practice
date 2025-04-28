@@ -88,6 +88,46 @@ class MyQueue_v1(object):
         :rtype: bool
         """
         return len(self.stack) == 0
+    
+class MyQueue_v2(object):
+
+    def __init__(self):
+        self.stack = []
+        self.stack2 = []
+
+    def consolidate(self):
+        if len(self.stack2) == 0:
+            for _ in range(len(self.stack)):
+                self.stack2.append(self.stack.pop())
+
+    def push(self, x):
+        """
+        :type x: int
+        :rtype: None
+        """
+        self.stack.append(x)
+        
+
+    def pop(self):
+        """
+        :rtype: int
+        """
+        self.consolidate()
+        return self.stack2.pop()
+        
+
+    def peek(self):
+        """
+        :rtype: int
+        """
+        self.consolidate()
+        return self.stack2[-1]
+
+    def empty(self):
+        """
+        :rtype: bool
+        """
+        return len(self.stack) == 0 and len(self.stack2) == 0
 
 solution = Solution()
 print(solution.valid_parentheses("()"))
@@ -106,3 +146,10 @@ myQueue.push(2)
 print(myQueue.peek())
 print(myQueue.pop())
 print(myQueue.empty())
+
+myQueue2 = MyQueue_v2()
+myQueue2.push(1)
+myQueue2.push(2)
+print(myQueue2.peek())
+print(myQueue2.pop())
+print(myQueue2.empty())
