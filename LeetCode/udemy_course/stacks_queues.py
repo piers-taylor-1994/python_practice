@@ -56,8 +56,38 @@ class Solution:
                 s[i] = ""
         
         return "".join(s)
+    
+class MyQueue_v1(object):
 
+    def __init__(self):
+        self.stack = []
 
+    def push(self, x):
+        """
+        :type x: int
+        :rtype: None
+        """
+        self.stack.append(x)
+        
+
+    def pop(self):
+        """
+        :rtype: int
+        """
+        return self.stack.pop(0)
+        
+
+    def peek(self):
+        """
+        :rtype: int
+        """
+        return self.stack[0]
+
+    def empty(self):
+        """
+        :rtype: bool
+        """
+        return len(self.stack) == 0
 
 solution = Solution()
 print(solution.valid_parentheses("()"))
@@ -69,3 +99,10 @@ print(solution.minimum_brackets_to_remove_v2("a)cbc(d)"))
 print(solution.minimum_brackets_to_remove_v2("(ab(c)d"))
 print(solution.minimum_brackets_to_remove_v2("))(("))
 print(solution.minimum_brackets_to_remove_v2("())()((("))
+
+myQueue = MyQueue_v1()
+myQueue.push(1)
+myQueue.push(2)
+print(myQueue.peek())
+print(myQueue.pop())
+print(myQueue.empty())
