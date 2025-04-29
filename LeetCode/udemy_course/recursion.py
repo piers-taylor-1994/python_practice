@@ -26,7 +26,7 @@ class Solution:
         right = [x for x in arr if x > pivot]
         return self.quicksort(left) + middle + self.quicksort(right)
     
-    def kth_largest_element(self, arr, k):
+    def kth_largest_element_quicksort(self, arr, k):
         def quicksort(arr):
             if len(arr) <= 1:
                 return arr
@@ -39,9 +39,30 @@ class Solution:
         
         arr = quicksort(arr)
         return arr[-k]
+    
+    def kth_largest_element_quickselect(self, arr, k):
+        def quickselect(arr, k):
+            if len(arr) == 1:
+                return arr[0]
+            
+            pivot = random.choice(arr)
+            left = [x for x in arr if x > pivot]
+            middle = [x for x in arr if x == pivot]
+            right = [x for x in arr if x < pivot]
+
+            if k < len(left):
+                return quickselect(left, k)
+            elif k < len(left) + len(middle):
+                return middle[0]
+            else:
+                return quickselect(right, k - len(middle) - len(left))
+        return quickselect(arr, k-1)
+            
+            
 
 solution = Solution()
 print(solution.factorial(4))
 print(solution.factorial_tail(4))
 print(solution.quicksort([1,5,1,7,3,2]))
-print(solution.kth_largest_element([1,5,1,7,3,2], 2))
+print(solution.kth_largest_element_quicksort([1,5,1,7,3,2], 2))
+print(solution.kth_largest_element_quickselect([1,5,1,7,3,2], 2))
