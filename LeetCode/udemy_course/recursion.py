@@ -1,3 +1,6 @@
+import random
+
+
 class Solution:
     #Space complexity: O(N)
     def factorial(self, x):
@@ -12,7 +15,18 @@ class Solution:
             return total_so_far
         else:
             return self.factorial_tail(x - 1, total_so_far * x)
+        
+    def quicksort(self, arr):
+        if len(arr) <= 1:
+            return arr
+        # Can use 1st, last, middle or median of three (1st, middle, last) as pivots
+        pivot = arr[len(arr) // 2]
+        left = [x for x in arr if x < pivot]
+        middle = [x for x in arr if x == pivot]
+        right = [x for x in arr if x > pivot]
+        return self.quicksort(left) + middle + self.quicksort(right)
 
 solution = Solution()
 print(solution.factorial(4))
 print(solution.factorial_tail(4))
+print(solution.quicksort([1,5,1,7,3,2]))
