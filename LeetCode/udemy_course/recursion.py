@@ -1,10 +1,12 @@
 class Solution:
+    #Space complexity: O(N)
     def factorial(self, x):
         if x == 1:
             return 1
         else:
             return x * self.factorial(x - 1)
     
+    #Space complexity: 0(1)
     def factorial_tail(self, x, total_so_far = 1):
         if x == 1:
             return total_so_far
