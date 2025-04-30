@@ -59,24 +59,88 @@ class Solution:
         return quickselect(arr, k-1)
     
     def binary_search(self, arr, target):
-        def search(arr, left, right):
-            if left > right:  # Base case
-                return -1
+        left = 0
+        right = len(arr) - 1
 
+        while left <= right:
             middle = (left + right) // 2
+
             if arr[middle] == target:
                 return middle
             elif arr[middle] < target:
-                return search(arr, middle + 1, right)
+                left = middle + 1
             else:
-                return search(arr, left, middle - 1)
-            
-        return search(arr, 0, len(arr) - 1)
+                right = middle - 1
+        
+        return -1
+    
+    def start_end_index_target(self, arr, target):
+        left = 0
+        right = len(arr) - 1
+        answers = []
 
+        while left <= right:
+            middle = (left + right) // 2
 
-            
-            
+            if arr[middle] == target:
+                answers.append(middle)
+                left_middle = middle - 1
+                right_middle = middle + 1
+                
+                while arr[left_middle] == target:
+                    answers.append(left_middle)
+                    left_middle -= 1
+                while arr[right_middle] == target:
+                    answers.append(right_middle)
+                    right_middle += 1
+                
+                answers.sort()
+                return [answers[0], answers[-1]]
 
+            elif arr[middle] < target:
+                left = middle + 1
+            else:
+                right = middle - 1
+        return [-1, -1]
+    
+    def start_end_index_target_v2(self, arr, target):
+        if len(arr) == 0:
+            return [-1, -1]
+        def binary_search(arr, left, right, target):
+            while left <= right:
+                middle = (left + right) // 2
+
+                if arr[middle] == target:
+                    return middle
+
+                elif arr[middle] < target:
+                    left = middle + 1
+                else:
+                    right = middle - 1
+
+            return -1
+        
+        position_to_find = binary_search(arr, 0, len(arr) - 1, target)
+        if position_to_find == -1:
+            return [-1, -1]
+        
+        start_position = position_to_find
+        end_position = position_to_find
+        temp_1 = position_to_find
+        temp_2 = position_to_find
+
+        while start_position != -1:
+            temp_1 = start_position
+            start_position = binary_search(arr, 0, start_position - 1, target)
+        start_position = temp_1
+
+        while end_position != -1:
+            temp_2 = end_position
+            end_position = binary_search(arr, end_position + 1, len(arr) - 1, target)
+        end_position = temp_2
+
+        return [temp_1, temp_2]
+        
 solution = Solution()
 print(solution.factorial(4))
 print(solution.factorial_tail(4))
@@ -84,3 +148,12 @@ print(solution.quicksort([1,5,1,7,3,2]))
 print(solution.kth_largest_element_quicksort([1,5,1,7,3,2], 2))
 print(solution.kth_largest_element_quickselect([1,5,1,7,3,2], 2))
 print(solution.binary_search([1,2,3,4,5,6,7], 5))
+print(solution.start_end_index_target([1,3,3,5,5,5,8,9], 5))
+print(solution.start_end_index_target([1,2,3,4,5,6], 4))
+print(solution.start_end_index_target([1,2,3,4,5], 9))
+print(solution.start_end_index_target([], 3))
+print(solution.start_end_index_target_v2([1,3,3,5,5,5,8,9], 5))
+print(solution.start_end_index_target_v2([1,2,3,4,5,6], 4))
+print(solution.start_end_index_target_v2([1,2,3,4,5], 9))
+print(solution.start_end_index_target_v2([], 3))
+print(solution.start_end_index_target_v2([5,7,7,8,8,10], 8))
