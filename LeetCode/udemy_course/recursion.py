@@ -140,6 +140,32 @@ class Solution:
         end_position = temp_2
 
         return [temp_1, temp_2]
+    
+    def start_end_index_target_v3(self, arr, target):
+        def binary_search(arr, target, searching_left):
+            left = 0
+            right = len(arr) - 1
+            idx = -1
+            while left <= right:
+                middle = (left + right) // 2
+
+                if arr[middle] < target:
+                    left = middle + 1
+                elif arr[middle] > target:
+                    right = middle - 1
+                else:
+                    idx = middle
+                    if searching_left:
+                        right = middle - 1
+                    else:
+                        left = middle + 1
+            
+            return idx
+
+        left = binary_search(arr, target, True)
+        right = binary_search(arr, target, False)
+        
+        return [left, right]
         
 solution = Solution()
 print(solution.factorial(4))
