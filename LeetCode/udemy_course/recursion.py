@@ -65,83 +65,16 @@ class Solution:
         while left <= right:
             middle = (left + right) // 2
 
-            if arr[middle] == target:
-                return middle
+            if arr[middle] > target:
+                right = middle - 1
             elif arr[middle] < target:
                 left = middle + 1
             else:
-                right = middle - 1
+                return middle
         
         return -1
     
     def start_end_index_target(self, arr, target):
-        left = 0
-        right = len(arr) - 1
-        answers = []
-
-        while left <= right:
-            middle = (left + right) // 2
-
-            if arr[middle] == target:
-                answers.append(middle)
-                left_middle = middle - 1
-                right_middle = middle + 1
-                
-                while arr[left_middle] == target:
-                    answers.append(left_middle)
-                    left_middle -= 1
-                while arr[right_middle] == target:
-                    answers.append(right_middle)
-                    right_middle += 1
-                
-                answers.sort()
-                return [answers[0], answers[-1]]
-
-            elif arr[middle] < target:
-                left = middle + 1
-            else:
-                right = middle - 1
-        return [-1, -1]
-    
-    def start_end_index_target_v2(self, arr, target):
-        if len(arr) == 0:
-            return [-1, -1]
-        def binary_search(arr, left, right, target):
-            while left <= right:
-                middle = (left + right) // 2
-
-                if arr[middle] == target:
-                    return middle
-
-                elif arr[middle] < target:
-                    left = middle + 1
-                else:
-                    right = middle - 1
-
-            return -1
-        
-        position_to_find = binary_search(arr, 0, len(arr) - 1, target)
-        if position_to_find == -1:
-            return [-1, -1]
-        
-        start_position = position_to_find
-        end_position = position_to_find
-        temp_1 = position_to_find
-        temp_2 = position_to_find
-
-        while start_position != -1:
-            temp_1 = start_position
-            start_position = binary_search(arr, 0, start_position - 1, target)
-        start_position = temp_1
-
-        while end_position != -1:
-            temp_2 = end_position
-            end_position = binary_search(arr, end_position + 1, len(arr) - 1, target)
-        end_position = temp_2
-
-        return [temp_1, temp_2]
-    
-    def start_end_index_target_v3(self, arr, target):
         def binary_search(arr, target, searching_left):
             left = 0
             right = len(arr) - 1
