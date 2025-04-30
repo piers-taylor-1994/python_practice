@@ -57,6 +57,23 @@ class Solution:
             else:
                 return quickselect(right, k - len(middle) - len(left))
         return quickselect(arr, k-1)
+    
+    def binary_search(self, arr, target):
+        def search(arr, left, right):
+            if left > right:  # Base case
+                return -1
+
+            middle = (left + right) // 2
+            if arr[middle] == target:
+                return middle
+            elif arr[middle] < target:
+                return search(arr, middle + 1, right)
+            else:
+                return search(arr, left, middle - 1)
+            
+        return search(arr, 0, len(arr) - 1)
+
+
             
             
 
@@ -66,3 +83,4 @@ print(solution.factorial_tail(4))
 print(solution.quicksort([1,5,1,7,3,2]))
 print(solution.kth_largest_element_quicksort([1,5,1,7,3,2], 2))
 print(solution.kth_largest_element_quickselect([1,5,1,7,3,2], 2))
+print(solution.binary_search([1,2,3,4,5,6,7], 5))
