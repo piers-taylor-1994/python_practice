@@ -16,9 +16,6 @@
 # Finding the shortest path:
 # BFS
 
-from os import curdir
-
-
 class TreeNode:
     def __init__(self, value):
         self.value = value
