@@ -65,20 +65,20 @@ class Solution:
         while left <= right:
             middle = (left + right) // 2
 
-            if arr[middle] > target:
-                right = middle - 1
-            elif arr[middle] < target:
+            if arr[middle] < target:
                 left = middle + 1
+            elif arr[middle] > target:
+                right = middle - 1
             else:
                 return middle
         
         return -1
     
     def start_end_index_target(self, arr, target):
-        def binary_search(arr, target, searching_left):
-            left = 0
-            right = len(arr) - 1
-            idx = -1
+        if len(arr) == 0:
+            return [-1, -1]
+
+        def binary_search(arr, left, right, target):
             while left <= right:
                 middle = (left + right) // 2
 
@@ -87,18 +87,33 @@ class Solution:
                 elif arr[middle] > target:
                     right = middle - 1
                 else:
-                    idx = middle
-                    if searching_left:
-                        right = middle - 1
-                    else:
-                        left = middle + 1
-            
-            return idx
+                    return middle
+            return -1
 
-        left = binary_search(arr, target, True)
-        right = binary_search(arr, target, False)
+        first_position = binary_search(arr, 0, len(arr) - 1, target)
+        if first_position == -1:
+            return [-1, -1]
         
-        return [left, right]
+        start_position = first_position
+        end_position = first_position
+        temp_start = first_position
+        temp_end = first_position
+
+        while start_position != -1:
+            temp_start = start_position
+            start_position = binary_search(arr, 0, start_position - 1, target)
+        
+        start_position = temp_start
+
+        while end_position != -1:
+            temp_end = end_position
+            end_position = binary_search(arr, end_position + 1, len(arr) - 1, target)
+        
+        end_position = temp_end
+
+        return [start_position, end_position]
+        
+
         
 solution = Solution()
 print(solution.factorial(4))
@@ -111,8 +126,8 @@ print(solution.start_end_index_target([1,3,3,5,5,5,8,9], 5))
 print(solution.start_end_index_target([1,2,3,4,5,6], 4))
 print(solution.start_end_index_target([1,2,3,4,5], 9))
 print(solution.start_end_index_target([], 3))
-print(solution.start_end_index_target_v2([1,3,3,5,5,5,8,9], 5))
-print(solution.start_end_index_target_v2([1,2,3,4,5,6], 4))
-print(solution.start_end_index_target_v2([1,2,3,4,5], 9))
-print(solution.start_end_index_target_v2([], 3))
-print(solution.start_end_index_target_v2([5,7,7,8,8,10], 8))
+# print(solution.start_end_index_target_v2([1,3,3,5,5,5,8,9], 5))
+# print(solution.start_end_index_target_v2([1,2,3,4,5,6], 4))
+# print(solution.start_end_index_target_v2([1,2,3,4,5], 9))
+# print(solution.start_end_index_target_v2([], 3))
+# print(solution.start_end_index_target_v2([5,7,7,8,8,10], 8))
