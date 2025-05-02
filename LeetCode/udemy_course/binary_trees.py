@@ -101,12 +101,12 @@ class TreeNode:
         self.left = left
         self.right = right
 
-    def max_depth(self, node, count = 0):
+    def max_depth(self, node, depth = 0):
         if not node:
-            return count
-        count += 1
+            return depth
+        depth += 1
 
-        return max(self.max_depth(node.left, count), self.max_depth(node.right, count))
+        return max(self.max_depth(node.left, depth), self.max_depth(node.right, depth))
 
 class Solution:
     pass
