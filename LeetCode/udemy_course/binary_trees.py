@@ -16,26 +16,6 @@
 # Finding the shortest path:
 # BF
 
-class TreeNode:
-    def __init__(self, value=0, left=None, right=None):
-        """
-        Initializes a binary tree node.
-
-        :param val: The value of the node
-        :param left: Reference to the left child node
-        :param right: Reference to the right child node
-        """
-        self.value = value
-        self.left = left
-        self.right = right
-
-    def max_depth(self, node, count = 0):
-        if not node:
-            return count
-        count += 1
-
-        return max(self.max_depth(node.left, count), self.max_depth(node.right, count))
-
 class BST:
     def __init__(self):
         self.root = None
@@ -107,6 +87,26 @@ class BST:
 
     def DFS_post_order(self):
         return self.traverse_post_order(self.root, [])
+    
+class TreeNode:
+    def __init__(self, value=0, left=None, right=None):
+        """
+        Initializes a binary tree node.
+
+        :param val: The value of the node
+        :param left: Reference to the left child node
+        :param right: Reference to the right child node
+        """
+        self.value = value
+        self.left = left
+        self.right = right
+
+    def max_depth(self, node, count = 0):
+        if not node:
+            return count
+        count += 1
+
+        return max(self.max_depth(node.left, count), self.max_depth(node.right, count))
 
 class Solution:
     pass
