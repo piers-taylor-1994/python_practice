@@ -14,13 +14,27 @@
 # DFS
 
 # Finding the shortest path:
-# BFS
+# BF
 
 class TreeNode:
-    def __init__(self, value):
+    def __init__(self, value=0, left=None, right=None):
+        """
+        Initializes a binary tree node.
+
+        :param val: The value of the node
+        :param left: Reference to the left child node
+        :param right: Reference to the right child node
+        """
         self.value = value
-        self.left = None
-        self.right = None
+        self.left = left
+        self.right = right
+
+    def max_depth(self, node, count = 0):
+        if not node:
+            return count
+        count += 1
+
+        return max(self.max_depth(node.left, count), self.max_depth(node.right, count))
 
 class BST:
     def __init__(self):
@@ -92,26 +106,43 @@ class BST:
         return list
 
     def DFS_post_order(self):
-        return self.traverse_post_order(self.root, [])       
+        return self.traverse_post_order(self.root, [])
 
 class Solution:
     pass
 
 solution = Solution()
 
+bst_tree = BST()
+
 #       9
 #   4       20
 #1    6   15   170  
 
-tree = BST()
-tree.insert(9)
-tree.insert(4)
-tree.insert(6)
-tree.insert(20)
-tree.insert(170)
-tree.insert(15)
-tree.insert(1)
-print(tree.breath_first_search())
-print(tree.DFS_in_order())
-print(tree.DFS_pre_order())
-print(tree.DFS_post_order())
+bst_tree.insert(9)
+bst_tree.insert(4)
+bst_tree.insert(6)
+bst_tree.insert(20)
+bst_tree.insert(170)
+bst_tree.insert(15)
+bst_tree.insert(1)
+
+# print(bst_tree.breath_first_search())
+# print(bst_tree.DFS_in_order())
+# print(bst_tree.DFS_pre_order())
+# print(bst_tree.DFS_post_order())
+
+#        1
+#    2       3
+# 4            5
+root = TreeNode(1)
+node2 = TreeNode(2)
+node3 = TreeNode(3)
+node4 = TreeNode(4)
+node5 = TreeNode(5)
+root.left = node2
+node2.left = node4
+root.right = node3
+node3.right = node5
+
+print(root.max_depth(root))
