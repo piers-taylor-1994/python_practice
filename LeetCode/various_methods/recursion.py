@@ -25,12 +25,7 @@ class Solution:
         return self.fibonacci_recursive(x - 1) + self.fibonacci_recursive(x - 2)
     
     def sum_of_digits_iterative(self, x):
-        numbers_list = list(str(x))
-        output = 0
-
-        for n in numbers_list:
-            output += int(n)
-        return output
+        return sum([int(num) for num in str(x)])
     def sum_of_digits_recursive(self, x):
         if x < 10:
             return x
