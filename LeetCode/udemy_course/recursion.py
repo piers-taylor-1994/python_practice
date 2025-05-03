@@ -15,7 +15,20 @@ class Solution:
             return total_so_far
         else:
             return self.factorial_tail(x - 1, total_so_far * x)
-        
+    
+    def fibonacci(self, n):
+        #base
+        if n < 2:
+            return n
+        return self.fibonacci(n - 1) + self.fibonacci(n - 2)
+    
+    def factorial(self, n):
+        #5 -> 5 * 4 * 3 * 2 * 1
+        #base
+        if n == 0:
+            return 1
+        return n * self.factorial(n - 1)
+    
     def quicksort(self, arr):
         if len(arr) <= 1:
             return arr
@@ -145,6 +158,9 @@ class Solution:
 solution = Solution()
 print(solution.factorial(4))
 print(solution.factorial_tail(4))
+print(solution.fibonacci(8))
+print(solution.factorial(4))
+print(solution.factorial_v2(4))
 print(solution.quicksort([1,5,1,7,3,2]))
 print(solution.kth_largest_element_quicksort([1,5,1,7,3,2], 2))
 print(solution.kth_largest_element_quickselect([1,5,1,7,3,2], 2))
