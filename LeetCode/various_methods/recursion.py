@@ -43,6 +43,16 @@ class Solution:
         if len(word) == 1:
             return word
         return self.reverse_string_recursive(word[1:]) + word[0]
+    
+    def array_sorted_iterative(self, array):
+        for i in range(1, len(array)):
+            if array[i] < array[i - 1]:
+                return False 
+        return True
+    def array_sorted_recursive(self, array, index = 0):
+        if index == len(array) - 1:
+            return array[index]
+        return array[index] <= self.array_sorted_recursive(array, index + 1)
 
 solution = Solution()
 print(solution.factorial_iterative(5))
@@ -53,3 +63,5 @@ print(solution.sum_of_digits_iterative(432))
 print(solution.sum_of_digits_recursive(432))
 print(solution.reverse_string_iterative("Hello"))
 print(solution.reverse_string_recursive("Hello"))
+print(solution.array_sorted_iterative([1,2,3,4,5]))
+print(solution.array_sorted_recursive([1,2,3,4,5]))
