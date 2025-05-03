@@ -31,6 +31,18 @@ class Solution:
             return x
         # % returns reminder so anything % 10 will be the unit
         return x % 10 + self.sum_of_digits_recursive(x // 10) # // 10 will just decrease everything by 1 digital and round down
+    
+    def reverse_string_iterative(self, word):
+        output = ""
+
+        for i in range(len(word) - 1, -1, -1):
+            output += word[i]
+        return output
+    def reverse_string_recursive(self, word):
+        #base
+        if len(word) == 1:
+            return word
+        return self.reverse_string_recursive(word[1:]) + word[0]
 
 solution = Solution()
 print(solution.factorial_iterative(5))
@@ -39,3 +51,5 @@ print(solution.fibonacci_iterative(8))
 print(solution.fibonacci_recursive(8))
 print(solution.sum_of_digits_iterative(432))
 print(solution.sum_of_digits_recursive(432))
+print(solution.reverse_string_iterative("Hello"))
+print(solution.reverse_string_recursive("Hello"))
