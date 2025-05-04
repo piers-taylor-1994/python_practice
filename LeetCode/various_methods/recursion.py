@@ -78,6 +78,27 @@ class Solution:
 
         str_number = str(number)
         return recursive(str_number, 0, len(str_number) - 1)
+    
+    def reverse_linked_list_iterative(self, head):
+        current_node = head
+        prev = None
+
+        while current_node:
+            next = current_node.next
+            current_node.next = prev
+            prev = current_node
+            current_node = next
+        return prev
+    def reverse_linked_list_recursive(self, head, prev = None):
+        #base case
+        if not head:
+            return prev
+        
+        next = head.next
+        head.next = prev
+        
+        #recursive
+        return self.reverse_linked_list_recursive(next, head)
 
 solution = Solution()
 print(solution.factorial_iterative(5))
