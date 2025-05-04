@@ -37,8 +37,8 @@ class BST:
                 node.right = TreeNode(value)
             else:
                 self._insert_recursive(node.right, value)
-    
-    def breath_first_search(self):
+
+    def BFS(self):
         current_node = self.root
         list = []
         queue = []
@@ -46,7 +46,6 @@ class BST:
 
         while queue:
             current_node = queue.pop(0)
-            print(current_node.value)
             list.append(current_node.value)
 
             if current_node.left:
@@ -55,38 +54,49 @@ class BST:
                 queue.append(current_node.right)
         return list
     
-    def traverse_in_order(self, node, list):
-        if node.left:
-            self.traverse_in_order(node.left, list)
-        list.append(node.value)
-        if node.right:
-            self.traverse_in_order(node.right, list)
-        return list
-    
-    def DFS_in_order(self):
-        return self.traverse_in_order(self.root, [])
-    
-    def traverse_pre_order(self, node, list):
-        list.append(node.value)
-        if node.left:
-            self.traverse_pre_order(node.left, list)
-        if node.right:
-            self.traverse_pre_order(node.right, list)
-        return list
-    
     def DFS_pre_order(self):
-        return self.traverse_pre_order(self.root, [])
-    
-    def traverse_post_order(self, node, list):
-        if node.left:
-            self.traverse_post_order(node.left, list)
-        if node.right:
-            self.traverse_post_order(node.right, list)
-        list.append(node.value)
-        return list
-
+        """Root -> left -> right"""
+        def helper(node, result):
+            if not node:
+                return
+            
+            result.append(node.value)
+            if node.left:
+                helper(node.left, result)
+            if node.right:
+                helper(node.right, result)
+        result = []
+        helper(self.root, result)
+        return result
+    def DFS_in_order(self):
+        """left -> root -> right"""
+        def helper(node, result):
+            if not node:
+                return
+            
+            if node.left:
+                helper(node.left, result)
+            result.append(node.value)
+            if node.right:
+                helper(node.right, result)
+        result = []
+        helper(self.root, result)
+        return result
     def DFS_post_order(self):
-        return self.traverse_post_order(self.root, [])
+        """left -> right -> root"""
+        def helper(node, result):
+            if not node:
+                return
+
+            if node.left:
+                helper(node.left, result)
+            if node.right:
+                helper(node.right, result)
+            result.append(node.value)
+        result = []
+        helper(self.root, result)
+        return result
+
     
 class TreeNode:
     def __init__(self, value=0, left=None, right=None):
@@ -127,10 +137,10 @@ bst_tree.insert(170)
 bst_tree.insert(15)
 bst_tree.insert(1)
 
-# print(bst_tree.breath_first_search())
-# print(bst_tree.DFS_in_order())
-# print(bst_tree.DFS_pre_order())
-# print(bst_tree.DFS_post_order())
+print(bst_tree.BFS())
+print(bst_tree.DFS_pre_order())
+print(bst_tree.DFS_in_order())
+print(bst_tree.DFS_post_order())
 
 #        1
 #    2       3
@@ -145,4 +155,4 @@ node2.left = node4
 root.right = node3
 node3.right = node5
 
-print(root.max_depth(root))
+# print(root.max_depth(root))
