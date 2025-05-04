@@ -89,16 +89,19 @@ class Solution:
             prev = current_node
             current_node = next
         return prev
-    def reverse_linked_list_recursive(self, head, prev = None):
-        #base case
+    def reverse_linked_list_recursive(self, head):
         if not head:
-            return prev
-        
-        next = head.next
-        head.next = prev
-        
-        #recursive
-        return self.reverse_linked_list_recursive(next, head)
+            return None
+            
+        def recursive(node, prev):
+            if not node:
+                return prev
+            next_node = node.next
+            node.next = prev
+
+            return recursive(next_node, node)
+
+        return recursive(head, None)
 
 solution = Solution()
 print(solution.factorial_iterative(5))
