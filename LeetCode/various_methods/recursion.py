@@ -93,13 +93,14 @@ class Solution:
         if not head:
             return None
             
-        def recursive(node, prev):
-            if not node:
+        def recursive(current_node, prev):
+            if not current_node:
                 return prev
-            next_node = node.next
-            node.next = prev
+            next_node = current_node.next
+            current_node.next = prev
+            prev = current_node
 
-            return recursive(next_node, node)
+            return recursive(next_node, prev)
 
         return recursive(head, None)
 
