@@ -53,15 +53,47 @@ class Solution:
         if index == len(array) - 1:
             return array[index]
         return array[index] <= self.array_sorted_recursive(array, index + 1)
+    
+    def is_palindrome_iterative(self, number):
+        if not number:
+            return False
+        number = str(number)
+        left = 0
+        right = len(number) - 1
+
+        while left < right:
+            if number[left] != number[right]:
+                return False
+            left += 1
+            right -= 1
+        return True
+    def is_palindrome_recursive(self, number):
+        if not number:
+            return False
+        
+        def recursive(str_number, left, right):
+            if left >= right:
+                return True
+            return str_number[left] == str_number[right] and recursive(str_number, left + 1, right - 1)
+
+        str_number = str(number)
+        return recursive(str_number, 0, len(str_number) - 1)
 
 solution = Solution()
 print(solution.factorial_iterative(5))
 print(solution.factorial_recursive(5))
+
 print(solution.fibonacci_iterative(8))
 print(solution.fibonacci_recursive(8))
+
 print(solution.sum_of_digits_iterative(432))
 print(solution.sum_of_digits_recursive(432))
+
 print(solution.reverse_string_iterative("Hello"))
 print(solution.reverse_string_recursive("Hello"))
+
 print(solution.array_sorted_iterative([1,2,3,4,5]))
 print(solution.array_sorted_recursive([1,2,3,4,5]))
+
+print(solution.is_palindrome_iterative(123321))
+print(solution.is_palindrome_recursive(123321))
