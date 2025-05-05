@@ -39,20 +39,22 @@ class BST:
                 self._insert_recursive(node.right, value)
 
     def BFS(self):
+        if not self.root:
+            return []
         current_node = self.root
         list = []
-        queue = []
-        queue.append(current_node)
+        queue = [current_node]
 
         while queue:
             current_node = queue.pop(0)
             list.append(current_node.value)
-
+            
             if current_node.left:
                 queue.append(current_node.left)
             if current_node.right:
                 queue.append(current_node.right)
         return list
+        
     
     def DFS_pre_order(self):
         """Root -> left -> right"""
