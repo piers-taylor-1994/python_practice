@@ -96,6 +96,24 @@ class BST:
         result = []
         helper(self.root, result)
         return result
+    def DFS_all(self, version):
+        def helper(node, result, version):
+            if not node:
+                return
+            
+            if version == "preorder":
+                result.append(node.value)
+            if node.left:
+                helper(node.left, result, version)
+            if version == "inorder":
+                result.append(node.value)
+            if node.right:
+                helper(node.right, result, version)
+            if version == "postorder":
+                result.append(node.value)
+        result = []
+        helper(self.root, result, version)
+        return result
 
     
 class TreeNode:
@@ -138,6 +156,9 @@ bst_tree.insert(15)
 bst_tree.insert(1)
 
 print(bst_tree.BFS())
+print(bst_tree.DFS_all("preorder"))
+print(bst_tree.DFS_all("inorder"))
+print(bst_tree.DFS_all("postorder"))
 print(bst_tree.DFS_pre_order())
 print(bst_tree.DFS_in_order())
 print(bst_tree.DFS_post_order())
