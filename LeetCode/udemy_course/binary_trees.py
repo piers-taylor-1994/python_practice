@@ -208,12 +208,12 @@ bst_tree.insert(15)
 bst_tree.insert(1)
 
 # print(bst_tree.BFS())
-# print(bst_tree.DFS_pre_order())
-# print(bst_tree.DFS_pre_order_iterative())
+print(bst_tree.DFS_pre_order())
+print(bst_tree.DFS_pre_order_iterative())
 # print(bst_tree.DFS_in_order())
 # print(bst_tree.DFS_in_order_iterative())
-print(bst_tree.DFS_post_order())
-print(bst_tree.DFS_post_order_iterative())
+# print(bst_tree.DFS_post_order())
+# print(bst_tree.DFS_post_order_iterative())
 
 #        1
 #    2       3
