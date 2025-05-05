@@ -99,17 +99,22 @@ class BST:
         return result
     def DFS_in_order_iterative(self):
         current_node = self.root
-        list = []
-        queue = [current_node]
+        result = []
+        stack = []
 
-        while queue:
-            current_node = queue.pop()
-            if current_node.right:
-                queue.append(current_node.right)
-            list.append(current_node.value)
-            if current_node.left:
-                queue.append(current_node.left)
-        return list
+        while current_node or stack:
+            #add all left nodes to stack
+            while current_node:
+                stack.append(current_node)
+                current_node = current_node.left
+
+            #process node
+            current_node = stack.pop()
+            result.append(current_node.value)
+
+            #transverse right tree
+            current_node = current_node.right
+        return result
     def DFS_post_order(self):
         """left -> right -> root"""
         def helper(node, result):
