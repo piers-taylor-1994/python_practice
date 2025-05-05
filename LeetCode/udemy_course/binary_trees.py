@@ -42,18 +42,18 @@ class BST:
         if not self.root:
             return []
         current_node = self.root
-        list = []
+        result = []
         queue = [current_node]
 
         while queue:
             current_node = queue.pop(0)
-            list.append(current_node.value)
+            result.append(current_node.value)
             
             if current_node.left:
                 queue.append(current_node.left)
             if current_node.right:
                 queue.append(current_node.right)
-        return list
+        return result
         
     
     def DFS_pre_order(self):
@@ -70,6 +70,19 @@ class BST:
         result = []
         helper(self.root, result)
         return result
+    def DFS_pre_order_iterative(self):
+        current_node = self.root
+        result = []
+        stack = [current_node]
+
+        while stack:
+            current_node = stack.pop()
+            result.append(current_node.value)
+            if current_node.right:
+                stack.append(current_node.right)
+            if current_node.left:
+                stack.append(current_node.left)
+        return result
     def DFS_in_order(self):
         """left -> root -> right"""
         def helper(node, result):
@@ -84,6 +97,19 @@ class BST:
         result = []
         helper(self.root, result)
         return result
+    def DFS_in_order_iterative(self):
+        current_node = self.root
+        list = []
+        queue = [current_node]
+
+        while queue:
+            current_node = queue.pop()
+            if current_node.right:
+                queue.append(current_node.right)
+            list.append(current_node.value)
+            if current_node.left:
+                queue.append(current_node.left)
+        return list
     def DFS_post_order(self):
         """left -> right -> root"""
         def helper(node, result):
@@ -157,13 +183,12 @@ bst_tree.insert(170)
 bst_tree.insert(15)
 bst_tree.insert(1)
 
-print(bst_tree.BFS())
-print(bst_tree.DFS_all("preorder"))
-print(bst_tree.DFS_all("inorder"))
-print(bst_tree.DFS_all("postorder"))
-print(bst_tree.DFS_pre_order())
+# print(bst_tree.BFS())
+# print(bst_tree.DFS_pre_order())
+# print(bst_tree.DFS_pre_order_iterative())
 print(bst_tree.DFS_in_order())
-print(bst_tree.DFS_post_order())
+print(bst_tree.DFS_in_order_iterative())
+# print(bst_tree.DFS_post_order())
 
 #        1
 #    2       3
