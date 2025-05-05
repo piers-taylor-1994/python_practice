@@ -15,7 +15,6 @@
 
 # Finding the shortest path:
 # BF
-
 class BST:
     def __init__(self):
         self.root = None
@@ -103,16 +102,13 @@ class BST:
         stack = []
 
         while current_node or stack:
-            #add all left nodes to stack
             while current_node:
                 stack.append(current_node)
                 current_node = current_node.left
-
-            #process node
+            
             current_node = stack.pop()
             result.append(current_node.value)
 
-            #transverse right tree
             current_node = current_node.right
         return result
     def DFS_post_order(self):
@@ -132,7 +128,7 @@ class BST:
     def DFS_post_order_iterative(self):
         current_node = self.root
         result = []
-        stack1 = [self.root]
+        stack1 = [current_node]
         stack2 = []
 
         while stack1:
@@ -208,12 +204,12 @@ bst_tree.insert(15)
 bst_tree.insert(1)
 
 # print(bst_tree.BFS())
-print(bst_tree.DFS_pre_order())
-print(bst_tree.DFS_pre_order_iterative())
+# print(bst_tree.DFS_pre_order())
+# print(bst_tree.DFS_pre_order_iterative())
 # print(bst_tree.DFS_in_order())
 # print(bst_tree.DFS_in_order_iterative())
-# print(bst_tree.DFS_post_order())
-# print(bst_tree.DFS_post_order_iterative())
+print(bst_tree.DFS_post_order())
+print(bst_tree.DFS_post_order_iterative())
 
 #        1
 #    2       3
