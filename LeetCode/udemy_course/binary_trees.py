@@ -129,6 +129,25 @@ class BST:
         result = []
         helper(self.root, result)
         return result
+    def DFS_post_order_iterative(self):
+        current_node = self.root
+        result = []
+        stack1 = [self.root]
+        stack2 = []
+
+        while stack1:
+            current_node = stack1.pop()
+            stack2.append(current_node)
+
+            if current_node.left:
+                stack1.append(current_node.left)
+            if current_node.right:
+                stack1.append(current_node.right)
+        
+        while stack2:
+            result.append(stack2.pop().value)
+        
+        return result
     def DFS_all(self, version):
         def helper(node, result, version):
             if not node:
@@ -191,9 +210,10 @@ bst_tree.insert(1)
 # print(bst_tree.BFS())
 # print(bst_tree.DFS_pre_order())
 # print(bst_tree.DFS_pre_order_iterative())
-print(bst_tree.DFS_in_order())
-print(bst_tree.DFS_in_order_iterative())
-# print(bst_tree.DFS_post_order())
+# print(bst_tree.DFS_in_order())
+# print(bst_tree.DFS_in_order_iterative())
+print(bst_tree.DFS_post_order())
+print(bst_tree.DFS_post_order_iterative())
 
 #        1
 #    2       3
