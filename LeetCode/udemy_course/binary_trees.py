@@ -77,6 +77,7 @@ class BST:
         while stack:
             current_node = stack.pop()
             result.append(current_node.value)
+
             if current_node.right:
                 stack.append(current_node.right)
             if current_node.left:
@@ -204,10 +205,10 @@ bst_tree.insert(15)
 bst_tree.insert(1)
 
 # print(bst_tree.BFS())
-# print(bst_tree.DFS_pre_order())
-# print(bst_tree.DFS_pre_order_iterative())
-# print(bst_tree.DFS_in_order())
-# print(bst_tree.DFS_in_order_iterative())
+print(bst_tree.DFS_pre_order())
+print(bst_tree.DFS_pre_order_iterative())
+print(bst_tree.DFS_in_order())
+print(bst_tree.DFS_in_order_iterative())
 print(bst_tree.DFS_post_order())
 print(bst_tree.DFS_post_order_iterative())
 
