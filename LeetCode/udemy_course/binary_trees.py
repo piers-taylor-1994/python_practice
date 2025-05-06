@@ -196,13 +196,13 @@ class Solution:
             return []
         node = root
         result = []
-        #queue = deque([current_node]) //More efficient O(n) => O(1) time
+        # queue = deque([node]) //More efficient O(n) => O(1) time
         queue = [node]
         
         while queue:
             level_nodes = []
             for _ in range(len(queue)):
-                #current_node = queue.popleft() //More efficient O(n) => O(1) time
+                #node = queue.popleft() //More efficient O(n) => O(1) time as pop(0) shifts values
                 node = queue.pop(0)
                 level_nodes.append(node.value)
 
