@@ -191,23 +191,25 @@ class Solution:
             return max(helper(node.left, depth), helper(node.right, depth))
         return helper(root, 0)
     
-    def level_order_v1(self, root):
+    def level_order(self, root):
         if not root:
             return []
-        current_node = root
+        node = root
         result = []
-        queue = [current_node]
-
+        #queue = deque([current_node]) //More efficient O(n) => O(1) time
+        queue = [node]
+        
         while queue:
             level_nodes = []
             for _ in range(len(queue)):
-                current_node = queue.pop(0)
-                level_nodes.append(current_node.value)
+                #current_node = queue.popleft() //More efficient O(n) => O(1) time
+                node = queue.pop(0)
+                level_nodes.append(node.value)
 
-                if current_node.left:
-                    queue.append(current_node.left)
-                if current_node.right:
-                    queue.append(current_node.right)
+                if node.left:
+                    queue.append(node.left)
+                if node.right:
+                    queue.append(node.right)
             result.append(level_nodes)
         return result
 
@@ -250,4 +252,5 @@ root.right = node3
 node3.right = node5
 
 print(solution.max_depth(root))
-print(solution.level_order_v1(root))
+print(solution.level_order(root))
+print(solution.level_order(None))
