@@ -15,6 +15,10 @@
 
 # Finding the shortest path:
 # BF
+from collections import deque
+from os import curdir
+
+
 class BST:
     def __init__(self):
         self.root = None
@@ -163,7 +167,6 @@ class BST:
         result = []
         helper(self.root, result, version)
         return result
-
     
 class TreeNode:
     def __init__(self, value=0, left=None, right=None):
@@ -178,15 +181,36 @@ class TreeNode:
         self.left = left
         self.right = right
 
-    def max_depth(self, node, depth = 0):
-        if not node:
-            return depth
-        depth += 1
-
-        return max(self.max_depth(node.left, depth), self.max_depth(node.right, depth))
-
 class Solution:
-    pass
+    def max_depth(self, root):
+        def helper(node, depth):
+            if not node:
+                return depth
+            depth += 1
+
+            return max(helper(node.left, depth), helper(node.right, depth))
+        return helper(root, 0)
+    
+    def level_order_v1(self, root):
+        if not root:
+            return []
+        current_node = root
+        result = []
+        queue = [current_node]
+
+        while queue:
+            level_nodes = []
+            for _ in range(len(queue)):
+                current_node = queue.pop(0)
+                level_nodes.append(current_node.value)
+
+                if current_node.left:
+                    queue.append(current_node.left)
+                if current_node.right:
+                    queue.append(current_node.right)
+            result.append(level_nodes)
+        return result
+
 
 solution = Solution()
 
@@ -225,4 +249,5 @@ node2.left = node4
 root.right = node3
 node3.right = node5
 
-# print(root.max_depth(root))
+print(solution.max_depth(root))
+print(solution.level_order_v1(root))
