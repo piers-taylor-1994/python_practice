@@ -221,16 +221,16 @@ class Solution:
         queue = deque([node])
 
         while queue:
-            level_order = []
+            right_node = None
             for _ in range(len(queue)):
                 node = queue.popleft()
-                level_order.append(node.value)
+                right_node = node.value
 
                 if node.left:
                     queue.append(node.left)
                 if node.right:
                     queue.append(node.right)
-            result.append(level_order[-1])
+            result.append(right_node)
         return result
 
 solution = Solution()
