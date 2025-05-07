@@ -232,6 +232,20 @@ class Solution:
                     queue.append(node.right)
             result.append(right_node)
         return result
+    
+    def right_side_view_DFS(self, root):
+        def helper(node, result, depth):
+            if not node:
+                return
+            if len(result) < depth:
+                result.append(node.value)
+            
+            depth += 1
+            helper(node.right, result, depth)
+            helper(node.left, result, depth)
+        result = []
+        helper(root, result, 1)
+        return result
 
 solution = Solution()
 
@@ -282,4 +296,5 @@ print(solution.max_depth(root))
 print(solution.level_order(root))
 print(solution.level_order(None))
 
+print(solution.right_side_view_BFS(root))
 print(solution.right_side_view_BFS(root))
