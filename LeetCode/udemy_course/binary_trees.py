@@ -212,7 +212,26 @@ class Solution:
                     queue.append(node.right)
             result.append(level_nodes)
         return result
+    
+    def right_side_view_BFS(self, root):
+        if not root:
+            return []
+        node = root
+        result = []
+        queue = deque([node])
 
+        while queue:
+            level_order = []
+            for _ in range(len(queue)):
+                node = queue.popleft()
+                level_order.append(node.value)
+
+                if node.left:
+                    queue.append(node.left)
+                if node.right:
+                    queue.append(node.right)
+            result.append(level_order[-1])
+        return result
 
 solution = Solution()
 
@@ -238,19 +257,29 @@ print(bst_tree.DFS_in_order_iterative())
 print(bst_tree.DFS_post_order())
 print(bst_tree.DFS_post_order_iterative())
 
-#        1
-#    2       3
-# 4            5
+#         1
+#     2         3
+# 4      5              6
+#     7
+#  8
 root = TreeNode(1)
 node2 = TreeNode(2)
 node3 = TreeNode(3)
 node4 = TreeNode(4)
 node5 = TreeNode(5)
+node6 = TreeNode(6)
+node7 = TreeNode(7)
+node8 = TreeNode(8)
 root.left = node2
-node2.left = node4
 root.right = node3
-node3.right = node5
+node2.left = node4
+node2.right = node5
+node3.right = node6
+node4.right = node7
+node7.left = node8
 
 print(solution.max_depth(root))
 print(solution.level_order(root))
 print(solution.level_order(None))
+
+print(solution.right_side_view_BFS(root))
