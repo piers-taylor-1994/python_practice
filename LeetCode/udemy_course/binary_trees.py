@@ -237,14 +237,13 @@ class Solution:
         def helper(node, result, depth):
             if not node:
                 return
-            if len(result) < depth:
+            if depth == len(result):
                 result.append(node.value)
             
-            depth += 1
-            helper(node.right, result, depth)
-            helper(node.left, result, depth)
+            helper(node.right, result, depth + 1)
+            helper(node.left, result, depth + 1)
         result = []
-        helper(root, result, 1)
+        helper(root, result, 0)
         return result
 
 solution = Solution()
