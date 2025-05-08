@@ -16,6 +16,7 @@
 # Finding the shortest path:
 # BF
 from collections import deque
+import math
 from os import curdir
 
 
@@ -245,6 +246,58 @@ class Solution:
         result = []
         helper(root, result, 0)
         return result
+    
+    def count_nodes(self, root):
+        """
+        :type root: Optional[TreeNode]
+        :rtype: int
+        """
+        def find_height(node, height):
+            if not node:
+                return
+            
+            height += 1
+            if not node.left and not node.right:
+                return height
+            return find_height(node.left, height)
+
+        def node_exists(index, height, node):
+            left = 0
+            right = (2 ** height) - 1
+            count = 0
+            
+            while count < height:
+                middle_of_node = math.ceil((left + right) / 2)
+                if index >= middle_of_node:
+                    node = node.right
+                    left = middle_of_node
+                else:
+                    node = node.left
+                    right = middle_of_node - 1
+                count += 1
+            
+            return node != None
+        
+        if not root:
+            return 0
+        height = find_height(root, 0)
+
+        if height == 1:
+            return 1
+
+        bottom_max = (2 ** height) - 1
+
+        left = 0
+        right = bottom_max
+
+        while left < right:
+            index_to_find = math.ceil((left + right) / 2)
+            if node_exists(index_to_find, bottom_max, root):
+                left = index_to_find
+            else:
+                right = index_to_find - 1
+
+        return bottom_max + left + 1
 
 solution = Solution()
 
@@ -297,3 +350,20 @@ print(solution.level_order(None))
 
 print(solution.right_side_view_BFS(root))
 print(solution.right_side_view_BFS(root))
+
+#          1
+#      2       3
+# 4       5  6
+
+root = TreeNode(1)
+node2 = TreeNode(2)
+node3 = TreeNode(3)
+node4 = TreeNode(4)
+node5 = TreeNode(5)
+node6 = TreeNode(6)
+root.left = node2
+root.right = node3
+node2.left = node4
+node2.right = node5
+node3.left = node6
+print(solution.count_nodes(root))
