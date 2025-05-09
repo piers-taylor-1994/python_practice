@@ -252,19 +252,18 @@ class Solution:
         :type root: Optional[TreeNode]
         :rtype: int
         """        
-        def calculate_depth(node):
+        def find_depth(node):
             depth = 0
-
             while node:
                 depth += 1
                 node = node.left
             
-            return depth - 1 #0 indexed depth for non-bottom-row node count / max bottom row index count
+            return depth - 1
         
         def node_exists(index, depth, node):
             left = 0
             right = 2 ** depth - 1
-            
+
             for _ in range(depth):
                 middle = (left + right) // 2
                 if index <= middle:
@@ -275,14 +274,14 @@ class Solution:
                     node = node.right
             
             return node != None
-        
+
         if not root:
             return 0
         
-        depth = calculate_depth(root)
+        depth = find_depth(root)
         if depth == 0:
             return 1
-
+        
         left = 0
         right = 2 ** depth - 1
 
