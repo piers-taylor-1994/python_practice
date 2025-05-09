@@ -258,7 +258,7 @@ class Solution:
                 depth += 1
                 node = node.left
             
-            return depth - 1
+            return depth
         
         def node_exists(index, depth, node):
             left = 0
@@ -277,8 +277,10 @@ class Solution:
 
         
         depth = find_depth(root)
-        if depth <= 0:
-            return depth + 1
+        if depth <= 1:
+            return depth
+        
+        depth -= 1
         
         left = 0
         right = 2 ** depth - 1
