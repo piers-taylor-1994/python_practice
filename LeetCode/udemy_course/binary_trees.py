@@ -251,10 +251,8 @@ class Solution:
         """
         :type root: Optional[TreeNode]
         :rtype: int
-        """
-        if not root:
-            return 0
-        def find_depth(node):
+        """        
+        def calculate_depth(node):
             depth = 0
 
             while node:
@@ -263,37 +261,40 @@ class Solution:
             
             return depth - 1
         
-        def exists(index, max_index, depth, root):
-            left = 0 
-            right = max_index
+        def node_exists(index, depth, node):
+            left = 0
+            right = 2 ** depth - 1
+            
             for _ in range(depth):
-                mid = (left + right) // 2
-                if index <= mid:
-                    root = root.left
-                    right = mid - 1
+                middle = (left + right) // 2
+                if index <= middle:
+                    right = middle
+                    node = node.left
                 else:
-                    root = root.right
-                    left = mid + 1
-            return root is not None
+                    left = middle + 1
+                    node = node.right
+            
+            return node != None
         
-        depth = find_depth(root)
-        if depth == 0:
+        if not root:
+            return 0
+        
+        zero_idx_depth = calculate_depth(root)
+        if zero_idx_depth == 0:
             return 1
 
-        max_bottom_index = (2 ** depth) - 1
-
         left = 0
-        right = max_bottom_index
+        right = 2 ** zero_idx_depth - 1
 
         while left <= right:
-            middle = math.ceil((left + right) / 2)
-            
-            if exists(middle, max_bottom_index, depth, root):
+            middle = (left + right) // 2
+
+            if node_exists(middle, zero_idx_depth, root):
                 left = middle + 1
             else:
                 right = middle - 1
         
-        return max_bottom_index + left
+        return 2 ** zero_idx_depth - 1 + left
 
 
 solution = Solution()
@@ -350,8 +351,8 @@ print(solution.right_side_view_BFS(root))
 
 #                   1
 #           2               3
-#     4         5      6         7
-#  8   9    10    11 12
+#     4          5      6       7
+#  8   9    10    11  12
 
 root = TreeNode(1)
 node2 = TreeNode(2)
