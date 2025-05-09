@@ -349,10 +349,10 @@ print(solution.level_order(None))
 print(solution.right_side_view_BFS(root))
 print(solution.right_side_view_BFS(root))
 
-#                   1
-#           2               3
-#     4          5      6       7
-#  8   9    10    11  12
+#                       1
+#           2                      3
+#    4            5           6         7
+#  8   9       10   11    12
 
 root = TreeNode(1)
 node2 = TreeNode(2)
