@@ -294,7 +294,7 @@ class Solution:
             else:
                 right = middle - 1
         
-        return 2 ** depth - 1 + left
+        return left + 2 ** depth - 1
 
 
 solution = Solution()
