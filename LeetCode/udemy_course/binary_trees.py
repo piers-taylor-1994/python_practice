@@ -252,52 +252,49 @@ class Solution:
         :type root: Optional[TreeNode]
         :rtype: int
         """
-        def find_height(node, height):
-            if not node:
-                return
-            
-            height += 1
-            if not node.left and not node.right:
-                return height
-            return find_height(node.left, height)
-
-        def node_exists(index, height, node):
-            left = 0
-            right = (2 ** height) - 1
-            count = 0
-            
-            while count < height:
-                middle_of_node = math.ceil((left + right) / 2)
-                if index >= middle_of_node:
-                    node = node.right
-                    left = middle_of_node
-                else:
-                    node = node.left
-                    right = middle_of_node - 1
-                count += 1
-            
-            return node != None
-        
         if not root:
             return 0
-        height = find_height(root, 0)
+        def find_depth(node):
+            depth = 0
 
-        if height == 1:
+            while node:
+                depth += 1
+                node = node.left
+            
+            return depth - 1
+        
+        def exists(index, max_index, depth, root):
+            left = 0 
+            right = max_index
+            for _ in range(depth):
+                mid = (left + right) // 2
+                if index <= mid:
+                    root = root.left
+                    right = mid - 1
+                else:
+                    root = root.right
+                    left = mid + 1
+            return root is not None
+        
+        depth = find_depth(root)
+        if depth == 0:
             return 1
 
-        bottom_max = (2 ** height) - 1
+        max_bottom_index = (2 ** depth) - 1
 
         left = 0
-        right = bottom_max
+        right = max_bottom_index
 
-        while left < right:
-            index_to_find = math.ceil((left + right) / 2)
-            if node_exists(index_to_find, bottom_max, root):
-                left = index_to_find
+        while left <= right:
+            middle = math.ceil((left + right) / 2)
+            
+            if exists(middle, max_bottom_index, depth, root):
+                left = middle + 1
             else:
-                right = index_to_find - 1
+                right = middle - 1
+        
+        return max_bottom_index + left
 
-        return bottom_max + left + 1
 
 solution = Solution()
 
@@ -351,9 +348,10 @@ print(solution.level_order(None))
 print(solution.right_side_view_BFS(root))
 print(solution.right_side_view_BFS(root))
 
-#          1
-#      2       3
-# 4       5  6
+#                   1
+#           2               3
+#     4         5      6         7
+#  8   9    10    11 12
 
 root = TreeNode(1)
 node2 = TreeNode(2)
@@ -361,9 +359,21 @@ node3 = TreeNode(3)
 node4 = TreeNode(4)
 node5 = TreeNode(5)
 node6 = TreeNode(6)
+node7 = TreeNode(7)
+node8 = TreeNode(8)
+node9 = TreeNode(9)
+node10 = TreeNode(10)
+node11 = TreeNode(11)
+node12 = TreeNode(12)
 root.left = node2
 root.right = node3
 node2.left = node4
 node2.right = node5
 node3.left = node6
+node3.right = node7
+node4.left = node8
+node4.right = node9
+node5.left = node10
+node5.right = node11
+node6.left = node12
 print(solution.count_nodes(root))
