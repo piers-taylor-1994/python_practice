@@ -259,7 +259,7 @@ class Solution:
                 depth += 1
                 node = node.left
             
-            return depth - 1
+            return depth - 1 #0 indexed depth for non-bottom-row node count / max bottom row index count
         
         def node_exists(index, depth, node):
             left = 0
@@ -279,22 +279,22 @@ class Solution:
         if not root:
             return 0
         
-        zero_idx_depth = calculate_depth(root)
-        if zero_idx_depth == 0:
+        depth = calculate_depth(root)
+        if depth == 0:
             return 1
 
         left = 0
-        right = 2 ** zero_idx_depth - 1
+        right = 2 ** depth - 1
 
         while left <= right:
             middle = (left + right) // 2
 
-            if node_exists(middle, zero_idx_depth, root):
+            if node_exists(middle, depth, root):
                 left = middle + 1
             else:
                 right = middle - 1
         
-        return 2 ** zero_idx_depth - 1 + left
+        return 2 ** depth - 1 + left
 
 
 solution = Solution()
