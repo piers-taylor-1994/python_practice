@@ -184,34 +184,28 @@ class TreeNode:
 
 class Solution:
     def max_depth(self, root):
-        def helper(node, depth):
-            if not node:
-                return depth
-            depth += 1
-
-            return max(helper(node.left, depth), helper(node.right, depth))
-        return helper(root, 0)
+        pass
     
     def level_order(self, root):
         if not root:
             return []
-        node = root
-        result = []
-        # queue = deque([node]) //More efficient O(n) => O(1) time
-        queue = [node]
         
+        result = []
+        queue = deque([root])
+
         while queue:
             level_nodes = []
-            for _ in range(len(queue)):
-                #node = queue.popleft() //More efficient O(n) => O(1) time as pop(0) shifts values
-                node = queue.pop(0)
-                level_nodes.append(node.value)
 
+            for _ in range(len(queue)):
+                node = queue.popleft()
+                level_nodes.append(node.value)
                 if node.left:
                     queue.append(node.left)
                 if node.right:
                     queue.append(node.right)
+
             result.append(level_nodes)
+        
         return result
     
     def right_side_view_BFS(self, root):
