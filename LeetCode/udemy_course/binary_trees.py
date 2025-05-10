@@ -235,16 +235,15 @@ class Solution:
         return result
     
     def right_side_view_DFS(self, root):
-        def helper(node, result, depth):
+        def dfs(node, depth, result):
             if not node:
                 return
             if depth == len(result):
                 result.append(node.value)
-            
-            helper(node.right, result, depth + 1)
-            helper(node.left, result, depth + 1)
+            dfs(node.right, depth + 1, result)
+            dfs(node.left, depth + 1, result)
         result = []
-        helper(root, result, 0)
+        dfs(root, 0, result)
         return result
     
     def count_nodes(self, root):
