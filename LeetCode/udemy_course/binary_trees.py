@@ -258,7 +258,7 @@ class Solution:
                 depth += 1
                 node = node.left
 
-            return depth - 1
+            return depth - 1 #0 indexed
         
         def node_exists(index, depth, node):
             left = 0
