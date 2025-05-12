@@ -258,7 +258,7 @@ class Solution:
                 depth += 1
                 node = node.left
 
-            return depth - 1 #0 indexed
+            return depth - 1
         
         def node_exists(index, depth, node):
             left = 0
@@ -266,15 +266,16 @@ class Solution:
 
             for _ in range(depth):
                 middle = (left + right) // 2
-                
-                if index <= middle:
-                    right = middle
-                    node = node.left
-                else:
-                    left = middle + 1
-                    node = node.right
-            return node != None
 
+                if index <= middle:
+                    node = node.left
+                    right = middle
+                else:
+                    node = node.right
+                    left = middle + 1
+            
+            return node != None
+        
         if not root:
             return 0
         depth = find_depth(root)
@@ -286,6 +287,7 @@ class Solution:
 
         while left <= right:
             middle = (left + right) // 2
+
             if node_exists(middle, depth, root):
                 left = middle + 1
             else:
