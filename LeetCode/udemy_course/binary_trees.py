@@ -16,9 +16,6 @@
 # Finding the shortest path:
 # BF
 from collections import deque
-import math
-from os import curdir
-
 
 class BST:
     def __init__(self):
@@ -294,6 +291,17 @@ class Solution:
                 right = middle - 1
         
         return left + 2 ** depth - 1
+    
+    def is_valid_BST(self, root):
+        def dfs(node, min, max):
+            if not node:
+                return True
+            elif not min < node.value < max:
+                return False
+            
+            return dfs(node.left, min, node.value) and dfs(node.right, node.value, max)
+
+        return dfs(root, -float('inf'), float('inf'))
 
 
 solution = Solution()
@@ -377,3 +385,22 @@ node5.left = node10
 node5.right = node11
 node6.left = node12
 print(solution.count_nodes(root))
+
+#           7
+#     5          15
+#  3     6    10    21
+
+root = TreeNode(7)
+node5 = TreeNode(5)
+node15 = TreeNode(15)
+node3 = TreeNode(3)
+node6 = TreeNode(6)
+node10 = TreeNode(10)
+node21 = TreeNode(21)
+root.left = node5
+root.right = node15
+node5.left = node3
+node5.right = node6
+node15.left = node10
+node15.right = node21
+print(solution.is_valid_BST(root))
