@@ -180,6 +180,23 @@ class TreeNode:
         self.right = right
 
 class Solution:
+    def bfs(self, root):
+        if not root:
+            return []
+        result = []
+        queue = deque([root])
+
+        while queue:
+            node = queue.popleft()
+            result.append(node.value)
+
+            if node.left:
+                queue.append(node.left)
+            if node.right:
+                queue.append(node.right)
+        
+        return result
+    
     def max_depth(self, root):
         def dfs(node, depth):
             if not node:
