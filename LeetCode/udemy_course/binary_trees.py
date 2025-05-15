@@ -195,6 +195,8 @@ node3.right = node6
 node4.right = node7
 node7.left = node8
 
+print(solution.bfs(root))
+
 print(solution.max_depth(root))
 print(solution.level_order(root))
 print(solution.level_order(None))
