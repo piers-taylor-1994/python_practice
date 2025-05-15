@@ -48,6 +48,18 @@ class Solution:
         
         return result
     
+    def dfs_preorder(self, root):
+        def dfs(node, result):
+            if not node:
+                return
+            result.append(node.value)
+            dfs(node.left, result)
+            dfs(node.right, result)
+
+        result = []
+        dfs(root, result)
+        return result
+    
     def max_depth(self, root):
         def dfs(node, depth):
             if not node:
@@ -196,6 +208,7 @@ node4.right = node7
 node7.left = node8
 
 print(solution.bfs(root))
+print(solution.dfs_preorder(root))
 
 print(solution.max_depth(root))
 print(solution.level_order(root))
