@@ -13,6 +13,11 @@ class PriorityQueue:
         else:
             return a < b
         
+    def min_max(self, a, b):
+        if self.max_heap:
+            return max(a, b)
+        return min(a, b)
+        
     def size(self):
         return len(self.heap)
     
@@ -37,8 +42,10 @@ class PriorityQueue:
     def push(self, x):
         self.heap.append(x)
 
-        while self.heap[self.parent(self.heap.index(x))] < x:
+        while self.comparator(x, self.heap[self.parent(self.heap.index(x))]):
             self.swap(self.heap.index(x), self.parent(self.heap.index(x)))
+            if self.heap.index(x) == 0:
+                break
 
         return self.heap
     
@@ -48,16 +55,29 @@ class PriorityQueue:
         x = self.heap.pop()
         self.heap.appendleft(x)
 
-        while self.comparator(max(self.heap[self.left_child(self.heap.index(x))], self.heap[self.right_child(self.heap.index(x))] if self.right_child(self.heap.index(x)) < len(self.heap) else 0), x):
-            self.swap(self.heap.index(x), self.heap.index(max(self.heap[self.left_child(self.heap.index(x))], self.heap[self.right_child(self.heap.index(x))])))
+        while self.comparator(self.min_max(self.heap[self.left_child(self.heap.index(x))], self.heap[self.right_child(self.heap.index(x))] if self.right_child(self.heap.index(x)) < len(self.heap) else 0), x):
+            self.swap(self.heap.index(x), self.heap.index(self.min_max(self.heap[self.left_child(self.heap.index(x))], self.heap[self.right_child(self.heap.index(x)) if self.right_child(self.heap.index(x)) < len(self.heap) else 0])))
+            if self.left_child(self.heap.index(x)) >= len(self.heap):
+                break
 
         return self.heap
 
+print("Insertion demo max_heap")
 priority_queue = PriorityQueue([50,25,45,35,10,15,20])
-print("Insertion demo")
 print(priority_queue.heap)
 print(priority_queue.push(40))
-print("\nDeletion demo")
+
+print("\nInsertion demo min_heap")
+priority_queue = PriorityQueue([10,15,25,20,35,30,50], False)
+print(priority_queue.heap)
+print(priority_queue.push(8))
+
+print("\nDeletion demo max_heap")
 priority_queue = PriorityQueue([75,50,25,45,35,10,15,20,40])
+print(priority_queue.heap)
+print(priority_queue.pop())
+
+print("\nDeletion demo min_heap")
+priority_queue = PriorityQueue([10,15,25,20,35,30,50,28], False)
 print(priority_queue.heap)
 print(priority_queue.pop())
