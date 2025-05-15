@@ -2,8 +2,8 @@ from collections import deque
 
 
 class PriorityQueue:
-    def __init__(self, max_heap = True):
-        self.heap = deque([50,25,45,35,10,15,20])
+    def __init__(self, queue, max_heap = True):
+        self.heap = deque(queue)
         self.max_heap = max_heap
         pass
 
@@ -37,11 +37,27 @@ class PriorityQueue:
     def push(self, x):
         self.heap.append(x)
 
-        while(self.heap[self.parent(self.heap.index(x))] < x):
+        while self.heap[self.parent(self.heap.index(x))] < x:
             self.swap(self.heap.index(x), self.parent(self.heap.index(x)))
 
         return self.heap
+    
+    def pop(self):
+        self.heap.popleft()
 
-priority_queue = PriorityQueue()
+        x = self.heap.pop()
+        self.heap.appendleft(x)
+
+        while self.comparator(max(self.heap[self.left_child(self.heap.index(x))], self.heap[self.right_child(self.heap.index(x))] if self.right_child(self.heap.index(x)) < len(self.heap) else 0), x):
+            self.swap(self.heap.index(x), self.heap.index(max(self.heap[self.left_child(self.heap.index(x))], self.heap[self.right_child(self.heap.index(x))])))
+
+        return self.heap
+
+priority_queue = PriorityQueue([50,25,45,35,10,15,20])
+print("Insertion demo")
 print(priority_queue.heap)
 print(priority_queue.push(40))
+print("\nDeletion demo")
+priority_queue = PriorityQueue([75,50,25,45,35,10,15,20,40])
+print(priority_queue.heap)
+print(priority_queue.pop())
