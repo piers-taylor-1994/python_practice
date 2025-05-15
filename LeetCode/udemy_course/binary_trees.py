@@ -18,7 +18,7 @@
 from collections import deque
     
 class TreeNode:
-    def __init__(self, value=0, left=None, right=None):
+    def __init__(self, val=0, left=None, right=None):
         """
         Initializes a binary tree node.
 
@@ -26,7 +26,7 @@ class TreeNode:
         :param left: Reference to the left child node
         :param right: Reference to the right child node
         """
-        self.value = value
+        self.val = val
         self.left = left
         self.right = right
 
@@ -39,7 +39,7 @@ class Solution:
 
         while queue:
             node = queue.popleft()
-            result.append(node.value)
+            result.append(node.val)
 
             if node.left:
                 queue.append(node.left)
@@ -52,7 +52,7 @@ class Solution:
         def dfs(node, result):
             if not node:
                 return
-            result.append(node.value)
+            result.append(node.val)
             dfs(node.left, result)
             dfs(node.right, result)
 
@@ -66,7 +66,7 @@ class Solution:
                 return
             
             dfs(node.left, result)
-            result.append(node.value)
+            result.append(node.val)
             dfs(node.right, result)
         
         result = []
@@ -80,7 +80,7 @@ class Solution:
             
             dfs(node.left, result)
             dfs(node.right, result)
-            result.append(node.value)
+            result.append(node.val)
         
         result = []
         dfs(root, result)
@@ -107,7 +107,7 @@ class Solution:
 
             for _ in range(len(queue)):
                 node = queue.popleft()
-                level_nodes.append(node.value)
+                level_nodes.append(node.val)
                 if node.left:
                     queue.append(node.left)
                 if node.right:
@@ -128,7 +128,7 @@ class Solution:
             right_node = None
             for _ in range(len(queue)):
                 node = queue.popleft()
-                right_node = node.value
+                right_node = node.val
 
                 if node.left:
                     queue.append(node.left)
@@ -142,7 +142,7 @@ class Solution:
             if not node:
                 return
             if depth == len(result):
-                result.append(node.value)
+                result.append(node.val)
             dfs(node.right, depth + 1, result)
             dfs(node.left, depth + 1, result)
         result = []
@@ -199,13 +199,13 @@ class Solution:
         return left + 2 ** depth - 1
     
     def is_valid_BST(self, root):
-        def dfs(node, min, max):
+        def dfs(node, lower_boundary, upper_boundary):
             if not node:
                 return True
-            elif not min < node.value < max:
+            elif not lower_boundary < node.val < upper_boundary:
                 return False
             
-            return dfs(node.left, min, node.value) and dfs(node.right, node.value, max)
+            return dfs(node.left, lower_boundary, node.val) and dfs(node.right, node.val, upper_boundary)
 
         return dfs(root, -float('inf'), float('inf'))
 
