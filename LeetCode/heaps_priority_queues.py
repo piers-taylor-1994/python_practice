@@ -1,6 +1,9 @@
+from collections import deque
+
+
 class PriorityQueue:
     def __init__(self, max_heap = True):
-        self.heap = [50,25,45,35,10,15,20]
+        self.heap = deque([50,25,45,35,10,15,20])
         self.max_heap = max_heap
         pass
 
@@ -30,6 +33,15 @@ class PriorityQueue:
     
     def peek(self):
         return self.heap[0]
+    
+    def push(self, x):
+        self.heap.append(x)
+
+        while(self.heap[self.parent(self.heap.index(x))] < x):
+            self.swap(self.heap.index(x), self.parent(self.heap.index(x)))
+
+        return self.heap
 
 priority_queue = PriorityQueue()
 print(priority_queue.heap)
+print(priority_queue.push(40))
