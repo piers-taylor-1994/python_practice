@@ -2,66 +2,38 @@ from collections import deque
 
 
 class Solution:
+    def __init__(self):
+        self.DIRECTIONS = [
+            (-1, 0),
+            (0, 1),
+            (1, 0),
+            (0, -1)
+        ]
+
     def traversal_dfs(self, matrix: list[list[int]]):
         if not matrix or not matrix[0]:
             return []
         
-        DIRECTIONS = [
-            [-1, 0], #up
-            [0, 1], #right
-            [1, 0], #down
-            [0, -1] #left
-        ]
-
         seen = [[False] * len(matrix[0]) for _ in range(len(matrix))]
-        
-        def dfs(matrix, row, col, seen, result):
+
+        def dfs(row, col, seen, result):
             if row < 0 or row >= len(matrix) or col < 0 or col >= len(matrix[0]) or seen[row][col]:
                 return
             
             result.append(matrix[row][col])
             seen[row][col] = True
-            
-            for dr, dc in DIRECTIONS:
+
+            for dr, dc in self.DIRECTIONS:
                 new_row = row + dr
                 new_col = col + dc
-
-                dfs(matrix, new_row, new_col, seen, result)
-
+                dfs(new_row, new_col, seen, result)
+        
         result = []
-        dfs(matrix, 0, 0, seen, result)
+        dfs(0, 0, seen, result)
         return result
     
     def traversal_bfs(self, matrix: list[list[int]]):
-        if not matrix or not matrix[0]:
-            return []
-        
-        DIRECTIONS = [
-            [-1, 0], #up
-            [0, 1], #right
-            [1, 0], #down
-            [0, -1] #left
-        ]
-
-        seen = [[False] * len(matrix[0]) for _ in range(len(matrix))]
-
-        result = []
-        queue = deque([(0, 0)])
-        seen[0][0] = True
-
-        while queue:
-            row, col = queue.popleft()
-            result.append(matrix[row][col])
-
-            for dr, dc in DIRECTIONS:
-                new_row = row + dr
-                new_col = col + dc
-
-                if 0 <= new_row < len(matrix) and 0 <= new_col < len(matrix[0]) and not seen[new_row][new_col]:
-                    queue.append((new_row, new_col))
-                    seen[new_row][new_col] = True
-        
-        return result
+        pass
             
 
 solution = Solution()
