@@ -33,7 +33,30 @@ class Solution:
         return result
     
     def traversal_bfs(self, matrix: list[list[int]]):
-        pass
+        if not matrix or not matrix[0]:
+            return []
+        
+        seen = [[False] * len(matrix[0]) for _ in range(len(matrix))]
+        result = []
+        queue = deque([(0, 0)])
+        seen[0][0] = True
+
+        while queue:
+            current = queue.popleft()
+            row = current[0]
+            col = current[1]
+            # row, col = queue.popleft()
+            result.append(matrix[row][col])
+
+            for dr, dc in self.DIRECTIONS:
+                new_row = row + dr
+                new_col = col + dc
+
+                if 0 <= new_row < len(matrix) and 0 <= new_col < len(matrix[0]) and not seen[new_row][new_col]:
+                    queue.append((new_row, new_col))
+                    seen[new_row][new_col] = True
+        
+        return result
             
 
 solution = Solution()
