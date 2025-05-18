@@ -9,28 +9,6 @@ class Solution:
             (1, 0),
             (0, -1)
         ]
-
-    def traversal_dfs(self, matrix: list[list[int]]):
-        if not matrix or not matrix[0]:
-            return []
-        
-        seen = [[False] * len(matrix[0]) for _ in range(len(matrix))]
-
-        def dfs(row, col, seen, result):
-            if row < 0 or row >= len(matrix) or col < 0 or col >= len(matrix[0]) or seen[row][col]:
-                return
-            
-            result.append(matrix[row][col])
-            seen[row][col] = True
-
-            for dr, dc in self.DIRECTIONS:
-                new_row = row + dr
-                new_col = col + dc
-                dfs(new_row, new_col, seen, result)
-        
-        result = []
-        dfs(0, 0, seen, result)
-        return result
     
     def traversal_bfs(self, matrix: list[list[int]]):
         if not matrix or not matrix[0]:
@@ -42,20 +20,16 @@ class Solution:
         seen[0][0] = True
 
         while queue:
-            current = queue.popleft()
-            row = current[0]
-            col = current[1]
-            # row, col = queue.popleft()
+            row, col = queue.popleft()
             result.append(matrix[row][col])
 
             for dr, dc in self.DIRECTIONS:
                 new_row = row + dr
                 new_col = col + dc
-
                 if 0 <= new_row < len(matrix) and 0 <= new_col < len(matrix[0]) and not seen[new_row][new_col]:
                     queue.append((new_row, new_col))
                     seen[new_row][new_col] = True
-        
+
         return result
             
 
