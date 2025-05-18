@@ -9,6 +9,28 @@ class Solution:
             (1, 0),
             (0, -1)
         ]
+
+    def traversal_dfs(self, matrix: list[list[int]]):
+        if not matrix or not matrix[0]:
+            return []
+        
+        def dfs(row, col, seen, result):
+            if row < 0 or row >= len(matrix) or col < 0 or col >= len(matrix[0]) or seen[row][col]:
+                return
+            
+            result.append(matrix[row][col])
+            seen[row][col] = True
+
+            for dr, dc in self.DIRECTIONS:
+                new_row = row + dr
+                new_col = col + dc
+                dfs(new_row, new_col, seen, result)
+
+                
+        seen = [[False] * len(matrix[0]) for _ in range(len(matrix))]
+        result = []
+        dfs(0, 0, seen, result)
+        return result
     
     def traversal_bfs(self, matrix: list[list[int]]):
         if not matrix or not matrix[0]:
