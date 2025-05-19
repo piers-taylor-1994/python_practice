@@ -33,8 +33,32 @@ class Solution:
         return result
 
     def traversal_dfs(self, matrix: list[list[int]]):
-        pass
+        if not matrix or not matrix[0]:
+            return []
+        
+        def dfs(row, col, seen, result):
+            if row < 0 or row >= len(matrix) or col < 0 or col >= len(matrix[0]) or seen[row][col]:
+                return
+            
+            result.append(matrix[row][col])
+            seen[row][col] = True
+
+            for dr, dc in self.DIRECTIONS:
+                new_row = row + dr
+                new_col = col + dc
+                dfs(new_row, new_col, seen, result)
+
+        seen = []
+        for _ in range(len(matrix)):
+            inner_seen = []
+            for _ in range(len(matrix[0])):
+                inner_seen.append(False)
+            seen.append(inner_seen)
+
+        result = []
+        dfs(0, 0, seen, result)
+        return result
 
 solution = Solution()
-print(solution.traversal_dfs([[1,2,3,4,5], [6,7,8,9,10], [11,12,13,14,15], [16,17,18,19,20]]))
 print(solution.traversal_bfs([[1,2,3,4,5], [6,7,8,9,10], [11,12,13,14,15], [16,17,18,19,20]]))
+print(solution.traversal_dfs([[1,2,3,4,5], [6,7,8,9,10], [11,12,13,14,15], [16,17,18,19,20]]))
