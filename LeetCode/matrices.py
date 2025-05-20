@@ -59,6 +59,41 @@ class Solution:
         dfs(0, 0, seen, result)
         return result
 
+    def num_islands(self, matrix: list[list[int]]) -> int:
+        def bfs(row, col, seen):
+            DIRECTIONS = [
+                [-1, 0],
+                [0, 1],
+                [1, 0],
+                [0, -1]
+            ]
+
+            queue = deque([(row, col)])
+
+            while queue:
+                r, c = queue.popleft()
+                seen[r][c] = True
+
+                for dr, dc in DIRECTIONS:
+                    new_row = r + dr
+                    new_col = c + dc
+                    if 0 <= new_row < len(matrix) and 0 <= new_col < len(matrix[0]) and matrix[new_row][new_col] == "1" and not seen[new_row][new_col]:
+                        queue.append((new_row, new_col))
+                        seen[new_row][new_col] = True
+
+        seen = [[False] * len(matrix[0]) for _ in range(len(matrix))]
+        island_count = 0
+        for row in range(len(matrix)):
+            for col in range(len(matrix[row])):
+                if not seen[row][col] and matrix[row][col] == "1":
+                    island_count += 1
+                    bfs(row, col, seen)
+        
+        return island_count
+
 solution = Solution()
 print(solution.traversal_bfs([[1,2,3,4,5], [6,7,8,9,10], [11,12,13,14,15], [16,17,18,19,20]]))
 print(solution.traversal_dfs([[1,2,3,4,5], [6,7,8,9,10], [11,12,13,14,15], [16,17,18,19,20]]))
+
+print(solution.num_islands([["1","1","1","1","0"], ["1","1","0","1","0"], ["1","1","0","0","0"], ["0","0","0","0","0"]]))
+print(solution.num_islands([["1","1","0","0","0"], ["1","1","0","0","0"], ["0","0","1","0","0"], ["0","0","0","1","1"]]))
