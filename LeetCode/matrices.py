@@ -59,35 +59,35 @@ class Solution:
         dfs(0, 0, seen, result)
         return result
 
-    def num_islands(self, matrix: list[list[int]]) -> int:
-        def bfs(row, col, seen):
+    def num_islands(self, matrix):
+        def bfs(row, col, matrix):
             DIRECTIONS = [
-                [-1, 0],
-                [0, 1],
-                [1, 0],
-                [0, -1]
+                [-1, 0], #up
+                [0, 1], #right
+                [1, 0], #down
+                [0, -1] #left
             ]
 
             queue = deque([(row, col)])
+            matrix[row][col] = "0"
 
             while queue:
-                r, c = queue.popleft()
-                seen[r][c] = True
+                row, col = queue.popleft()
 
                 for dr, dc in DIRECTIONS:
-                    new_row = r + dr
-                    new_col = c + dc
-                    if 0 <= new_row < len(matrix) and 0 <= new_col < len(matrix[0]) and matrix[new_row][new_col] == "1" and not seen[new_row][new_col]:
+                    new_row = row + dr
+                    new_col = col + dc
+                    if 0 <= new_row < len(matrix) and 0 <= new_col < len(matrix[0]) and matrix[new_row][new_col] == "1":
                         queue.append((new_row, new_col))
-                        seen[new_row][new_col] = True
+                        matrix[new_row][new_col] = "0"
+                        
 
-        seen = [[False] * len(matrix[0]) for _ in range(len(matrix))]
         island_count = 0
         for row in range(len(matrix)):
             for col in range(len(matrix[row])):
-                if not seen[row][col] and matrix[row][col] == "1":
+                if matrix[row][col] == "1":
                     island_count += 1
-                    bfs(row, col, seen)
+                    bfs(row, col, matrix)
         
         return island_count
 
