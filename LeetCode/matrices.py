@@ -60,40 +60,38 @@ class Solution:
         return result
 
     def num_islands(self, matrix):
-        def bfs(row, col, matrix):
-            DIRECTIONS = [
-                [-1, 0], #up
-                [0, 1], #right
-                [1, 0], #down
-                [0, -1] #left
-            ]
+        def traversal(row, col, seen, matrix):
+            if row < 0 or col < 0 or row >= len(matrix) or col >= len(matrix[0]) or matrix[row][col] == "0" or seen[row][col]:
+                return
+            
+            seen[row][col] = True
 
-            queue = deque([(row, col)])
-            matrix[row][col] = "0"
+            for dr, dc in self.DIRECTIONS:
+                traversal(dr + row, dc + col, seen, matrix)
 
-            while queue:
-                row, col = queue.popleft()
+        seen = [[False] * len(matrix[0]) for _ in range(len(matrix))]
+        num_of_islands = 0
+        for i in range(len(matrix)):
+            for j in range(len(matrix[i])):
+                if matrix[i][j] == "1" and not seen[i][j]:
+                    num_of_islands += 1
+                    traversal(i, j, seen, matrix)
+        return num_of_islands
 
-                for dr, dc in DIRECTIONS:
-                    new_row = row + dr
-                    new_col = col + dc
-                    if 0 <= new_row < len(matrix) and 0 <= new_col < len(matrix[0]) and matrix[new_row][new_col] == "1":
-                        queue.append((new_row, new_col))
-                        matrix[new_row][new_col] = "0"
-                        
-
-        island_count = 0
-        for row in range(len(matrix)):
-            for col in range(len(matrix[row])):
-                if matrix[row][col] == "1":
-                    island_count += 1
-                    bfs(row, col, matrix)
-        
-        return island_count
 
 solution = Solution()
 print(solution.traversal_bfs([[1,2,3,4,5], [6,7,8,9,10], [11,12,13,14,15], [16,17,18,19,20]]))
 print(solution.traversal_dfs([[1,2,3,4,5], [6,7,8,9,10], [11,12,13,14,15], [16,17,18,19,20]]))
 
-print(solution.num_islands([["1","1","1","1","0"], ["1","1","0","1","0"], ["1","1","0","0","0"], ["0","0","0","0","0"]]))
-print(solution.num_islands([["1","1","0","0","0"], ["1","1","0","0","0"], ["0","0","1","0","0"], ["0","0","0","1","1"]]))
+print(solution.num_islands([
+    ["1","1","1","1","0"], 
+    ["1","1","0","1","0"], 
+    ["1","1","0","0","0"], 
+    ["0","0","0","0","0"]
+    ]))
+print(solution.num_islands([
+    ["1","1","0","0","0"], 
+    ["1","1","0","0","0"], 
+    ["0","0","1","0","0"], 
+    ["0","0","0","1","1"]
+    ]))
