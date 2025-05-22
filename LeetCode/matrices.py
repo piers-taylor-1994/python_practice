@@ -107,10 +107,10 @@ class Solution:
                     oranges.append((i, j))
                 if matrix[i][j] == 2:
                     rotten_oranges.append((i, j))
-
-        if not rotten_oranges:
-            if not oranges:
-                return 0
+        
+        if not oranges:
+            return 0
+        elif not rotten_oranges:
             return -1
         
         minutes = bfs()
