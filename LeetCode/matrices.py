@@ -77,6 +77,45 @@ class Solution:
                     num_of_islands += 1
                     traversal(i, j, seen, matrix)
         return num_of_islands
+    
+    def oranges_rotting(self, matrix):
+        def bfs():
+            queue = deque(rotten_oranges)
+            minutes = 0
+
+            while queue:
+                for _ in range(len(queue)):
+                    row, col = queue.popleft()
+
+                    for dr, dc in self.DIRECTIONS:
+                        new_row = row + dr
+                        new_col = col + dc
+
+                        if 0 <= new_row < len(matrix) and 0 <= new_col < len(matrix[0]) and matrix[new_row][new_col] == 1:
+                            queue.append((new_row, new_col))
+                            matrix[new_row][new_col] = 2
+                            oranges.remove((new_row, new_col))
+                if queue:
+                    minutes += 1
+            return minutes
+
+        rotten_oranges = []
+        oranges = []
+        for i in range(len(matrix)):
+            for j in range(len(matrix[i])):
+                if matrix[i][j] == 1:
+                    oranges.append((i, j))
+                if matrix[i][j] == 2:
+                    rotten_oranges.append((i, j))
+
+        if not rotten_oranges:
+            if not oranges:
+                return 0
+            return -1
+        
+        minutes = bfs()
+        
+        return minutes if not oranges else -1
 
 
 solution = Solution()
@@ -94,4 +133,13 @@ print(solution.num_islands([
     ["1","1","0","0","0"], 
     ["0","0","1","0","0"], 
     ["0","0","0","1","1"]
+    ]))
+
+print(solution.oranges_rotting([
+    [2,1,1], 
+    [1,1,0], 
+    [0,1,1]
+    ]))
+print(solution.oranges_rotting([
+    [0,1]
     ]))
