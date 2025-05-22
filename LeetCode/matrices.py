@@ -79,33 +79,13 @@ class Solution:
         return num_of_islands
     
     def oranges_rotting(self, matrix):
-        def bfs():
-            queue = deque(rotten_oranges)
-            minutes = 0
-
-            while queue:
-                for _ in range(len(queue)):
-                    row, col = queue.popleft()
-
-                    for dr, dc in self.DIRECTIONS:
-                        new_row = row + dr
-                        new_col = col + dc
-
-                        if 0 <= new_row < len(matrix) and 0 <= new_col < len(matrix[0]) and matrix[new_row][new_col] == 1:
-                            queue.append((new_row, new_col))
-                            matrix[new_row][new_col] = 2
-                            oranges.remove((new_row, new_col))
-                if queue:
-                    minutes += 1
-            return minutes
-
+        oranges = 0
         rotten_oranges = []
-        oranges = []
         for i in range(len(matrix)):
             for j in range(len(matrix[i])):
                 if matrix[i][j] == 1:
-                    oranges.append((i, j))
-                if matrix[i][j] == 2:
+                    oranges += 1
+                elif matrix[i][j] == 2:
                     rotten_oranges.append((i, j))
         
         if not oranges:
@@ -113,7 +93,24 @@ class Solution:
         elif not rotten_oranges:
             return -1
         
-        minutes = bfs()
+        minutes = 0
+        queue = deque(rotten_oranges)
+
+        while queue:
+            for _ in range(len(queue)):
+                row, col = queue.popleft()
+
+                for dr, dc in self.DIRECTIONS:
+                    new_row = row + dr
+                    new_col = col + dc
+
+                    if 0 <= new_row < len(matrix) and 0 <= new_col < len(matrix[0]) and matrix[new_row][new_col] == 1:
+                        queue.append((new_row, new_col))
+                        matrix[new_row][new_col] = 2
+                        oranges -= 1
+                
+            if queue:
+                minutes += 1
         
         return minutes if not oranges else -1
 
