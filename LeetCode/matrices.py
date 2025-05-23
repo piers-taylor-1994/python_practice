@@ -113,6 +113,38 @@ class Solution:
                 minutes += 1
         
         return minutes if not oranges else -1
+    
+    def walls_gates(self, matrix):
+        if not matrix or not matrix[0]:
+            return matrix
+        
+        for i in range(len(matrix)):
+            for j in range(len(matrix[i])):
+                if matrix[i][j] == float("inf"):
+                    seen = [[False] * len(matrix[0]) for _ in range(len(matrix))]
+                    queue = deque([(i, j)])
+                    seen[i][j] = True
+                    depth = 0
+                    while queue:
+                        for _ in range(len(queue)):
+                            row, col = queue.popleft()
+
+                            if matrix[row][col] == 0:
+                                matrix[i][j] = depth
+                                queue.clear()
+                                break
+
+                            for dr, dc in self.DIRECTIONS:
+                                new_row = row + dr
+                                new_col = col + dc
+
+                                if 0 <= new_row < len(matrix) and 0 <= new_col < len(matrix[0]) and not seen[new_row][new_col] and matrix[new_row][new_col] != -1:
+                                    queue.append((new_row, new_col))
+                                    seen[new_row][new_col] = True
+                        
+                        depth += 1
+        
+        return matrix
 
 
 solution = Solution()
@@ -139,4 +171,11 @@ print(solution.oranges_rotting([
     ]))
 print(solution.oranges_rotting([
     [0,1]
+    ]))
+
+print(solution.walls_gates([
+    [float('inf'), -1, 0, float('inf')],
+    [float('inf'), float('inf'), float('inf'), -1],
+    [float('inf'), -1, float('inf'), -1],
+    [0, -1, float('inf'), float('inf')]
     ]))
