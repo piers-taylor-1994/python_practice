@@ -145,6 +145,30 @@ class Solution:
                         depth += 1
         
         return matrix
+    
+    def wall_gates_v2(self, matrix):
+        if not matrix or not matrix[0]:
+            return matrix
+        
+        queue = deque()
+        for i in range(len(matrix)):
+            for j in range(len(matrix[i])):
+                if matrix[i][j] == 0:
+                    queue.append((i, j))
+
+        while queue:
+            row, col = queue.popleft()
+
+            for dr, dc in self.DIRECTIONS:
+                new_row = row + dr
+                new_col = col + dc
+
+                if 0 <= new_row < len(matrix) and 0 <= new_col < len(matrix[0]) and matrix[new_row][new_col] == float('inf'):
+                    matrix[new_row][new_col] = matrix[row][col] + 1
+                    queue.append((new_row, new_col))
+        
+        return matrix
+
 
 
 solution = Solution()
@@ -174,6 +198,12 @@ print(solution.oranges_rotting([
     ]))
 
 print(solution.walls_gates([
+    [float('inf'), -1, 0, float('inf')],
+    [float('inf'), float('inf'), float('inf'), -1],
+    [float('inf'), -1, float('inf'), -1],
+    [0, -1, float('inf'), float('inf')]
+    ]))
+print(solution.wall_gates_v2([
     [float('inf'), -1, 0, float('inf')],
     [float('inf'), float('inf'), float('inf'), -1],
     [float('inf'), -1, float('inf'), -1],
