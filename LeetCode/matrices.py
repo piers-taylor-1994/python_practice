@@ -118,48 +118,27 @@ class Solution:
         if not matrix or not matrix[0]:
             return matrix
         
-        def bfs(row, col, depth):
-            queue = deque([(row, col)])
+        def bfs(gates):
+            queue = deque(gates)
 
             while queue:
-                for _ in range(len(queue)):
-                    qrow, qcol = queue.popleft()
+                row, col = queue.popleft()
 
-                    if matrix[qrow][qcol] == 0:
-                        matrix[row][col] = depth
-                        queue.clear()
-                        break
+                for dr, dc in self.DIRECTIONS:
+                    new_row = row + dr
+                    new_col = col + dc
 
-                    for dr, dc in self.DIRECTIONS:
-                        new_row = qrow + dr
-                        new_col = qcol + dc
+                    if 0 <= new_row < len(matrix) and 0 <= new_col < len(matrix[0]) and matrix[new_row][new_col] == float('inf'):
+                        matrix[new_row][new_col] = matrix[row][col] + 1
+                        queue.append((new_row, new_col))
 
-                        if 0 <= new_row < len(matrix) and 0 <= new_col < len(matrix[0]) and matrix[new_row][new_col] != -1:
-                            queue.append((new_row, new_col))
-
-                depth += 1
-
-        def dfs(row, col, seen, depth):
-            if row < 0 or row >= len(matrix) or col < 0 or col >= len(matrix[0]) or seen[row][col] or matrix[row][col] == -1:
-                return float('inf')
-            elif matrix[row][col] == 0:
-                return depth
-            
-            seen[row][col] = True
-            
-            depths = []
-            for dr, dc in self.DIRECTIONS:
-                new_row = row + dr
-                new_col = col + dc
-                depths.append(dfs(new_row, new_col, seen, depth + 1))
-            
-            return min(depths)
-        
+        gates = []
         for i in range(len(matrix)):
             for j in range(len(matrix[i])):
-                if matrix[i][j] == float('inf'):
-                    seen = [[False] * len(matrix[0]) for _ in range(len(matrix))]
-                    matrix[i][j] = dfs(i, j, seen, 0)
+                if matrix[i][j] == 0:
+                    gates.append((i, j))
+
+        bfs(gates)
         
         return matrix
 
