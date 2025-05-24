@@ -132,13 +132,22 @@ class Solution:
                         matrix[new_row][new_col] = matrix[row][col] + 1
                         queue.append((new_row, new_col))
 
-        gates = []
+        def dfs(row, col, steps):
+            #return if values are 0 (gate), -1 (wall) or value is smaller than current step value
+            if row < 0 or row >= len(matrix) or col < 0 or col >= len(matrix[0]) or steps > matrix[row][col]:
+                return
+            
+            matrix[row][col] = steps
+
+            for dr, dc in self.DIRECTIONS:
+                new_row = row + dr
+                new_col = col + dc
+                dfs(new_row, new_col, steps + 1)
+
         for i in range(len(matrix)):
             for j in range(len(matrix[i])):
                 if matrix[i][j] == 0:
-                    gates.append((i, j))
-
-        bfs(gates)
+                    dfs(i, j, 0)
         
         return matrix
 
