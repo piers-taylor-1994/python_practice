@@ -118,22 +118,30 @@ class Solution:
         if not matrix or not matrix[0]:
             return matrix
         
-        def dfs(row, col, steps = 0):
-            if row < 0 or row >= len(matrix) or col < 0 or col >= len(matrix[0]) or steps > matrix[row][col]:
-                return
-            
-            matrix[row][col] = steps
-
-            for dr, dc in self.DIRECTIONS:
-                new_row = row + dr
-                new_col = col + dc
-                
-                dfs(new_row, new_col, steps + 1)
-        
+        gates = []
         for i in range(len(matrix)):
             for j in range(len(matrix[0])):
                 if matrix[i][j] == 0:
-                    dfs(i, j)
+                    gates.append((i, j))
+
+        queue = deque(gates)
+        steps = 0
+
+        while queue:
+            for _ in range(len(queue)):
+                row, col = queue.popleft()
+
+                if matrix[row][col] == float('inf'):
+                    matrix[row][col] = steps
+
+                for dr, dc in self.DIRECTIONS:
+                    new_row = row + dr
+                    new_col = col + dc
+
+                    if 0 <= new_row < len(matrix) and 0 <= new_col < len(matrix[0]) and matrix[new_row][new_col] == float('inf'):
+                        queue.append((new_row, new_col))
+            
+            steps += 1
 
         return matrix
 
