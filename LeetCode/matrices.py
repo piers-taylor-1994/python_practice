@@ -118,36 +118,35 @@ class Solution:
         if not matrix or not matrix[0]:
             return matrix
         
-        def bfs(gates):
-            queue = deque(gates)
+        def bfs(row, col):
+            seen = []
+            steps = 0
+            queue = deque([(row, col)])
+            seen.append((row, col))
 
             while queue:
-                row, col = queue.popleft()
+                for _ in range(len(queue)):
+                    qrow, qcol = queue.popleft()
 
-                for dr, dc in self.DIRECTIONS:
-                    new_row = row + dr
-                    new_col = col + dc
+                    if matrix[qrow][qcol] == 0:
+                        matrix[row][col] = steps
+                        queue.clear()
+                        break
 
-                    if 0 <= new_row < len(matrix) and 0 <= new_col < len(matrix[0]) and matrix[new_row][new_col] == float('inf'):
-                        matrix[new_row][new_col] = matrix[row][col] + 1
-                        queue.append((new_row, new_col))
+                    for dr, dc in self.DIRECTIONS:
+                        new_row = qrow + dr
+                        new_col = qcol + dc
 
-        def dfs(row, col, steps):
-            #return if values are 0 (gate), -1 (wall) or value is smaller than current step value
-            if row < 0 or row >= len(matrix) or col < 0 or col >= len(matrix[0]) or steps > matrix[row][col]:
-                return
-            
-            matrix[row][col] = steps
-
-            for dr, dc in self.DIRECTIONS:
-                new_row = row + dr
-                new_col = col + dc
-                dfs(new_row, new_col, steps + 1)
-
+                        if 0 <= new_row < len(matrix) and 0 <= new_col < len(matrix[0]) and (new_row, new_col) not in seen and matrix[new_row][new_col] != -1:
+                            queue.append((new_row, new_col))
+                            seen.append((new_row, new_col))
+                
+                steps += 1
+        
         for i in range(len(matrix)):
             for j in range(len(matrix[i])):
-                if matrix[i][j] == 0:
-                    dfs(i, j, 0)
+                if matrix[i][j] == float('inf'):
+                    bfs(i, j)
         
         return matrix
 
