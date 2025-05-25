@@ -118,25 +118,25 @@ class Solution:
         if not matrix or not matrix[0]:
             return matrix
         
-        def bfs(row, col):
-            queue = deque([(row, col)])
-
-            while queue:
-                row, col = queue.popleft()
-
-                for dr, dc in self.DIRECTIONS:
-                    new_row = row + dr
-                    new_col = col + dc
-
-                    if 0 <= new_row < len(matrix) and 0 <= new_col < len(matrix[0]) and 0 < matrix[new_row][new_col] <= float('inf'):
-                        if matrix[row][col] + 1 < matrix[new_row][new_col]:
-                            matrix[new_row][new_col] = matrix[row][col] + 1
-                            queue.append((new_row, new_col))
+        gates = []
         
         for i in range(len(matrix)):
             for j in range(len(matrix[0])):
                 if matrix[i][j] == 0:
-                    bfs(i, j)
+                    gates.append((i, j))
+        
+        queue = deque(gates)
+
+        while queue:
+            row, col = queue.popleft()
+
+            for dr, dc in self.DIRECTIONS:
+                new_row = row + dr
+                new_col = col + dc
+
+                if 0 <= new_row < len(matrix) and 0 <= new_col < len(matrix[0]) and matrix[new_row][new_col] == float('inf'):
+                    matrix[new_row][new_col] = matrix[row][col] + 1
+                    queue.append((new_row, new_col))
 
         return matrix
 
