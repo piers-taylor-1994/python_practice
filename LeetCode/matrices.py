@@ -118,35 +118,27 @@ class Solution:
         if not matrix or not matrix[0]:
             return matrix
         
-        def bfs(row, col):
-            seen = []
-            steps = 0
-            queue = deque([(row, col)])
+        def dfs(row, col, seen, steps):
+            if row < 0 or row >= len(matrix) or col < 0 or col >= len(matrix[0]) or (row, col) in seen or matrix[row][col] == -1:
+                return float('inf')
+            elif matrix[row][col] == 0:
+                return steps
+            
             seen.append((row, col))
+            
+            results = []
+            for dr, dc in self.DIRECTIONS:
+                new_row = row + dr
+                new_col = col + dc
 
-            while queue:
-                for _ in range(len(queue)):
-                    qrow, qcol = queue.popleft()
-
-                    if matrix[qrow][qcol] == 0:
-                        matrix[row][col] = steps
-                        queue.clear()
-                        break
-
-                    for dr, dc in self.DIRECTIONS:
-                        new_row = qrow + dr
-                        new_col = qcol + dc
-
-                        if 0 <= new_row < len(matrix) and 0 <= new_col < len(matrix[0]) and (new_row, new_col) not in seen and matrix[new_row][new_col] != -1:
-                            queue.append((new_row, new_col))
-                            seen.append((new_row, new_col))
-                
-                steps += 1
+                results.append(dfs(new_row, new_col, seen, steps + 1))
+            
+            return min(results)
         
         for i in range(len(matrix)):
             for j in range(len(matrix[i])):
                 if matrix[i][j] == float('inf'):
-                    bfs(i, j)
+                    matrix[i][j] = dfs(i, j, [], 0)
         
         return matrix
 
