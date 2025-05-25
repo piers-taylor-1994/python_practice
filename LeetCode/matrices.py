@@ -118,28 +118,26 @@ class Solution:
         if not matrix or not matrix[0]:
             return matrix
         
-        def dfs(row, col, seen, steps):
-            if row < 0 or row >= len(matrix) or col < 0 or col >= len(matrix[0]) or (row, col) in seen or matrix[row][col] == -1:
-                return float('inf')
-            elif matrix[row][col] == 0:
-                return steps
-            
-            seen.append((row, col))
-            
-            results = []
-            for dr, dc in self.DIRECTIONS:
-                new_row = row + dr
-                new_col = col + dc
+        def bfs(row, col):
+            queue = deque([(row, col)])
 
-                results.append(dfs(new_row, new_col, seen, steps + 1))
-            
-            return min(results)
+            while queue:
+                row, col = queue.popleft()
+
+                for dr, dc in self.DIRECTIONS:
+                    new_row = row + dr
+                    new_col = col + dc
+
+                    if 0 <= new_row < len(matrix) and 0 <= new_col < len(matrix[0]) and 0 < matrix[new_row][new_col] <= float('inf'):
+                        if matrix[row][col] + 1 < matrix[new_row][new_col]:
+                            matrix[new_row][new_col] = matrix[row][col] + 1
+                            queue.append((new_row, new_col))
         
         for i in range(len(matrix)):
-            for j in range(len(matrix[i])):
-                if matrix[i][j] == float('inf'):
-                    matrix[i][j] = dfs(i, j, [], 0)
-        
+            for j in range(len(matrix[0])):
+                if matrix[i][j] == 0:
+                    bfs(i, j)
+
         return matrix
 
 
