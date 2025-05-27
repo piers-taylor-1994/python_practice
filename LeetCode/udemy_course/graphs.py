@@ -22,24 +22,7 @@ class Solution:
         return result
     
     def traversal_dfs(self, graph):
-        if not graph:
-            return []
-        
-        def dfs(node, seen, result):
-            if node in seen:
-                return
-            
-            result.append(node)
-            seen.add(node)
-
-            for edge in graph[node]:
-                dfs(edge, seen, result)
-
-        result = []
-        seen = set()
-        dfs(0, seen, result)
-
-        return result
+        pass
 
 solution = Solution()
 print(solution.traversal_bfs([
