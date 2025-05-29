@@ -18,23 +18,11 @@ class Solution:
                 if edge not in seen:
                     queue.append(edge)
                     seen.add(edge)
+        
         return result
     
     def traversal_dfs(self, graph):
-        def dfs(node, seen, result):
-            if node in seen:
-                return
-            
-            result.append(node)
-            seen.add(node)
-
-            for edge in graph[node]:
-                dfs(edge, seen, result)
-
-        result = []
-        seen = set()
-        dfs(0, seen, result)
-        return result
+        pass
 
 solution = Solution()
 graph_1 = [
