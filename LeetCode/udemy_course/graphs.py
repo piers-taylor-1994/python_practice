@@ -44,32 +44,23 @@ class Solution:
             return 0
         
         graph = {id:[] for id in range(n)}
-        for i in range(len(manager)):
-            manager_id = manager[i] #2
-            employee_id = i #0
+        for employee_id in range(len(manager)):
+            manager_id = manager[employee_id] #2
 
             if manager_id != -1:
                 graph[manager_id].append(employee_id)
-                graph[employee_id].append(manager_id)
-    
-        total_minutes = 0
 
-        def dfs(node, seen, minutes):
-            if node in seen:
-                return minutes
-            
-            minutes += informTime[node]
-            seen.add(node)
+        def dfs(node):
+            if not graph[node]:
+                return 0
 
-            mins_array = []
+            max_minutes = 0
             for edge in graph[node]:
-                mins_array.append(dfs(edge, seen, minutes))
+                max_minutes = max(max_minutes, dfs(edge))
             
-            return max(mins_array)
+            return max_minutes + informTime[node]
         
-        seen = set()
-        total_minutes = dfs(headID, seen, total_minutes)
-        return total_minutes      
+        return dfs(headID)   
 
 solution = Solution()
 graph_1 = {
