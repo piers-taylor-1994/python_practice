@@ -40,27 +40,28 @@ class Solution:
         return result
     
     def num_of_minutes(self, n, headID, manager, informTime):
-        if n == 1:
+        if not n:
             return 0
         
-        graph = {id:[] for id in range(n)}
-        for employee_id in range(len(manager)):
-            manager_id = manager[employee_id] #2
+        graph = {i:[] for i in range(n)}
 
-            if manager_id != -1:
-                graph[manager_id].append(employee_id)
-
+        for employee in range(len(manager)):
+            managerId = manager[employee]
+            if managerId != -1:
+                graph[managerId].append(employee)
+        
         def dfs(node):
             if not graph[node]:
                 return 0
-
+            
             max_minutes = 0
             for edge in graph[node]:
                 max_minutes = max(max_minutes, dfs(edge))
             
-            return max_minutes + informTime[node]
-        
-        return dfs(headID)   
+            return informTime[node] + max_minutes
+
+        return dfs(headID)
+
 
 solution = Solution()
 graph_1 = {
