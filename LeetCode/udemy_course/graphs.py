@@ -50,18 +50,17 @@ class Solution:
             if manager_id != -1:
                 graph[manager_id].append(employee_id)
         
-        def dfs(node):
-            if not graph[node]:
-                return 0
-            
-            max_time = 0
+        queue = deque([(headID, informTime[headID])])
+        max_time = 0
+
+        while queue:
+            node, elapsed = queue.popleft()
+            max_time = max(max_time, elapsed)
 
             for edge in graph[node]:
-                max_time = max(max_time, dfs(edge))
-            
-            return informTime[node] + max_time
+                queue.append((edge, informTime[edge] + elapsed))
         
-        return dfs(headID)
+        return max_time
 
 
 solution = Solution()
