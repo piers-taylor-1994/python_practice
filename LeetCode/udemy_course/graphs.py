@@ -44,22 +44,23 @@ class Solution:
             return 0
         
         graph = {i:[] for i in range(n)}
+        for employee_id in range(len(manager)):
+            manager_id = manager[employee_id]
 
-        for employee in range(len(manager)):
-            managerId = manager[employee]
-            if managerId != -1:
-                graph[managerId].append(employee)
+            if manager_id != -1:
+                graph[manager_id].append(employee_id)
         
         def dfs(node):
             if not graph[node]:
                 return 0
             
-            max_minutes = 0
-            for edge in graph[node]:
-                max_minutes = max(max_minutes, dfs(edge))
-            
-            return informTime[node] + max_minutes
+            max_time = 0
 
+            for edge in graph[node]:
+                max_time = max(max_time, dfs(edge))
+            
+            return informTime[node] + max_time
+        
         return dfs(headID)
 
 
