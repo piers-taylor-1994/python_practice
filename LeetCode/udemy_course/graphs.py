@@ -62,6 +62,32 @@ class Solution:
         
         return max_time
 
+    def can_finish(self, numCourses, prerequisites):
+        graph = {i:[] for i in range(numCourses)}
+        status = [0] * numCourses #0 unvisited, 1 visiting, 2 visited
+        for courseA, courseB in prerequisites:
+            graph[courseB].append(courseA)
+
+        def bfs(start):
+            queue = deque([start])
+
+            while queue:
+                node = queue.popleft()
+                if status[node] == 1:
+                    return False
+                elif status[node] == 2:
+                    continue
+
+                for edge in graph[node]:
+                    queue.append(edge)
+                status[node] = 2
+            return True
+        
+        for i in range(numCourses):
+            if status[i] == 0 and not bfs(i):
+                return False
+        return True
+
 
 solution = Solution()
 graph_1 = {
@@ -80,3 +106,6 @@ print(solution.traversal_dfs(graph_1))
 
 print(solution.num_of_minutes(8, 4, [2,2,4,6,-1,4,4,5], [0,0,4,0,7,3,6,0]))
 print(solution.num_of_minutes(11, 4, [5,9,6,10,-1,8,9,1,9,3,4], [0,213,0,253,686,170,975,0,261,309,337]))
+
+print(solution.can_finish(2, [[1,0],[0,1]]))
+print(solution.can_finish(4, [[1,0],[2,0],[3,1],[3,2]]))
