@@ -62,30 +62,26 @@ class Solution:
         
         return max_time
 
-    def can_finish(self, numCourses, prerequisites):
+    def canFinish(self, numCourses, prerequisites):
         graph = {i:[] for i in range(numCourses)}
-        status = [0] * numCourses #0 unvisited, 1 visiting, 2 visited
+
         for courseA, courseB in prerequisites:
             graph[courseB].append(courseA)
 
-        def bfs(start):
-            queue = deque([start])
+        for g in range(numCourses):
+            queue = deque(graph[g])
+            seen = set()
 
             while queue:
                 node = queue.popleft()
-                if status[node] == 1:
+                
+                if node == g:
                     return False
-                elif status[node] == 2:
-                    continue
 
                 for edge in graph[node]:
-                    queue.append(edge)
-                status[node] = 2
-            return True
-        
-        for i in range(numCourses):
-            if status[i] == 0 and not bfs(i):
-                return False
+                    if edge not in seen:
+                        queue.append(edge)
+                        seen.add(node)
         return True
 
 
