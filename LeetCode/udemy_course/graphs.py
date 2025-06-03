@@ -44,45 +44,24 @@ class Solution:
             return 0
         
         graph = {i:[] for i in range(n)}
-        for employee_id in range(len(manager)):
-            manager_id = manager[employee_id]
-
-            if manager_id != -1:
-                graph[manager_id].append(employee_id)
+        for i in range(len(manager)):
+            if manager[i] != -1:
+                graph[manager[i]].append(i)
         
+        max_mins = 0
         queue = deque([(headID, informTime[headID])])
-        max_time = 0
 
         while queue:
             node, elapsed = queue.popleft()
-            max_time = max(max_time, elapsed)
+            max_mins = max(max_mins, elapsed)
 
             for edge in graph[node]:
-                queue.append((edge, informTime[edge] + elapsed))
+                queue.append((edge, elapsed + informTime[edge]))
         
-        return max_time
+        return max_mins
 
     def canFinish(self, numCourses, prerequisites):
-        graph = {i:[] for i in range(numCourses)}
-
-        for courseA, courseB in prerequisites:
-            graph[courseB].append(courseA)
-
-        for g in range(numCourses):
-            queue = deque(graph[g])
-            seen = set()
-
-            while queue:
-                node = queue.popleft()
-                
-                if node == g:
-                    return False
-
-                for edge in graph[node]:
-                    if edge not in seen:
-                        queue.append(edge)
-                        seen.add(node)
-        return True
+        pass
 
 
 solution = Solution()
@@ -103,5 +82,5 @@ print(solution.traversal_dfs(graph_1))
 print(solution.num_of_minutes(8, 4, [2,2,4,6,-1,4,4,5], [0,0,4,0,7,3,6,0]))
 print(solution.num_of_minutes(11, 4, [5,9,6,10,-1,8,9,1,9,3,4], [0,213,0,253,686,170,975,0,261,309,337]))
 
-print(solution.can_finish(2, [[1,0],[0,1]]))
-print(solution.can_finish(4, [[1,0],[2,0],[3,1],[3,2]]))
+# print(solution.can_finish(2, [[1,0],[0,1]]))
+# print(solution.can_finish(4, [[1,0],[2,0],[3,1],[3,2]]))
