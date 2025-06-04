@@ -47,18 +47,18 @@ class Solution:
         for i in range(len(manager)):
             if manager[i] != -1:
                 graph[manager[i]].append(i)
-        
-        max_mins = 0
-        queue = deque([(headID, informTime[headID])])
 
-        while queue:
-            node, elapsed = queue.popleft()
-            max_mins = max(max_mins, elapsed)
-
+        def dfs(node):
+            if not informTime[node]:
+                return 0
+            
+            max_time = 0
             for edge in graph[node]:
-                queue.append((edge, elapsed + informTime[edge]))
+                max_time = max(max_time, dfs(edge))
+            
+            return informTime[node] + max_time
         
-        return max_mins
+        return dfs(headID)
 
     def canFinish(self, numCourses, prerequisites):
         pass
