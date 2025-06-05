@@ -61,8 +61,29 @@ class Solution:
         return dfs(headID, informTime[headID])
 
     def canFinish(self, numCourses, prerequisites):
-        pass
+        if numCourses == 1:
+            return True
+        
+        graph = {i:[] for i in range(numCourses)}
+        for courseA, courseB in prerequisites:
+            graph[courseB].append(courseA)
+        
+        for course in range(numCourses):
+            queue = deque(graph[course])
+            seen = set(graph[course])
 
+            while queue:
+                node = queue.popleft()
+
+                if node == course:
+                    return False
+                
+                for edge in graph[node]:
+                    if edge not in seen:
+                        queue.append(edge)
+                        seen.add(edge)
+            
+        return True
 
 solution = Solution()
 graph_1 = {
@@ -82,5 +103,5 @@ print(solution.traversal_dfs(graph_1))
 print(solution.num_of_minutes(8, 4, [2,2,4,6,-1,4,4,5], [0,0,4,0,7,3,6,0]))
 print(solution.num_of_minutes(11, 4, [5,9,6,10,-1,8,9,1,9,3,4], [0,213,0,253,686,170,975,0,261,309,337]))
 
-# print(solution.can_finish(2, [[1,0],[0,1]]))
-# print(solution.can_finish(4, [[1,0],[2,0],[3,1],[3,2]]))
+print(solution.can_finish(2, [[1,0],[0,1]]))
+print(solution.can_finish(4, [[1,0],[2,0],[3,1],[3,2]]))
