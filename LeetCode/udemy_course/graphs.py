@@ -46,19 +46,19 @@ class Solution:
         graph = {i:[] for i in range(n)}
         for i in range(len(manager)):
             if manager[i] != -1:
-                graph[manager[i]].append(i)
+                graph[manager[i]].append((i, informTime[i]))
 
-        def dfs(node):
-            if not informTime[node]:
+        def dfs(node, time):
+            if not time:
                 return 0
             
             max_time = 0
-            for edge in graph[node]:
-                max_time = max(max_time, dfs(edge))
+            for edge, iTime in graph[node]:
+                max_time = max(max_time, dfs(edge, iTime))
             
             return informTime[node] + max_time
         
-        return dfs(headID)
+        return dfs(headID, informTime[headID])
 
     def canFinish(self, numCourses, prerequisites):
         pass
