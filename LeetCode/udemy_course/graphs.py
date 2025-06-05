@@ -60,28 +60,38 @@ class Solution:
         
         return dfs(headID, informTime[headID])
 
-    def canFinish(self, numCourses, prerequisites):
+    def can_finish(self, numCourses, prerequisites):
         if numCourses == 1:
             return True
         
         graph = {i:[] for i in range(numCourses)}
         for courseA, courseB in prerequisites:
             graph[courseB].append(courseA)
+
+        def dfs(node, course, seen):
+            if node == course:
+                return False
+            elif node in seen:
+                return
+            
+            seen.add(node)
+            
+            result = None
+            for edge in graph[node]:
+                if dfs(edge, course, seen) == False:
+                    result = False
+                    break
+            
+            return False if result == False else True
+            
         
         for course in range(numCourses):
-            queue = deque(graph[course])
-            seen = set(graph[course])
+            for edge in graph[course]:
+                seen = set()
+                result = dfs(edge, course, seen)
 
-            while queue:
-                node = queue.popleft()
-
-                if node == course:
+                if not result:
                     return False
-                
-                for edge in graph[node]:
-                    if edge not in seen:
-                        queue.append(edge)
-                        seen.add(edge)
             
         return True
 
