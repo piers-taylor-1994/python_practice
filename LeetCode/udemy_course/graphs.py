@@ -65,35 +65,30 @@ class Solution:
             return True
         
         graph = {i:[] for i in range(numCourses)}
+        inDegree = {i:0 for i in range(numCourses)}
         for courseA, courseB in prerequisites:
             graph[courseB].append(courseA)
+            inDegree[courseA] += 1
 
-        def dfs(node, course, seen):
-            if node == course:
-                return False
-            elif node in seen:
-                return
-            
-            seen.add(node)
-            
-            result = None
+        stack = []
+        for i in range(len(inDegree)):
+            if inDegree[i] == 0:
+                stack.append(i)
+
+        count = 0
+        while stack:
+            node = stack.pop()
+            count += 1
+
             for edge in graph[node]:
-                if dfs(edge, course, seen) == False:
-                    result = False
-                    break
-            
-            return False if result == False else True
-            
-        
-        for course in range(numCourses):
-            for edge in graph[course]:
-                seen = set()
-                result = dfs(edge, course, seen)
+                inDegree[edge] -= 1
 
-                if not result:
-                    return False
-            
-        return True
+                if inDegree[edge] == 0:
+                    stack.append(edge)
+        
+        return numCourses == count
+
+        
 
 solution = Solution()
 graph_1 = {
