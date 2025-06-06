@@ -1,4 +1,5 @@
 from collections import deque
+import heapq
 
 class Solution:
     def traversal_bfs(self, graph):
@@ -87,8 +88,32 @@ class Solution:
                     stack.append(edge)
         
         return numCourses == count
-
+    
+    def networkDelayTime(self, times, n, k):
+        if n == 1:
+            return 0
         
+        graph = {i:[] for i in range(1, n + 1)}
+
+        for u, v, w in times:
+            graph[u].append((v, w))
+
+        heap = [(0, k)]
+        shortest_times = {}
+
+        while heap:
+            time, node = heapq.heappop(heap)
+
+            if node in shortest_times:
+                continue
+
+            shortest_times[node] = time
+
+            for edge, travel_time in graph[node]:
+                if edge not in shortest_times:
+                    heapq.heappush(heap, (travel_time + time, edge))
+        
+        return max(shortest_times.values()) if len(shortest_times) == n else -1
 
 solution = Solution()
 graph_1 = {
@@ -110,3 +135,9 @@ print(solution.num_of_minutes(11, 4, [5,9,6,10,-1,8,9,1,9,3,4], [0,213,0,253,686
 
 print(solution.can_finish(2, [[1,0],[0,1]]))
 print(solution.can_finish(4, [[1,0],[2,0],[3,1],[3,2]]))
+
+# print(solution.networkDelayTime([[2,1,1],[2,3,1],[3,4,1]], 4, 2))
+# print(solution.networkDelayTime([[1,2,1]], 2, 2))
+# print(solution.networkDelayTime([[1,2,1],[2,3,7],[1,3,4],[2,1,2]], 3, 2))
+# print(solution.networkDelayTime([[1,2,1],[2,1,3]], 2, 2))
+print(solution.networkDelayTime([[4,2,76],[1,3,79],[3,1,81],[4,3,30],[2,1,47],[1,5,61],[1,4,99],[3,4,68],[3,5,46],[4,1,6],[5,4,7],[5,3,44],[4,5,19],[2,3,13],[3,2,18],[1,2,0],[5,1,25],[2,5,58],[2,4,77],[5,2,74]], 5, 3))
