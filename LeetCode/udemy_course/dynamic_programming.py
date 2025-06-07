@@ -1,15 +1,18 @@
 class Solution:
     def min_cost_stairs(self, cost):
-        def dp(i):
-            if i < 0:
+        def dp(i, memo):
+            if i in memo:
+                return memo[i]
+            elif i < 0:
                 return 0
             elif i < 2:
                 return cost[i]
             
-            return cost[i] + min(dp(i-1), dp(i-2))
+            memo[i] = cost[i] + min(dp(i-1, memo), dp(i-2, memo))
+            return memo[i]
 
         n = len(cost)
-        return 0 + min(dp(n-1), dp(n-2))
+        return 0 + min(dp(n-1, {}), dp(n-2, {}))
 
 
 solution = Solution()
