@@ -23,8 +23,20 @@ class Solution:
             dp[i] = cost[i] + min(dp[i-1], dp[i-2])
         
         return min(dp[len(cost) - 1], dp[len(cost) - 2])
+    
+    def min_cost_stairs_tabular_v2(self, cost):
+        first = cost[0]
+        second = cost[1]
+
+        for i in range(2, len(cost)):
+            temp = cost[i] + min(first, second)
+            first = second
+            second = temp
+
+        return min(first, second)
 
 
 solution = Solution()
 print(solution.min_cost_stairs_memo([20,15,30,5]))
 print(solution.min_cost_stairs_tabular([20,15,30,5]))
+print(solution.min_cost_stairs_tabular_v2([20,15,30,5]))
