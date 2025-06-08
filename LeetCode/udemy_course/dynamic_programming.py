@@ -1,5 +1,5 @@
 class Solution:
-    def min_cost_stairs(self, cost):
+    def min_cost_stairs_memo(self, cost):
         def dp(i, memo):
             if i in memo:
                 return memo[i]
@@ -16,4 +16,4 @@ class Solution:
 
 
 solution = Solution()
-print(solution.min_cost_stairs([20,15,30,5]))
+print(solution.min_cost_stairs_memo([20,15,30,5]))
