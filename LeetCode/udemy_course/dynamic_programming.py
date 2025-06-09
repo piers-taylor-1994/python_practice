@@ -42,24 +42,23 @@ class Solution:
             if r < 0 or r >= n or c < 0 or c >= n:
                 return 0
             elif depth == k:
-                return 1.00000
+                return 1
             elif (r, c, depth) in memo:
                 return memo[(r, c, depth)]
             
             probability = 0
             for k_row, k_col in moves:
-                probability += dfs(k_row + r, k_col + c, memo, depth + 1)
-
-            memo[(r, c, depth)] = probability
+                probability += dfs(k_row + r, k_col + c, memo, depth + 1) / 8
             
-            return memo[(r, c, depth)]
-                
+            memo[(r, c, depth)] = probability
 
-        return dfs(row, column, {}, 0) / 8 ** k
+            return memo[(r, c, depth)]
+
+        return dfs(row, column, {}, 0)
 
 solution = Solution()
 print(solution.min_cost_stairs_memo([20,15,30,5]))
 print(solution.min_cost_stairs_tabular([20,15,30,5]))
 print(solution.min_cost_stairs_tabular_v2([20,15,30,5]))
 
-print(solution.knight_probability(3, 2, 0, 0))
+print(solution.knight_probability_memo(3, 2, 0, 0))
