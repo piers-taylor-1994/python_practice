@@ -89,6 +89,23 @@ class Solution:
             second = temp
 
         return second
+    
+    def coin_change_memo(self, coins, amount):
+        def dfs(current_amount, memo):
+            if current_amount == 0:
+                return 0
+            elif current_amount < 0:
+                return float('inf')
+            elif current_amount in memo:
+                return memo[current_amount]
+
+            memo[current_amount] = min([dfs(current_amount - coin, memo) + 1 for coin in coins])
+            return memo[current_amount]
+
+        memo = {}
+        result = dfs(amount, memo)
+
+        return result if result != float('inf') else -1
 
 solution = Solution()
 print(solution.min_cost_stairs_memo([20,15,30,5]))
@@ -100,3 +117,6 @@ print(solution.knight_probability_memo(3, 2, 0, 0))
 print(solution.fibonacci_memo(8))
 print(solution.fibonacci_tabular(8))
 print(solution.fibonacci_tabular_optimised(8))
+
+print(solution.coin_change_memo([1,2,5], 11))
+print(solution.coin_change_memo([2], 3))
