@@ -55,6 +55,22 @@ class Solution:
             return memo[(r, c, depth)]
 
         return dfs(row, column, {}, 0)
+    
+    def fibonacci_memo(self, n):
+        def dp(n, memo):
+            if n <= 1:
+                return n
+            elif n in memo:
+                return memo[n]
+            
+            memo[n] = dp(n - 1, memo) + dp(n - 2, memo)
+
+            return memo[n]
+
+        return dp(n, {})
+    
+
+            
 
 solution = Solution()
 print(solution.min_cost_stairs_memo([20,15,30,5]))
@@ -62,3 +78,5 @@ print(solution.min_cost_stairs_tabular([20,15,30,5]))
 print(solution.min_cost_stairs_tabular_v2([20,15,30,5]))
 
 print(solution.knight_probability_memo(3, 2, 0, 0))
+
+print(solution.fibonacci_memo(5))
