@@ -68,9 +68,16 @@ class Solution:
             return memo[n]
 
         return dp(n, {})
-    
-
             
+    def fibonacci_tabular(self, n):
+        dp = {}
+        dp[0] = 0
+        dp[1] = 1
+
+        for i in range(2, n + 1):
+            dp[i] = dp[i - 1] + dp[i - 2]
+        
+        return dp[n]
 
 solution = Solution()
 print(solution.min_cost_stairs_memo([20,15,30,5]))
@@ -80,3 +87,4 @@ print(solution.min_cost_stairs_tabular_v2([20,15,30,5]))
 print(solution.knight_probability_memo(3, 2, 0, 0))
 
 print(solution.fibonacci_memo(5))
+print(solution.fibonacci_tabular(5))
