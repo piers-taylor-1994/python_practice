@@ -106,6 +106,17 @@ class Solution:
         result = dfs(amount, memo)
 
         return result if result != float('inf') else -1
+    
+    def coin_change_tabular(self, coins, amount):
+        dp = [float('inf')] * (amount + 1)
+        dp[0] = 0
+
+        for i in range(1, amount + 1):
+            for coin in coins:
+                if i >= coin:
+                    dp[i] = min(dp[i], dp[i - coin] + 1)
+        
+        return dp[amount] if dp[amount] != float('inf') else -1
 
 solution = Solution()
 print(solution.min_cost_stairs_memo([20,15,30,5]))
@@ -120,3 +131,5 @@ print(solution.fibonacci_tabular_optimised(8))
 
 print(solution.coin_change_memo([1,2,5], 11))
 print(solution.coin_change_memo([2], 3))
+print(solution.coin_change_tabular([1,2,5], 11))
+print(solution.coin_change_tabular([2], 3))
