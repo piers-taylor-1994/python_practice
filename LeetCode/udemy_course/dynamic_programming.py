@@ -117,6 +117,31 @@ class Solution:
                     dp[i] = min(dp[i], dp[i - coin] + 1)
         
         return dp[amount] if dp[amount] != float('inf') else -1
+    
+    def knapsack_bfs(self, w, profit, weight):
+        n = len(profit)
+
+        def dfs(i, current_weight, memo):
+            if i == n or current_weight == 0:
+                return 0
+            elif (i, current_weight) in memo:
+                return memo[(i, current_weight)]
+            
+
+            if weight[i] > current_weight:
+                result = dfs(i + 1, current_weight, memo)
+            
+            else:
+                take = profit[i] + dfs(i + 1, current_weight - weight[i], memo)
+                skip = dfs(i + 1, current_weight, memo)
+                result = max(take, skip)
+
+            memo[(i, current_weight)] = result
+
+            return memo[(i, current_weight)]
+
+        return dfs(0, w, {})
+
 
 solution = Solution()
 print(solution.min_cost_stairs_memo([20,15,30,5]))
@@ -133,3 +158,5 @@ print(solution.coin_change_memo([1,2,5], 11))
 print(solution.coin_change_memo([2], 3))
 print(solution.coin_change_tabular([1,2,5], 11))
 print(solution.coin_change_tabular([2], 3))
+
+print(solution.knapsack_bfs(4, [1,2,3], [4,5,1]))
