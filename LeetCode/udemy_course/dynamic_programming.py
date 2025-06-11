@@ -118,7 +118,7 @@ class Solution:
         
         return dp[amount] if dp[amount] != float('inf') else -1
     
-    def knapsack_bfs(self, w, profit, weight):
+    def knapsack_memo(self, w, profit, weight):
         def dp(i, current_weight, memo):
             if i == len(profit) or current_weight == 0:
                 return 0
@@ -156,4 +156,4 @@ print(solution.coin_change_memo([2], 3))
 print(solution.coin_change_tabular([1,2,5], 11))
 print(solution.coin_change_tabular([2], 3))
 
-print(solution.knapsack_bfs(4, [1,2,3], [4,5,1]))
+print(solution.knapsack_memo(4, [1,2,3], [4,5,1]))
