@@ -155,4 +155,4 @@ print(solution.coin_change_memo([2], 3))
 print(solution.coin_change_tabular([1,2,5], 11))
 print(solution.coin_change_tabular([2], 3))
 
-print(solution.knapsack_memo(4, [1,2,3], [4,5,1]))
+print(solution.knapsack_memo(4, profit=[1,2,3], weight=[4,5,1]))
