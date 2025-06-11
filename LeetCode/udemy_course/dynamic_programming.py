@@ -134,7 +134,6 @@ class Solution:
                 result = max(take, skip)
             
             memo[(i, current_weight)] = result
-
             return memo[(i, current_weight)]
 
         return dp(0, w, {})
