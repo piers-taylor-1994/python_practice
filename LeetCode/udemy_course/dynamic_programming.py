@@ -119,22 +119,20 @@ class Solution:
         return dp[amount] if dp[amount] != float('inf') else -1
     
     def knapsack_bfs(self, w, profit, weight):
-        n = len(profit)
-
         def dp(i, current_weight, memo):
-            if i == n or current_weight == 0:
+            if i == len(profit) or current_weight == 0:
                 return 0
             elif (i, current_weight) in memo:
                 return memo[(i, current_weight)]
             
-
             if weight[i] > current_weight:
                 result = dp(i + 1, current_weight, memo)
             else:
                 take = profit[i] + dp(i + 1, current_weight - weight[i], memo)
                 skip = dp(i + 1, current_weight, memo)
-                result = max(take, skip)
 
+                result = max(take, skip)
+            
             memo[(i, current_weight)] = result
 
             return memo[(i, current_weight)]
