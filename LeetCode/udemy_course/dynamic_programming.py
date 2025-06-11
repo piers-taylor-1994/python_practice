@@ -91,7 +91,7 @@ class Solution:
         return second
     
     def coin_change_memo(self, coins, amount):
-        def dfs(current_amount, memo):
+        def dp(current_amount, memo):
             if current_amount == 0:
                 return 0
             elif current_amount < 0:
@@ -99,11 +99,11 @@ class Solution:
             elif current_amount in memo:
                 return memo[current_amount]
 
-            memo[current_amount] = min([dfs(current_amount - coin, memo) + 1 for coin in coins])
+            memo[current_amount] = min([dp(current_amount - coin, memo) + 1 for coin in coins])
             return memo[current_amount]
 
         memo = {}
-        result = dfs(amount, memo)
+        result = dp(amount, memo)
 
         return result if result != float('inf') else -1
     
@@ -121,7 +121,7 @@ class Solution:
     def knapsack_bfs(self, w, profit, weight):
         n = len(profit)
 
-        def dfs(i, current_weight, memo):
+        def dp(i, current_weight, memo):
             if i == n or current_weight == 0:
                 return 0
             elif (i, current_weight) in memo:
@@ -129,18 +129,17 @@ class Solution:
             
 
             if weight[i] > current_weight:
-                result = dfs(i + 1, current_weight, memo)
-            
+                result = dp(i + 1, current_weight, memo)
             else:
-                take = profit[i] + dfs(i + 1, current_weight - weight[i], memo)
-                skip = dfs(i + 1, current_weight, memo)
+                take = profit[i] + dp(i + 1, current_weight - weight[i], memo)
+                skip = dp(i + 1, current_weight, memo)
                 result = max(take, skip)
 
             memo[(i, current_weight)] = result
 
             return memo[(i, current_weight)]
 
-        return dfs(0, w, {})
+        return dp(0, w, {})
 
 
 solution = Solution()
