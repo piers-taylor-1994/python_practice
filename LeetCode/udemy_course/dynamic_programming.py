@@ -136,6 +136,19 @@ class Solution:
             return memo[(i, current_capacity)]
 
         return dp(0, capacity, {})
+    
+    def unique_paths_memo(self, m, n):
+        def dp(m, n, memo):
+            if m == 1 or n == 1:
+                return 1
+            elif (m, n) in memo:
+                return memo[(m, n)]
+            
+            memo[(m, n)] = dp(m - 1, n, memo) + dp(m, n - 1, memo)
+            return memo[(m, n)]
+
+        return dp(m, n, {})
+
 
 solution = Solution()
 print(solution.min_cost_stairs_memo([20,15,30,5]))
@@ -154,4 +167,6 @@ print(solution.coin_change_tabular([1,2,5], 11))
 print(solution.coin_change_tabular([2], 3))
 
 print(solution.knapsack_memo(4, profit=[1,2,3], weight=[4,5,1]))
-print(solution.knapsack_tabular(4, profit=[1,2,3], weight=[4,5,1]))
+
+print(solution.unique_paths_memo(3, 2))
+print(solution.unique_paths_memo(3, 7))
