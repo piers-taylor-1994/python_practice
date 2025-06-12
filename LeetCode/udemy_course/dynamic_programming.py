@@ -148,6 +148,18 @@ class Solution:
             return memo[(m, n)]
 
         return dp(m, n, {})
+    
+    def unique_paths_tabular(self, m, n):
+        dp = {}
+
+        for i in range(m):
+            for j in range(n):
+                if i == 0 or j == 0:
+                    dp[(i, j)] = 1
+                else:
+                    dp[(i, j)] = dp[(i - 1, j)] + dp[(i, j - 1)]
+        
+        return dp[(m - 1, n - 1)]
 
 
 solution = Solution()
@@ -170,3 +182,5 @@ print(solution.knapsack_memo(4, profit=[1,2,3], weight=[4,5,1]))
 
 print(solution.unique_paths_memo(3, 2))
 print(solution.unique_paths_memo(3, 7))
+print(solution.unique_paths_tabular(3, 2))
+print(solution.unique_paths_tabular(3, 7))
