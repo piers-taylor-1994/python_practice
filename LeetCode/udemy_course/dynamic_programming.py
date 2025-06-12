@@ -118,26 +118,24 @@ class Solution:
         
         return dp[amount] if dp[amount] != float('inf') else -1
     
-    def knapsack_memo(self, w, profit, weight):
-        def dp(i, current_weight, memo):
-            if i == len(profit) or current_weight == 0:
+    def knapsack_memo(self, capacity, profit, weight):
+        def dp(i, current_capacity, memo):
+            if i == len(profit) or current_capacity == 0:
                 return 0
-            elif (i, current_weight) in memo:
-                return memo[(i, current_weight)]
+            elif (i, current_capacity) in memo:
+                return memo[(i, current_capacity)]
             
-            if weight[i] > current_weight:
-                result = dp(i + 1, current_weight, memo)
+            if weight[i] > current_capacity:
+                result = dp(i + 1, current_capacity, memo)
             else:
-                take = profit[i] + dp(i + 1, current_weight - weight[i], memo)
-                skip = dp(i + 1, current_weight, memo)
-
+                take = profit[i] + dp(i + 1, current_capacity - weight[i], memo)
+                skip = dp(i + 1, current_capacity, memo)
                 result = max(take, skip)
-            
-            memo[(i, current_weight)] = result
-            return memo[(i, current_weight)]
 
-        return dp(0, w, {})
+            memo[(i, current_capacity)] = result
+            return memo[(i, current_capacity)]
 
+        return dp(0, capacity, {})
 
 solution = Solution()
 print(solution.min_cost_stairs_memo([20,15,30,5]))
@@ -156,3 +154,4 @@ print(solution.coin_change_tabular([1,2,5], 11))
 print(solution.coin_change_tabular([2], 3))
 
 print(solution.knapsack_memo(4, profit=[1,2,3], weight=[4,5,1]))
+print(solution.knapsack_tabular(4, profit=[1,2,3], weight=[4,5,1]))
