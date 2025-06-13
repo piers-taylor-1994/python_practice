@@ -120,18 +120,18 @@ class Solution:
     
     def knapsack_memo(self, capacity, profit, weight):
         def dp(i, current_capacity, memo):
-            if i == len(profit) or current_capacity == 0:
+            if i == len(profit) or capacity == 0:
                 return 0
             elif (i, current_capacity) in memo:
                 return memo[(i, current_capacity)]
             
-            if weight[i] > current_capacity:
+            if current_capacity - weight[i] < 0:
                 result = dp(i + 1, current_capacity, memo)
             else:
                 take = profit[i] + dp(i + 1, current_capacity - weight[i], memo)
                 skip = dp(i + 1, current_capacity, memo)
                 result = max(take, skip)
-
+            
             memo[(i, current_capacity)] = result
             return memo[(i, current_capacity)]
 
