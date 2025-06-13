@@ -161,21 +161,21 @@ class Solution:
         
         return dp[(m - 1, n - 1)]
     
-    def min_path_sum(self, grid):
+    def min_path_sum_memo(self, grid):
         target_pos = (len(grid) - 1, len(grid[0]) - 1)
 
-        def dp(row, col, accumulated):
+        def dp(row, col, memo):
             if row > target_pos[0] or col > target_pos[1]:
                 return float('inf')
-            
-            accumulated += grid[row][col]
-
             if (row, col) == target_pos:
-                return accumulated
+                return grid[row][col]
+            if (row, col) in memo:
+                return memo[(row, col)]
             
-            return min(dp(row + 1, col, accumulated), dp(row, col + 1, accumulated))
+            memo[(row, col)] = grid[row][col] + min(dp(row + 1, col, memo), dp(row, col + 1, memo))
+            return memo[(row, col)]
 
-        return dp(0, 0, 0)
+        return dp(0, 0, {})
 
 
 solution = Solution()
