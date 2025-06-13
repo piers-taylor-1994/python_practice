@@ -163,8 +163,9 @@ class Solution:
     
     def min_path_sum_memo(self, grid):
         target_pos = (len(grid) - 1, len(grid[0]) - 1)
+        memo = {}
 
-        def dp(row, col, memo):
+        def dp(row, col):
             if row > target_pos[0] or col > target_pos[1]:
                 return float('inf')
             if (row, col) == target_pos:
@@ -172,10 +173,10 @@ class Solution:
             if (row, col) in memo:
                 return memo[(row, col)]
             
-            memo[(row, col)] = grid[row][col] + min(dp(row + 1, col, memo), dp(row, col + 1, memo))
+            memo[(row, col)] = grid[row][col] + min(dp(row + 1, col), dp(row, col + 1))
             return memo[(row, col)]
 
-        return dp(0, 0, {})
+        return dp(0, 0)
     
     def min_path_sum_tabular(self, grid):
         dp = {}
