@@ -176,6 +176,23 @@ class Solution:
             return memo[(row, col)]
 
         return dp(0, 0, {})
+    
+    def min_path_sum_tabular(self, grid):
+        dp = {}
+        dp[(0, 0)] = grid[0][0]
+        dp[(1, 0)] = dp[(0, 0)] + grid[1][0]
+        dp[(0, 1)] = dp[(0, 0)] + grid[0][1]
+
+        for i in range(len(grid)):
+            for j in range(len(grid[0])):
+                if (i, j) == (0, 0) or (i, j) == (1, 0) or (i, j) == (0, 1):
+                    continue
+                else:
+                    first = dp[(i - 1, j)] if (i - 1, j) in dp else grid[i - 1][j] if i - 1 >= 0 and j >= 0 else float('inf')
+                    second = dp[(i, j - 1)] if (i, j - 1) in dp else grid[i][j - 1] if i >= 0 and j - 1 >= 0 else float('inf')
+                    dp[(i, j)] = grid[i][j] + min(first, second)
+        
+        return dp[(len(grid) - 1, len(grid[0]) - 1)]
 
 
 solution = Solution()
@@ -201,5 +218,7 @@ print(solution.unique_paths_memo(3, 7))
 print(solution.unique_paths_tabular(3, 2))
 print(solution.unique_paths_tabular(3, 7))
 
-print(solution.min_path_sum([[1,3,1],[1,5,1],[4,2,1]]))
-print(solution.min_path_sum([[1,2,3],[4,5,6]]))
+print(solution.min_path_sum_memo([[1,3,1],[1,5,1],[4,2,1]]))
+print(solution.min_path_sum_memo([[1,2,3],[4,5,6]]))
+print(solution.min_path_sum_tabular([[1,3,1],[1,5,1],[4,2,1]]))
+print(solution.min_path_sum_tabular([[1,2,3],[4,5,6]]))
