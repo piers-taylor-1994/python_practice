@@ -203,10 +203,16 @@ class Solution:
         def dp(i, j):
             if i == len_text1 or j == len_text2:
                 return 0
-            elif text1[i] == text2[j]:
-                return 1 + dp(i + 1, j + 1)
+            elif (i, j) in memo:
+                return memo[(i, j)]
             
-            return max(dp(i + 1, j), dp(i, j + 1))
+            if text1[i] == text2[j]:
+                result = 1 + dp(i + 1, j + 1)
+            else:
+                result = max(dp(i + 1, j), dp(i, j + 1))
+            
+            memo[(i, j)] = result
+            return memo[(i, j)]
         
         return dp(0, 0)
 
