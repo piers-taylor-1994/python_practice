@@ -196,24 +196,23 @@ class Solution:
         return dp[(len(grid) - 1, len(grid[0]) - 1)]
     
     def longest_common_subsequence(self, text1, text2):
-        memo = {}
+        memo = [[-1] * len(text2) for _ in range(len(text1))]
 
         def dp(i = 0, j = 0):
             if i == len(text1) or j == len(text2):
                 return 0
-            elif (i, j) in memo:
-                return memo[(i, j)]
+            elif memo[i][j] != -1:
+                return memo[i][j]
             
             if text1[i] == text2[j]:
                 result = 1 + dp(i + 1, j + 1)
             else:
                 result = max(dp(i + 1, j), dp(i, j + 1))
-
-            memo[(i, j)] = result
-            return memo[(i, j)]                
-
+            
+            memo[i][j] = result
+            return memo[i][j]
+        
         return dp()
-
 
 solution = Solution()
 print(solution.min_cost_stairs_memo([20,15,30,5]))
