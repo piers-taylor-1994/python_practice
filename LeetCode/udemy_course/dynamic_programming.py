@@ -196,24 +196,16 @@ class Solution:
         return dp[(len(grid) - 1, len(grid[0]) - 1)]
     
     def longest_common_subsequence(self, text1, text2):
-        memo = {}
-        len_text1 = len(text1)
-        len_text2 = len(text2)
-
         def dp(i, j):
-            if i == len_text1 or j == len_text2:
+            #base case
+            if i == len(text1) or j == len(text2):
                 return 0
-            elif (i, j) in memo:
-                return memo[(i, j)]
             
             if text1[i] == text2[j]:
-                result = 1 + dp(i + 1, j + 1)
-            else:
-                result = max(dp(i + 1, j), dp(i, j + 1))
+                return 1 + dp(i + 1, j + 1)
             
-            memo[(i, j)] = result
-            return memo[(i, j)]
-        
+            return max(dp(i + 1, j), dp(i, j + 1))
+
         return dp(0, 0)
 
 solution = Solution()
