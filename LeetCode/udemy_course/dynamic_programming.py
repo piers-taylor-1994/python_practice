@@ -205,12 +205,10 @@ class Solution:
             if (i, j) in memo:
                 return memo[(i, j)]
             
-            if text1[i] == text2[j]:
-                result = 1 + dp(i + 1, j + 1)
-            else:
-                result = max(dp(i + 1, j), dp(i, j + 1))
-            
-            memo[(i, j)] = result
+            memo[(i, j)] = (
+                1 + dp(i + 1, j + 1) if text1[i] == text2[j]
+                else max(dp(i + 1, j), dp(i, j + 1))
+            )
             return memo[(i, j)]
 
         return dp(0, 0)
