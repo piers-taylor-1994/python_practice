@@ -212,16 +212,16 @@ class Solution:
         return dp(0, 0)
     
     def edit_distance(self, word1, word2):
-        memo = [[-1] * len(word2) for _ in range(len(word1))]
+        memo = {}
         def dp(i, j):
             if i == 0:
                 return j
             if j == 0:
                 return i
-            elif memo[i - 1][j - 1] != -1:
-                return memo[i - 1][j - 1]
+            elif (i, j) in memo:
+                return memo[(i, j)]
             
-            memo[i - 1][j - 1] = (
+            memo[(i, j)] = (
                 dp(i - 1, j - 1) if word1[i - 1] == word2[j - 1]
                 else 1 + min(
                     dp(i - 1, j),
@@ -230,7 +230,7 @@ class Solution:
                 )
             )
             
-            return memo[i - 1][j - 1]
+            return memo[(i, j)]
 
         return dp(len(word1), len(word2))
 
