@@ -216,7 +216,7 @@ class Solution:
         def dp(i, j):
             if i == 0:
                 return j
-            if j == 0:
+            elif j == 0:
                 return i
             elif (i, j) in memo:
                 return memo[(i, j)]
@@ -224,12 +224,11 @@ class Solution:
             memo[(i, j)] = (
                 dp(i - 1, j - 1) if word1[i - 1] == word2[j - 1]
                 else 1 + min(
-                    dp(i - 1, j), #deletion
-                    dp(i, j - 1), #insertion
-                    dp(i - 1, j - 1) #substitution
+                    dp(i - 1, j),
+                    dp(i, j - 1),
+                    dp(i - 1, j - 1)
                 )
             )
-            
             return memo[(i, j)]
 
         return dp(len(word1), len(word2))
