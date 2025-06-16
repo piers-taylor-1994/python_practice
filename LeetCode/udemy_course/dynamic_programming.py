@@ -210,6 +210,29 @@ class Solution:
 
             return memo[(i, j)]
         return dp(0, 0)
+    
+    def edit_distance(self, word1, word2):
+        memo = {}
+        def dp(i, j):
+            if i == 0:
+                return j
+            if j == 0:
+                return i
+            elif (i, j) in memo:
+                return memo[(i, j)]
+            
+            memo[(i, j)] = (
+                dp(i - 1, j - 1) if word1[i - 1] == word2[j - 1]
+                else 1 + min(
+                    dp(i - 1, j),
+                    dp(i, j - 1),
+                    dp(i - 1, j - 1)
+                )
+            )
+            
+            return memo[(i, j)]
+
+        return dp(len(word1), len(word2))
 
 solution = Solution()
 print(solution.min_cost_stairs_memo([20,15,30,5]))
@@ -240,3 +263,5 @@ print(solution.min_path_sum_tabular([[1,3,1],[1,5,1],[4,2,1]]))
 print(solution.min_path_sum_tabular([[1,2,3],[4,5,6]]))
 
 print(solution.longest_common_subsequence("abcde", "abc"))
+
+print(solution.edit_distance("horse", "ros"))
