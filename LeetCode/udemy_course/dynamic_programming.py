@@ -213,10 +213,11 @@ class Solution:
     
     def edit_distance(self, word1, word2):
         memo = {}
+        
         def dp(i, j):
             if i == 0:
                 return j
-            elif j == 0:
+            if j == 0:
                 return i
             elif (i, j) in memo:
                 return memo[(i, j)]
