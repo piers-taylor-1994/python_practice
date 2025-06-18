@@ -233,6 +233,42 @@ class Solution:
             return memo[(i, j)]
 
         return dp(len(word1), len(word2))
+    
+    def house_robber(self, nums):
+        memo = {}
+
+        def dp(i):
+            if i == 0:
+                return nums[0]
+            elif i == 1:
+                return max(nums[0], nums[1])
+            elif i in memo:
+                return memo[i]
+            
+            memo[i] = max(dp(i - 1), nums[i] + dp(i - 2))
+            return memo[i]
+
+        return dp(len(nums) - 1)
+    
+    def jump_game(self, nums):
+        memo = {}
+
+        def dp(i):
+            if i == len(nums) - 1:
+                return True
+            elif i >= len(nums):
+                return False
+            elif i in memo:
+                return memo[i]
+            
+            for j in range(1, nums[i] + 1):
+                if dp(i + j):
+                    memo[i] = True
+                    return True
+            memo[i] = False
+            return False
+
+        return dp(0)
 
 solution = Solution()
 print(solution.min_cost_stairs_memo([20,15,30,5]))
@@ -245,23 +281,28 @@ print(solution.fibonacci_memo(8))
 print(solution.fibonacci_tabular(8))
 print(solution.fibonacci_tabular_optimised(8))
 
+#dp technique 1
+print(solution.knapsack_memo(4, profit=[1,2,3], weight=[4,5,1]))
 print(solution.coin_change_memo([1,2,5], 11))
 print(solution.coin_change_memo([2], 3))
 print(solution.coin_change_tabular([1,2,5], 11))
 print(solution.coin_change_tabular([2], 3))
 
-print(solution.knapsack_memo(4, profit=[1,2,3], weight=[4,5,1]))
-
+#dp technique 2
 print(solution.unique_paths_memo(3, 2))
 print(solution.unique_paths_memo(3, 7))
 print(solution.unique_paths_tabular(3, 2))
 print(solution.unique_paths_tabular(3, 7))
-
 print(solution.min_path_sum_memo([[1,3,1],[1,5,1],[4,2,1]]))
 print(solution.min_path_sum_memo([[1,2,3],[4,5,6]]))
 print(solution.min_path_sum_tabular([[1,3,1],[1,5,1],[4,2,1]]))
 print(solution.min_path_sum_tabular([[1,2,3],[4,5,6]]))
 
+#dp technique 3
 print(solution.longest_common_subsequence("abcde", "abc"))
-
 print(solution.edit_distance("horse", "ros"))
+
+#dp technique 4
+print(solution.house_robber([1,2,3,1]))
+print(solution.jump_game([2,3,1,1,4]))
+print(solution.jump_game([3,2,1,0,4]))
