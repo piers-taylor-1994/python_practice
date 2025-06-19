@@ -34,27 +34,6 @@ class Solution:
             second = temp
 
         return min(first, second)
-
-    def knight_probability_memo(self, n, k, row, column):
-        moves = [(-2,-1), (-2,1), (-1,2), (1,2), (2,1), (2,-1), (1,-2), (-1,-2)]
-        
-        def dfs(r, c, memo, depth):
-            if r < 0 or r >= n or c < 0 or c >= n:
-                return 0
-            elif depth == k:
-                return 1
-            elif (r, c, depth) in memo:
-                return memo[(r, c, depth)]
-            
-            probability = 0
-            for k_row, k_col in moves:
-                probability += dfs(k_row + r, k_col + c, memo, depth + 1) / 8
-            
-            memo[(r, c, depth)] = probability
-
-            return memo[(r, c, depth)]
-
-        return dfs(row, column, {}, 0)
     
     def fibonacci_memo(self, n):
         def dp(n, memo):
@@ -277,6 +256,24 @@ class Solution:
                 return False
             furthest = max(furthest, i + nums[i])
         return True
+    
+    def knight_probability_memo(self, n, k, row, column):
+        moves = [(-2,-1), (-2,1), (-1,2), (1,2), (2,1), (2,-1), (1,-2), (-1,-2)]
+        memo = {}
+
+        def dp(move, r, c):
+            if r < 0 or r >= n or c < 0 or c >= n:
+                return 0
+            elif move == k:
+                return 1.00
+            elif (r, c, move) in memo:
+                return memo[(r, c, move)]
+            
+            total = sum([dp(move + 1, r + k_row, c + k_col) / 8 for k_row, k_col in moves])
+            memo[(r, c, move)] = total
+            return memo[(r, c, move)]
+        
+        return dp(0, row, column)
 
 solution = Solution()
 print(solution.min_cost_stairs_memo([20,15,30,5]))
@@ -313,3 +310,6 @@ print(solution.edit_distance("horse", "ros"))
 #dp technique 4
 print(solution.house_robber([1,2,3,1]))
 print(solution.jump_game_memo([2,3,1,1,4]))
+
+#dp technique 5
+print(solution.knight_probability_memo(3, 2, 0, 0))
