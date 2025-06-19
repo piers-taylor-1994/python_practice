@@ -274,6 +274,18 @@ class Solution:
             return memo[(r, c, move)]
         
         return dp(0, row, column)
+    
+    def dice_roll(self, n, k, target):
+        def dp(roll, number):
+            if roll == n and number != target:
+                return 0
+            elif roll == n and number == target:
+                return 1
+            
+            return sum([dp(roll + 1, number + i) for i in range(1, k + 1)])
+
+        return dp(0, 0)
+
 
 solution = Solution()
 print(solution.min_cost_stairs_memo([20,15,30,5]))
@@ -313,3 +325,4 @@ print(solution.jump_game_memo([2,3,1,1,4]))
 
 #dp technique 5
 print(solution.knight_probability_memo(3, 2, 0, 0))
+print(solution.dice_roll(2, 6, 7))
