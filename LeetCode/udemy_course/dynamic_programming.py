@@ -270,7 +270,13 @@ class Solution:
 
         return dp(0)
     def jump_game_greedy(self, nums):
-        pass
+        furthest = 0
+
+        for i in range(len(nums)):
+            if i > furthest:
+                return False
+            furthest = max(furthest, i + nums[i])
+        return True
 
 solution = Solution()
 print(solution.min_cost_stairs_memo([20,15,30,5]))
