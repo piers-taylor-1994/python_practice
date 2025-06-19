@@ -250,7 +250,7 @@ class Solution:
 
         return dp(len(nums) - 1)
     
-    def jump_game(self, nums):
+    def jump_game_memo(self, nums):
         memo = {}
 
         def dp(i):
@@ -269,6 +269,8 @@ class Solution:
             return False
 
         return dp(0)
+    def jump_game_greedy(self, nums):
+        pass
 
 solution = Solution()
 print(solution.min_cost_stairs_memo([20,15,30,5]))
@@ -304,5 +306,4 @@ print(solution.edit_distance("horse", "ros"))
 
 #dp technique 4
 print(solution.house_robber([1,2,3,1]))
-print(solution.jump_game([2,3,1,1,4]))
-print(solution.jump_game([3,2,1,0,4]))
+print(solution.jump_game_memo([2,3,1,1,4]))
