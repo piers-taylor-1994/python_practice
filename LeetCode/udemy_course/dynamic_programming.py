@@ -276,15 +276,19 @@ class Solution:
         return dp(0, row, column)
     
     def dice_roll(self, n, k, target):
+        memo = {}
         def dp(roll, number):
             if roll == n and number != target:
                 return 0
             elif roll == n and number == target:
                 return 1
+            elif (roll, number) in memo:
+                return memo[(roll, number)]
             
-            return sum([dp(roll + 1, number + i) for i in range(1, k + 1)])
+            memo[(roll, number)] = sum([dp(roll + 1, number + i) for i in range(1, k + 1)])
+            return memo[(roll, number)]
 
-        return dp(0, 0)
+        return dp(0, 0) % ((10**9) + 7)
 
 
 solution = Solution()
