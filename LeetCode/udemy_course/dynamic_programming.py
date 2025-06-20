@@ -293,15 +293,13 @@ class Solution:
     def travelling_salesman(self, n, cost):
         memo = {}
         def dp(current_city, seen):
-            new_seen = seen | (1 << current_city)
-
-            if new_seen == (1 << n) - 1:
+            if seen == (1 << n) - 1:
                 return cost[current_city][0]
-            elif (current_city, new_seen) in memo:
-                return memo[(current_city, new_seen)]
+            elif (current_city, seen) in memo:
+                return memo[(current_city, seen)]
             
-            memo[(current_city, new_seen)] = min([cost[current_city][i] + dp(i, new_seen) for i in range(n) if not (new_seen & (1 << i))])
-            return memo[(current_city, new_seen)]
+            memo[(current_city, seen)] = min([cost[current_city][i] + dp(i, seen | (1 << current_city)) for i in range(n) if not (seen & (1 << i))])
+            return memo[(current_city, seen)]
         return dp(0, 0)
 
 solution = Solution()
