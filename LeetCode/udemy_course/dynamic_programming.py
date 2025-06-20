@@ -289,7 +289,18 @@ class Solution:
             return memo[(roll, number)]
 
         return dp(0, 0) % ((10**9) + 7)
-
+    
+    def travelling_salesman(self, n, cost):
+        memo = {}
+        def dp(current_city, current_cost, seen):
+            if len(seen) == n:
+                return current_cost + cost[current_city][0]
+            elif (current_city, current_cost, tuple(seen)) in memo:
+                return memo[(current_city, current_cost, tuple(seen))]
+            
+            memo[(current_city, current_cost, tuple(seen))] = current_cost + min([dp(i, cost[current_city][i], seen + [i]) for i in range(1, n) if i not in seen])
+            return memo[(current_city, current_cost, tuple(seen))]
+        return dp(0, 0, [0])
 
 solution = Solution()
 print(solution.min_cost_stairs_memo([20,15,30,5]))
@@ -330,3 +341,17 @@ print(solution.jump_game_memo([2,3,1,1,4]))
 #dp technique 5
 print(solution.knight_probability_memo(3, 2, 0, 0))
 print(solution.dice_roll(2, 6, 7))
+
+#dp technique 6
+print(solution.travelling_salesman(4, [
+    [0, 10, 15, 20],
+    [10, 0, 35, 25],
+    [15, 35, 0, 30],
+    [20, 25, 30, 0]
+]))
+print(solution.travelling_salesman(3, [
+  [0, 5, 9],
+  [5, 0, 10],
+  [9, 10, 0]
+]
+))
