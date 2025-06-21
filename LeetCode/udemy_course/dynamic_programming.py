@@ -299,32 +299,17 @@ class Solution:
     # Skipping over i if it's already in bitmask ->                         if not (bitmask & 1 << i)
     
     def travelling_salesman(self, n, cost):
-        memo = {}
         def dp(current_city, seen):
-            if seen == (1 << n) - 1: #check if seen == bitmask n
+            if len(seen) == n:
                 return cost[current_city][0]
-            elif (current_city, seen) in memo:
-                return memo[(current_city, seen)]
             
-            memo[(current_city, seen)]= min([cost[current_city][i] + dp(i, seen | 1 << i) for i in range(n) if not (seen & 1 << i)]) #add i to bitmask and check if i is in bitmask
-            return memo[(current_city, seen)]
+            return min([cost[current_city][i] + dp(i, seen + [i]) for i in range(n) if i not in seen])
 
-        return dp(0, 1 << 0) #add 0 to bitmask
+        return dp(0, [0])
+
     
     def job_assignment(self, n, cost):
-        memo = {}
-        def dp(job_number = 0, staff_assigned = 0):
-            if job_number == n - 1:
-                for i in range(n):
-                    if not (staff_assigned & 1 << i):
-                        return cost[job_number][i]
-            elif (job_number, staff_assigned) in memo:
-                return memo[(job_number, staff_assigned)]
-                
-            memo[(job_number, staff_assigned)] = min([cost[job_number][i] + dp(job_number + 1, staff_assigned | 1 << i) for i in range(n) if not (staff_assigned & 1 << i)])
-            return memo[(job_number, staff_assigned)]
-
-        return dp()
+        pass
 
 solution = Solution()
 print(solution.min_cost_stairs_memo([20,15,30,5]))
