@@ -293,6 +293,11 @@ class Solution:
 
         return dp(0, 0) % ((10**9) + 7)
     
+    # BITMASK NOTES
+    # Base case for recursion checking array length against bitmask ->      bitmask == (1 << array_length) - 1
+    # Adding a new "i" to current bitmask ->                                bitmask | 1 << i
+    # Skipping over i if it's already in bitmask ->                         if not (bitmask & 1 << i)
+    
     def travelling_salesman(self, n, cost):
         memo = {}
         def dp(current_city, seen):
