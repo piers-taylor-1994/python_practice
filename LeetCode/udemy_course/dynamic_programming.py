@@ -298,7 +298,7 @@ class Solution:
             elif (current_city, seen) in memo:
                 return memo[(current_city, seen)]
             
-            memo[(current_city, seen)] = min([cost[current_city][i] + dp(i, seen | 1 << i) for i in range(n) if not (seen & 1 << i)]) #add i to bitmask and check if i is in bitmask
+            memo[(current_city, seen)]= min([cost[current_city][i] + dp(i, seen | 1 << i) for i in range(n) if not (seen & 1 << i)]) #add i to bitmask and check if i is in bitmask
             return memo[(current_city, seen)]
 
         return dp(0, 1 << 0) #add 0 to bitmask
