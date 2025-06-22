@@ -291,16 +291,13 @@ class Solution:
         return dp(0, 0) % ((10**9) + 7)
     
     def travelling_salesman(self, n, cost):
-        memo = {}
         def dp(current_city, seen):
-            if seen == (1 << n) - 1:
+            if len(seen) == n:
                 return cost[current_city][0]
-            elif (current_city, seen) in memo:
-                return memo[(current_city, seen)]
             
-            memo[(current_city, seen)] = min([cost[current_city][i] + dp(i, seen | (1 << current_city)) for i in range(n) if not (seen & (1 << i))])
-            return memo[(current_city, seen)]
-        return dp(0, 0)
+            return min([cost[current_city][i] + dp(i, seen | set([i])) for i in range(n) if i not in seen])
+
+        return dp(0, set([0]))
 
 solution = Solution()
 print(solution.min_cost_stairs_memo([20,15,30,5]))
