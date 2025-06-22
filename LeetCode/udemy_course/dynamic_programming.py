@@ -1,3 +1,6 @@
+from re import I
+
+
 class Solution:
     def min_cost_stairs_memo(self, cost):
         def dp(i, memo):
@@ -302,6 +305,21 @@ class Solution:
             return memo[(current_city, seen)]
 
         return dp(0, 1 << 0) #add 0 to bitmask
+    
+    def job_assignment(self, n, cost):
+        memo = {}
+        def dp(job_number = 0, staff_assigned = 0):
+            if job_number == n - 1:
+                for i in range(n):
+                    if not (staff_assigned & 1 << i):
+                        return cost[job_number][i]
+            elif (job_number, staff_assigned) in memo:
+                return memo[(job_number, staff_assigned)]
+                
+            memo[(job_number, staff_assigned)] = min([cost[job_number][i] + dp(job_number + 1, staff_assigned | 1 << i) for i in range(n) if not (staff_assigned & 1 << i)])
+            return memo[(job_number, staff_assigned)]
+
+        return dp()
 
 solution = Solution()
 print(solution.min_cost_stairs_memo([20,15,30,5]))
@@ -356,3 +374,8 @@ print(solution.travelling_salesman(3, [
   [9, 10, 0]
 ]
 ))
+print(solution.job_assignment(3, [
+    [9, 2, 7],
+    [6, 4, 3],
+    [5, 8, 1]
+]))
