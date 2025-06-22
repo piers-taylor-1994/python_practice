@@ -293,15 +293,15 @@ class Solution:
     def travelling_salesman(self, n, cost):
         memo = {}
         def dp(current_city, seen):
-            if len(seen) == n:
+            if seen == (1 << n) - 1:
                 return cost[current_city][0]
-            elif (current_city, tuple(seen)) in memo:
-                return memo[(current_city, tuple(seen))]
+            elif (current_city, seen) in memo:
+                return memo[(current_city, seen)]
             
-            memo[(current_city, tuple(seen))] = min([cost[current_city][i] + dp(i, seen | set([i])) for i in range(n) if i not in seen])
-            return memo[(current_city, tuple(seen))]
+            memo[(current_city, seen)]= min([cost[current_city][i] + dp(i, seen | 1 << i) for i in range(n) if not (seen & 1 << i)])
+            return memo[(current_city, seen)]
 
-        return dp(0, set([0]))
+        return dp(0, 1 << 0)
 
 solution = Solution()
 print(solution.min_cost_stairs_memo([20,15,30,5]))
