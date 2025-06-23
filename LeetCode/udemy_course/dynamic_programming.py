@@ -303,9 +303,9 @@ class Solution:
             if len(seen) == n:
                 return cost[current_city][0]
             
-            return min([cost[current_city][i] + dp(i, seen + [i]) for i in range(n) if i not in seen])
+            return min([cost[current_city][i] + dp(i, seen | set([i])) for i in range(n) if i not in seen])
 
-        return dp(0, [0])
+        return dp(0, set([0]))
 
     
     def job_assignment(self, n, cost):
