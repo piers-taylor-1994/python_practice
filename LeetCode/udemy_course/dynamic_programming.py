@@ -299,14 +299,17 @@ class Solution:
     # Skipping over i if it's already in bitmask ->                         if not (bitmask & 1 << i)
     
     def travelling_salesman(self, n, cost):
+        memo = {}
         def dp(current_city, seen):
             if len(seen) == n:
                 return cost[current_city][0]
+            elif (current_city, tuple(seen)) in memo:
+                return memo[(current_city, tuple(seen))]
             
-            return min([cost[current_city][i] + dp(i, seen | set([i])) for i in range(n) if i not in seen])
+            memo[(current_city, tuple(seen))] = min([cost[current_city][i] + dp(i, seen | set([i])) for i in range(n) if i not in seen])
+            return memo[(current_city, tuple(seen))]
 
         return dp(0, set([0]))
-
     
     def job_assignment(self, n, cost):
         pass
