@@ -316,9 +316,9 @@ class Solution:
             if len(seen) == n:
                 return 0
             
-            return min([cost[worker_number][i] + dp(worker_number + 1, seen | set([i])) for i in range(n) if i not in seen])
+            return min([cost[worker_number][i] + dp(worker_number + 1, seen + [i]) for i in range(n) if i not in seen])
         
-        return dp(0, set())
+        return dp(0, [])
 
 solution = Solution()
 print(solution.min_cost_stairs_memo([20,15,30,5]))
