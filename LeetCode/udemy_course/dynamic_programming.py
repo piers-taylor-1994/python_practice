@@ -312,13 +312,17 @@ class Solution:
         return dp(0, 1 << 0)
     
     def job_assignment(self, n, cost):
+        memo = {}
         def dp(worker_number, seen):
-            if len(seen) == n:
+            if seen == (1 << n) - 1:
                 return 0
+            elif (worker_number, seen) in memo:
+                return memo[(worker_number, seen)]
             
-            return min([cost[worker_number][i] + dp(worker_number + 1, seen + [i]) for i in range(n) if i not in seen])
+            memo[(worker_number, seen)] = min([cost[worker_number][i] + dp(worker_number + 1, seen | 1 << i) for i in range(n) if not (seen & 1 << i)])
+            return memo[(worker_number, seen)]
         
-        return dp(0, [])
+        return dp(0, 0)
 
 solution = Solution()
 print(solution.min_cost_stairs_memo([20,15,30,5]))
