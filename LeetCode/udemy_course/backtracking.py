@@ -4,7 +4,7 @@ class Solution:
             if 0 <= r <= 2:
                 if 0 <= c <= 2:
                     #grid 0
-                    pass
+                    return value not in board[0][0:3] and value not in board[1][0:3] and value not in board[2][0:3]
                 elif 3 <= c <= 5:
                     #grid 1
                     pass
