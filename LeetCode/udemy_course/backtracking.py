@@ -1,58 +1,39 @@
 class Solution:
-    def soduku_solver(self, board):
-        def grid_check(value, r, c):
-            if 0 <= r <= 2:
-                if 0 <= c <= 2:
-                    #grid 0
-                    return value not in board[0][0:3] and value not in board[1][0:3] and value not in board[2][0:3]
-                elif 3 <= c <= 5:
-                    #grid 1
-                    pass
-                else:
-                    #grid 2
-                    pass
-            elif 3 <= r <= 5:
-                if 0 <= c <= 2:
-                    #grid 3
-                    pass
-                elif 3 <= c <= 5:
-                    #grid 4
-                    pass
-                else:
-                    #grid 5
-                    pass
-            else:
-                if 0 <= c <= 2:
-                    #grid 6
-                    pass
-                elif 3 <= c <= 5:
-                    #grid 7
-                    pass
-                else:
-                    #grid 8
-                    pass
+    def sudoku_solver(self, board):
+        def is_valid(r, c, val):
+            # Row check
+            if val in board[r]:
+                return False
+            # Column check
+            if val in [board[i][c] for i in range(9)]:
+                return False
+            # 3x3 grid check
+            start_row, start_col = 3 * (r // 3), 3 * (c // 3)
+            for i in range(start_row, start_row + 3):
+                for j in range(start_col, start_col + 3):
+                    if board[i][j] == val:
+                        return False
+            return True
 
-        def recursion(row, col):
-            if (row, col) == (8, 8):
-                return board
-            elif board[row][col] != ".":
-                if col == 8:
-                    return recursion(row + 1, 0)
-                else:
-                    return recursion(row, col + 1)
+        def solve():
+            for r in range(9):
+                for c in range(9):
+                    if board[r][c] == ".":
+                        for num in map(str, range(1, 10)):
+                            if is_valid(r, c, num):
+                                board[r][c] = num
+                                if solve():
+                                    return True
+                                board[r][c] = "."  # backtrack
+                        return False  # if no valid number found
+            return True  # board is complete
 
-            for i in range(1, 10):
-                if str(i) not in board[row] and (str(i) not in board[0][col] or str(i) not in board[1][col] or str(i) not in board[2][col] or str(i) not in board[3][col] or str(i) not in board[4][col] or str(i) not in board[5][col] or str(i) not in board[6][col] or str(i) not in board[7][col] or str(i) not in board[8][col]): #and grid_check(str(i), row, col):
-                    board[row][col] = str(i)
-                    if col == 8:
-                        return recursion(row + 1, 0)
-                    else:
-                        return recursion(row, col + 1)
+        solve()
+        return board
 
-        return recursion(0, 0)
 
 solution = Solution()
-print(solution.soduku_solver([["5","3",".",".","7",".",".",".","."],
+print(solution.sudoku_solver([["5","3",".",".","7",".",".",".","."],
                               ["6",".",".","1","9","5",".",".","."],
                               [".","9","8",".",".",".",".","6","."],
                               ["8",".",".",".","6",".",".",".","3"],
