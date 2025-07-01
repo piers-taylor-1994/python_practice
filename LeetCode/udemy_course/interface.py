@@ -2,20 +2,18 @@ from collections import deque
 
 
 class Node():
-    def __init__(self, name, parent):
+    def __init__(self, name):
         self.Name = name
         self.Children = []
         self.Alive = True
-
-    def add_children(self, child):
-        self.Children.append(child)
         
 class ThroneInheritance(object):
     def __init__(self, kingName):
         """
         :type kingName: str
         """
-        self.head = Node(kingName, None)
+        self.head = Node(kingName)
+        self.lookup = {kingName: self.head}
 
     def birth(self, parentName, childName):
         """
@@ -23,30 +21,17 @@ class ThroneInheritance(object):
         :type childName: str
         :rtype: None
         """
-        current = self.head
-        queue = deque([current])
-
-        while queue:
-            current = queue.popleft()
-            if current.Name == parentName:
-                current.Children.append(Node(childName, current))
-                break
-            queue += current.Children
+        parent = self.lookup[parentName]
+        child = Node(childName)
+        parent.Children.append(child)
+        self.lookup[childName] = child
 
     def death(self, name):
         """
         :type name: str
         :rtype: None
         """
-        current = self.head
-        queue = deque([current])
-
-        while queue:
-            current = queue.popleft()
-            if current.Name == name:
-                current.Alive = False
-                break
-            queue += current.Children
+        self.lookup[name].Alive = False
 
     def getInheritanceOrder(self):
         """
