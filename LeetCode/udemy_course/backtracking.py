@@ -25,7 +25,37 @@ class Solution:
         return solutions
 
     def sudoku_solver(self, board):
-        pass
+        def is_valid(row, col, num):
+            if num in board[row]:
+                return False
+            elif num in [board[i][col] for i in range(len(board))]:
+                return False
+            
+            search_row = 3 * (row // 3)
+            search_col = 3 * (col // 3)
+
+            for r in range(3):
+                for c in range(3):
+                    if board[r + search_row][c + search_col] == num:
+                        return False
+            
+            return True
+
+        def rec():
+            for row in range(9):
+                for col in range(9):
+                    if board[row][col] == ".":
+                        for num in map(str, range(1, 10)):
+                            if is_valid(row, col, num):
+                                board[row][col] = num
+                                if rec():
+                                    return True
+                                board[row][col] = "."
+                        return False
+            return True
+
+        rec()
+        return board
 
 solution = Solution()
 
