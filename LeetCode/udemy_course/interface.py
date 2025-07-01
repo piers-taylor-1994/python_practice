@@ -4,8 +4,8 @@ from collections import deque
 class Node():
     def __init__(self, name, parent):
         self.Name = name
-        self.Parent = parent
         self.Children = []
+        self.Alive = True
 
     def add_children(self, child):
         self.Children.append(child)
@@ -44,29 +44,7 @@ class ThroneInheritance(object):
         while queue:
             current = queue.popleft()
             if current.Name == name:
-                children = current.Children
-                parent = current.Parent
-
-                if not parent or not parent:
-                    if not parent:
-                        new_king = children[0]
-                        self.head = new_king
-                        new_king.Parent = None
-                    if not children:
-                        parent.Children.remove(current)
-                else:
-                    index = parent.Children.index(current)
-
-                    for child in children:
-                        parent.Children.insert(index, child)
-                        index += 1
-                    parent.Children.remove(current)
-
-                    for child in children:
-                        child.Parent = parent
-                
-                current.Parent = None
-                current.Children = None
+                current.Alive = False
                 break
             queue += current.Children
 
@@ -77,7 +55,8 @@ class ThroneInheritance(object):
         results = []
 
         def dfs(node):
-            results.append(node.Name)
+            if node.Alive:
+                results.append(node.Name)
             for child in node.Children:
                 dfs(child)
 
