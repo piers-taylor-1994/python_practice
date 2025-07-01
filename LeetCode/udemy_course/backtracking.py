@@ -1,38 +1,36 @@
 class Solution:
+    """
+    function backtrack(current_state):
+        if is_goal(current_state):
+            record_solution(current_state)
+            return
+
+        for choice in get_valid_choices(current_state):
+            make_choice(current_state, choice)
+            backtrack(current_state)
+            undo_choice(current_state, choice)
+    """
+    def generate_all_subsets(self, nums):
+        solutions = []
+
+        def rec(position, path):
+            solutions.append(path[:])
+
+            for i in range(position, len(nums)):
+                path.append(nums[i])
+                rec(i + 1, path)
+                path.pop()
+
+        rec(0, [])
+        return solutions
+
     def sudoku_solver(self, board):
-        def is_valid(r, c, val):
-            # Row check
-            if val in board[r]:
-                return False
-            # Column check
-            if val in [board[i][c] for i in range(9)]:
-                return False
-            # 3x3 grid check
-            start_row, start_col = 3 * (r // 3), 3 * (c // 3)
-            for i in range(start_row, start_row + 3):
-                for j in range(start_col, start_col + 3):
-                    if board[i][j] == val:
-                        return False
-            return True
-
-        def solve():
-            for r in range(9):
-                for c in range(9):
-                    if board[r][c] == ".":
-                        for num in map(str, range(1, 10)):
-                            if is_valid(r, c, num):
-                                board[r][c] = num
-                                if solve():
-                                    return True
-                                board[r][c] = "."  # backtrack
-                        return False  # if no valid number found
-            return True  # board is complete
-
-        solve()
-        return board
-
+        pass
 
 solution = Solution()
+
+print(solution.generate_all_subsets([1,2,3]))
+
 print(solution.sudoku_solver([["5","3",".",".","7",".",".",".","."],
                               ["6",".",".","1","9","5",".",".","."],
                               [".","9","8",".",".",".",".","6","."],
