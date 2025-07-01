@@ -65,6 +65,26 @@ class Solution:
 
         rec()
         return board
+    
+    def permutations(self, nums):
+        solutions = []
+        used = set()
+
+        def rec(arr):
+            if arr and len(arr) == len(nums):
+                solutions.append(arr[:])
+                return
+            
+            for num in nums:
+                if num not in used:
+                    arr.append(num)
+                    used.add(num)
+                    rec(arr)
+                    arr.pop()
+                    used.remove(num)
+
+        rec([])
+        return solutions
 
 solution = Solution()
 
@@ -79,3 +99,5 @@ print(solution.sudoku_solver([["5","3",".",".","7",".",".",".","."],
                               [".","6",".",".",".",".","2","8","."],
                               [".",".",".","4","1","9",".",".","5"],
                               [".",".",".",".","8",".",".","7","9"]]))
+
+print(solution.permutations([1, 2, 3]))
