@@ -85,6 +85,28 @@ class Solution:
 
         rec([])
         return solutions
+    
+    def combination_sum(self, nums, target):
+        solutions = []
+        nums.sort()
+
+        def rec(position, arr, total):
+            if total == target:
+                arr.sort()
+                if arr not in solutions:
+                    solutions.append(arr[:])
+                return
+            if total > target:
+                return
+            
+            for i in range(position, len(nums)):
+                num = nums[i]
+                arr.append(num)
+                rec(i, arr, total + num)
+                arr.pop()
+
+        rec(0, [], 0)
+        return solutions
 
 solution = Solution()
 
@@ -101,3 +123,7 @@ print(solution.sudoku_solver([["5","3",".",".","7",".",".",".","."],
                               [".",".",".",".","8",".",".","7","9"]]))
 
 print(solution.permutations([1, 2, 3]))
+
+# print(solution.combination_sum([2,3,6,7], 7))
+# print(solution.combination_sum([2,3,5], 8))
+print(solution.combination_sum([7,3,2], 18))
