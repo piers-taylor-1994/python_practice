@@ -25,33 +25,42 @@ class Solution:
         return solutions
 
     def sudoku_solver(self, board):
-        def is_valid(row, col, num):
-            if num in board[row]:
-                return False
-            elif num in [board[i][col] for i in range(len(board))]:
-                return False
-            
-            search_row = 3 * (row // 3)
-            search_col = 3 * (col // 3)
+        rows = [set() for _ in range(9)]
+        cols = [set() for _ in range(9)]
+        boxes = [set() for _ in range(9)]
+        empty_spaces = []
 
-            for r in range(3):
-                for c in range(3):
-                    if board[r + search_row][c + search_col] == num:
-                        return False
-            
-            return True
+        for r in range(9):
+            for c in range(9):
+                if board[r][c] != ".":
+                    num = board[r][c]
+                    rows[r].add(num)
+                    cols[c].add(num)
+                    box_index = (r // 3) * 3 + (c // 3)
+                    boxes[box_index].add(num)
+                else:
+                    empty_spaces.append((r, c))
 
         def rec():
-            for row in range(9):
-                for col in range(9):
-                    if board[row][col] == ".":
-                        for num in map(str, range(1, 10)):
-                            if is_valid(row, col, num):
-                                board[row][col] = num
-                                if rec():
-                                    return True
-                                board[row][col] = "."
-                        return False
+            for row, col in empty_spaces:
+                for num in map(str, range(1, 10)):
+                    box_index = (row // 3) * 3 + (col // 3)
+                    if num not in rows[row] and num not in cols[col] and num not in boxes[box_index]:
+                        board[row][col] = num
+                        rows[row].add(num)
+                        cols[col].add(num)
+                        boxes[box_index].add(num)
+                        empty_spaces.remove((row, col))
+
+                        if rec():
+                            return True
+                                
+                        board[row][col] = "."
+                        rows[row].remove(num)
+                        cols[col].remove(num)
+                        boxes[box_index].remove(num)
+                        empty_spaces.append((row, col))
+                return False
             return True
 
         rec()
