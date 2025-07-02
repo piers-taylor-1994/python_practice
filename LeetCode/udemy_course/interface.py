@@ -12,6 +12,7 @@ class ThroneInheritance(object):
         :type kingName: str
         """
         self.head = Node(kingName)
+        self.people = {kingName: self.head}
 
     def birth(self, parentName, childName):
         """
@@ -19,30 +20,17 @@ class ThroneInheritance(object):
         :type childName: str
         :rtype: None
         """
-        current = self.head
-        queue = deque([current])
-
-        while queue:
-            current = queue.popleft()
-            if current.Name == parentName:
-                current.Children.append(Node(childName))
-                break
-            queue += current.Children
+        parent = self.people[parentName]
+        child = Node(childName)
+        parent.Children.append(child)
+        self.people[childName] = child
         
     def death(self, name):
         """
         :type name: str
         :rtype: None
         """
-        current = self.head
-        queue = deque([current])
-
-        while queue:
-            current = queue.popleft()
-            if current.Name == name:
-                current.Alive = False
-                break
-            queue += current.Children
+        self.people[name].Alive = False
 
     def getInheritanceOrder(self):
         """
