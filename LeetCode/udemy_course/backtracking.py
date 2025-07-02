@@ -87,26 +87,24 @@ class Solution:
         return solutions
     
     def combination_sum(self, nums, target):
-        solutions = []
+        results = []
         nums.sort()
 
-        def rec(position, arr, total):
+        def rec(position, total, path):
             if total == target:
-                arr.sort()
-                if arr not in solutions:
-                    solutions.append(arr[:])
+                results.append(path[:])
                 return
-            if total > target:
+            elif total > target:
                 return
             
             for i in range(position, len(nums)):
                 num = nums[i]
-                arr.append(num)
-                rec(i, arr, total + num)
-                arr.pop()
+                path.append(num)
+                rec(i, total + num, path)
+                path.pop()
 
-        rec(0, [], 0)
-        return solutions
+        rec(0, 0, [])
+        return results
 
 solution = Solution()
 
