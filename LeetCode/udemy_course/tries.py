@@ -1,64 +1,64 @@
 class TrieNode:
     def __init__(self):
-        self.Is_end = False
-        self.Children = [None] * 26
+        self.end = False
+        self.children = [None] * 26
         
 class Trie(object):
     def __init__(self):
-        self.Root = TrieNode()
+        self.root = TrieNode()
 
     def insert(self, word):
         """
         :type word: str
         :rtype: None
         """
-        current = self.Root
+        current = self.root
 
         for letter in word:
             alphabet_idx = ord(letter) - ord("a")
 
-            if not current.Children[alphabet_idx]:
-                current.Children[alphabet_idx] = TrieNode()
+            if not current.children[alphabet_idx]:
+                current.children[alphabet_idx] = TrieNode()
 
-            current = current.Children[alphabet_idx]
+            current = current.children[alphabet_idx]
         
-        current.Is_end = True
+        current.end = True
 
     def search(self, word):
         """
         :type word: str
         :rtype: bool
         """
-        current = self.Root
+        word_length = len(word)
 
-        for letter in word:
-            alphabet_idx = ord(letter) - ord("a")
-
-            if not current.Children[alphabet_idx]:
+        def dfs(node, letter_num):
+            if not node:
                 return False
+            elif letter_num == word_length - 1:
+                return node.end
+            
+            letter_num += 1
+            return dfs(node.children[ord(word[letter_num]) - ord("a")], letter_num)
 
-            current = current.Children[alphabet_idx]
-        
-        return current.Is_end
+        return dfs(self.root, -1)
 
     def startsWith(self, prefix):
         """
         :type prefix: str
         :rtype: bool
         """
+        word_length = len(prefix)
 
-        current = self.Root
-
-        for letter in prefix:
-            alphabet_idx = ord(letter) - ord("a")
-
-            if not current.Children[alphabet_idx]:
+        def dfs(node, letter_num):
+            if not node:
                 return False
+            elif letter_num == word_length - 1:
+                return True
+            
+            letter_num += 1
+            return dfs(node.children[ord(prefix[letter_num]) - ord("a")], letter_num)
 
-            current = current.Children[alphabet_idx]
-        
-        return True
-
+        return dfs(self.root, -1)
 
 # Your Trie object will be instantiated and called as such:
 obj = Trie()
