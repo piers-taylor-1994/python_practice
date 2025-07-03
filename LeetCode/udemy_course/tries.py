@@ -29,36 +29,35 @@ class Trie(object):
         :type word: str
         :rtype: bool
         """
-        word_length = len(word)
+        current = self.root
 
-        def dfs(node, letter_num):
-            if not node:
+        for letter in word:
+            alphabet_idx = ord(letter) - ord("a")
+
+            if not current.children[alphabet_idx]:
                 return False
-            elif letter_num == word_length - 1:
-                return node.end
-            
-            letter_num += 1
-            return dfs(node.children[ord(word[letter_num]) - ord("a")], letter_num)
 
-        return dfs(self.root, -1)
+            current = current.children[alphabet_idx]
+        
+        return current.end
 
     def startsWith(self, prefix):
         """
         :type prefix: str
         :rtype: bool
         """
-        word_length = len(prefix)
 
-        def dfs(node, letter_num):
-            if not node:
+        current = self.root
+
+        for letter in prefix:
+            alphabet_idx = ord(letter) - ord("a")
+
+            if not current.children[alphabet_idx]:
                 return False
-            elif letter_num == word_length - 1:
-                return True
-            
-            letter_num += 1
-            return dfs(node.children[ord(prefix[letter_num]) - ord("a")], letter_num)
 
-        return dfs(self.root, -1)
+            current = current.children[alphabet_idx]
+        
+        return True
 
 # Your Trie object will be instantiated and called as such:
 obj = Trie()
