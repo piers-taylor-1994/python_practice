@@ -6,6 +6,7 @@ class TrieNode:
 class Trie(object):
     def __init__(self):
         self.root = TrieNode()
+        self.alphabet = {}
 
     def insert(self, word):
         """
@@ -15,12 +16,14 @@ class Trie(object):
         current = self.root
 
         for letter in word:
-            alphabet_idx = ord(letter) - ord("a")
+            if letter not in self.alphabet:
+                self.alphabet[letter] = ord(letter) - ord("a")
+            idx = self.alphabet[letter]
 
-            if not current.children[alphabet_idx]:
-                current.children[alphabet_idx] = TrieNode()
+            if not current.children[idx]:
+                current.children[idx] = TrieNode()
 
-            current = current.children[alphabet_idx]
+            current = current.children[idx]
         
         current.end = True
 
@@ -32,12 +35,14 @@ class Trie(object):
         current = self.root
 
         for letter in word:
-            alphabet_idx = ord(letter) - ord("a")
+            if letter not in self.alphabet:
+                self.alphabet[letter] = ord(letter) - ord("a")
+            idx = self.alphabet[letter]
 
-            if not current.children[alphabet_idx]:
+            if not current.children[idx]:
                 return False
 
-            current = current.children[alphabet_idx]
+            current = current.children[idx]
         
         return current.end
 
@@ -46,16 +51,17 @@ class Trie(object):
         :type prefix: str
         :rtype: bool
         """
-
         current = self.root
 
         for letter in prefix:
-            alphabet_idx = ord(letter) - ord("a")
+            if letter not in self.alphabet:
+                self.alphabet[letter] = ord(letter) - ord("a")
+            idx = self.alphabet[letter]
 
-            if not current.children[alphabet_idx]:
+            if not current.children[idx]:
                 return False
 
-            current = current.children[alphabet_idx]
+            current = current.children[idx]
         
         return True
 
