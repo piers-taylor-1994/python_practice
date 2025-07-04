@@ -16,9 +16,7 @@ class Trie(object):
         current = self.root
 
         for letter in word:
-            if letter not in self.alphabet:
-                self.alphabet[letter] = ord(letter) - ord("a")
-            idx = self.alphabet[letter]
+            idx = ord(letter) - ord("a")
 
             if not current.children[idx]:
                 current.children[idx] = TrieNode()
@@ -35,9 +33,7 @@ class Trie(object):
         current = self.root
 
         for letter in word:
-            if letter not in self.alphabet:
-                self.alphabet[letter] = ord(letter) - ord("a")
-            idx = self.alphabet[letter]
+            idx = ord(letter) - ord("a")
 
             if not current.children[idx]:
                 return False
@@ -54,9 +50,7 @@ class Trie(object):
         current = self.root
 
         for letter in prefix:
-            if letter not in self.alphabet:
-                self.alphabet[letter] = ord(letter) - ord("a")
-            idx = self.alphabet[letter]
+            idx = ord(letter) - ord("a")
 
             if not current.children[idx]:
                 return False
