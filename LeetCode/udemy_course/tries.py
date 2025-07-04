@@ -1,7 +1,7 @@
 class TrieNode:
     def __init__(self):
         self.end = False
-        self.children = [None] * 26
+        self.children = {}
         
 class Trie(object):
     def __init__(self):
@@ -18,7 +18,7 @@ class Trie(object):
         for letter in word:
             idx = ord(letter) - ord("a")
 
-            if not current.children[idx]:
+            if idx not in current.children:
                 current.children[idx] = TrieNode()
 
             current = current.children[idx]
@@ -35,7 +35,7 @@ class Trie(object):
         for letter in word:
             idx = ord(letter) - ord("a")
 
-            if not current.children[idx]:
+            if idx not in current.children:
                 return False
 
             current = current.children[idx]
@@ -52,7 +52,7 @@ class Trie(object):
         for letter in prefix:
             idx = ord(letter) - ord("a")
 
-            if not current.children[idx]:
+            if idx not in current.children:
                 return False
 
             current = current.children[idx]
