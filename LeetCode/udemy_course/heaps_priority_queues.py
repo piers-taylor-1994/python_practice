@@ -1,83 +1,71 @@
-from collections import deque
+import heapq
 
 
-class PriorityQueue:
-    def __init__(self, queue, max_heap = True):
-        self.heap = deque(queue)
-        self.max_heap = max_heap
-        pass
+class MinHeap:
+    def __init__(self):
+        self.heap = []
+    
+    def insert(self, val):
+        # Append value and bubble it up
+        self.heap.append(val)
+        val_idx = len(self.heap) - 1
 
-    def comparator(self, a, b):
-        if self.max_heap:
-            return a > b
-        else:
-            return a < b
+        while val_idx > 0:
+            parent_idx = (self.heap.index(val) - 1) // 2
+            if self.heap[parent_idx] > val:
+                (self.heap[parent_idx], self.heap[val_idx]) = (self.heap[val_idx], self.heap[parent_idx])
+                val_idx = parent_idx
+            else:
+                break
+    
+    def extract_min(self):
+        # Swap root with last, remove last, bubble root down
+        if not self.heap:
+            return None
+        if len(self.heap) == 1:
+            return self.heap.pop()
+
+        min_val = self.heap[0]
+        self.heap[0] = self.heap.pop()
         
-    def min_max(self, a, b):
-        if self.max_heap:
-            return max(a, b)
-        return min(a, b)
-        
-    def size(self):
-        return len(self.heap)
-    
-    def is_empty(self):
-        return len(self.heap) == 0
-    
-    def parent(self, idx):
-        return (idx - 1) // 2
-    
-    def left_child(self, idx):
-        return (idx * 2) + 1
-    
-    def right_child(self, idx):
-        return (idx * 2) + 2
-    
-    def swap(self, i, j):
-        self.heap[i], self.heap[j] = self.heap[j], self.heap[i]
+        idx = 0
+        while True:
+            left = 2 * idx + 1
+            right = 2 * idx + 2
+            smallest = idx
+
+            if left < len(self.heap) and self.heap[left] < self.heap[smallest]:
+                smallest = left
+            if right < len(self.heap) and self.heap[right] < self.heap[smallest]:
+                smallest = right
+            if smallest == idx:
+                break
+
+            self.heap[idx], self.heap[smallest] = self.heap[smallest], self.heap[idx]
+            idx = smallest
+
+        return min_val
+
     
     def peek(self):
-        return self.heap[0]
+        return self.heap[0] if self.heap else None
     
-    def push(self, x):
-        self.heap.append(x)
+heap = MinHeap()
+heap.insert(5)
+heap.insert(3)
+heap.insert(8)
+heap.insert(1)
+heap.insert(2)
+print(heap.heap)
+heap.extract_min()
+print(heap.heap)
 
-        while self.comparator(x, self.heap[self.parent(self.heap.index(x))]):
-            self.swap(self.heap.index(x), self.parent(self.heap.index(x)))
-            if self.heap.index(x) == 0:
-                break
-
-        return self.heap
-    
-    def pop(self):
-        self.heap.popleft()
-
-        x = self.heap.pop()
-        self.heap.appendleft(x)
-
-        while self.comparator(self.min_max(self.heap[self.left_child(self.heap.index(x))], self.heap[self.right_child(self.heap.index(x))] if self.right_child(self.heap.index(x)) < len(self.heap) else 0), x):
-            self.swap(self.heap.index(x), self.heap.index(self.min_max(self.heap[self.left_child(self.heap.index(x))], self.heap[self.right_child(self.heap.index(x)) if self.right_child(self.heap.index(x)) < len(self.heap) else 0])))
-            if self.left_child(self.heap.index(x)) >= len(self.heap):
-                break
-
-        return self.heap
-
-print("Insertion demo max_heap")
-priority_queue = PriorityQueue([50,25,45,35,10,15,20])
-print(priority_queue.heap)
-print(priority_queue.push(40))
-
-print("\nInsertion demo min_heap")
-priority_queue = PriorityQueue([10,15,25,20,35,30,50], False)
-print(priority_queue.heap)
-print(priority_queue.push(8))
-
-print("\nDeletion demo max_heap")
-priority_queue = PriorityQueue([75,50,25,45,35,10,15,20,40])
-print(priority_queue.heap)
-print(priority_queue.pop())
-
-print("\nDeletion demo min_heap")
-priority_queue = PriorityQueue([10,15,25,20,35,30,50,28], False)
-print(priority_queue.heap)
-print(priority_queue.pop())
+heap_2 = []
+heapq.heappush(heap_2, 5)
+heapq.heappush(heap_2, 3)
+heapq.heappush(heap_2, 8)
+heapq.heappush(heap_2, 1)
+heapq.heappush(heap_2, 2)
+print(heap_2)
+heapq.heappop(heap_2)
+print(heap_2)
