@@ -1,3 +1,4 @@
+from collections import deque
 import random
 
 class ListNode(object):
@@ -5,12 +6,27 @@ class ListNode(object):
         self.val = x
         self.next = None
 
+class TreeNode(object):
+    def __init__(self, val = 0, left = None, right = None):
+        self.val = val
+        self.left = left
+        self.right = right
+
 class Solution:
     """
     1. Arrays
     2. Strings
     3. Sorts/searches
     4. Linked lists
+    5. Binary trees
+    6. Tries
+    7. Matrices
+    8. Stack/queues
+    9. Graphs
+    10. Heaps
+    11. DP
+    12. Backtracking
+
     """
     def two_sum(self, nums, target):
         recorded_nums = {}
@@ -48,10 +64,29 @@ class Solution:
             visited_nodes.add(current_node)
             current_node = current_node.next
 
+    def binary_tree_bfs(self, root):
+        if not root:
+            return []
+        
+        queue = deque([root])
+        tree = []
+
+        while queue:
+            current_node = queue.popleft()
+            tree.append(current_node.val)
+
+            if current_node.left:
+                queue.append(current_node.left)
+            if current_node.right:
+                queue.append(current_node.right)
+        
+        return tree
+
 # print(random.choice(["container-with-most-water", "trapping-rainwater"]))
 # print(random.choice(["typed-out-strings", "longest-substring-without-repeating", "is_almost_palindrome"]))
 # print(random.choice(["quick_sort", "binary_search"]))
-print(random.choice(["reverse_partial_linked_list", "flatten_double_linked_list"]))
+# print(random.choice(["reverse_partial_linked_list", "flatten_double_linked_list"]))
+print(random.choice(["max-depth", "level-order", "right-side-view", "count-nodes", "is_valid_bst"]))
 
 solution = Solution()
 
@@ -68,3 +103,20 @@ node_1.next = node_2
 node_2.next = node_3
 node_3.next = node_1
 print(solution.linked_list_has_cycle(head))
+
+root = TreeNode(1)
+tree_node_2 = TreeNode(2)
+tree_node_3 = TreeNode(3)
+tree_node_4 = TreeNode(4)
+tree_node_5 = TreeNode(5)
+tree_node_6 = TreeNode(6)
+root.left = tree_node_2
+root.right = tree_node_3
+tree_node_2.left = tree_node_4
+tree_node_2.right = tree_node_5
+tree_node_3.left = tree_node_6
+print(solution.binary_tree_bfs(root))
+print("/// dfs ///")
+print(solution.binary_tree_dfs(root, "preorder"))
+print(solution.binary_tree_dfs(root, "inorder"))
+print(solution.binary_tree_dfs(root, "postorder"))
