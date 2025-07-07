@@ -180,13 +180,42 @@ class Solution:
                     seen.add((new_row, new_col))
         
         return result
+
+    def matrix_dfs(self, matrix):
+        DIRECTIONS = [
+            (-1, 0),
+            (0, 1),
+            (1, 0),
+            (0, -1),
+        ]
+
+        if not matrix or not matrix[0]:
+            return []
+
+        result = []
+        seen = set()
+
+        def dfs(row, col):
+            if row < 0 or row >= len(matrix) or col < 0 or col >= len(matrix[0]) or (row, col) in seen:
+                return
+            
+            result.append(matrix[row][col])
+            seen.add((row, col))
+
+            for dr, dc in DIRECTIONS:
+                new_row = row + dr
+                new_col = col + dc
+                dfs(new_row, new_col)
+
+        dfs(0, 0)
+        return result
     
 # print(random.choice(["container-with-most-water", "trapping-rainwater"]))
 # print(random.choice(["typed-out-strings", "longest-substring-without-repeating", "is_almost_palindrome"]))
 # print(random.choice(["quick_sort", "binary_search"]))
 # print(random.choice(["reverse_partial_linked_list", "flatten_double_linked_list"]))
 # print(random.choice(["max-depth", "level-order", "right-side-view", "count-nodes", "is_valid_bst"]))
-print(random.choice(["num_islands", "orange_rotting", "walls_gates"]))
+# print(random.choice(["num_islands", "orange_rotting", "walls_gates"]))
 
 solution = Solution()
 
