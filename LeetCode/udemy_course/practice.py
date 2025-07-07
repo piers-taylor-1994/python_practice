@@ -1,6 +1,6 @@
 from collections import deque
 import random
-
+ 
 class ListNode(object):
     def __init__(self, x):
         self.val = x
@@ -11,6 +11,53 @@ class TreeNode(object):
         self.val = val
         self.left = left
         self.right = right
+
+class TrieNode:
+    def __init__(self):
+        self.end = False
+        self.children = [None] * 26
+class Trie:
+    def __init__(self):
+        self.root = TrieNode()
+
+    def insert(self, word):
+        current_node = self.root
+
+        for letter in word:
+            letter_idx = ord(letter) - ord("a")
+
+            if not current_node.children[letter_idx]:
+                current_node.children[letter_idx] = TrieNode()
+            
+            current_node = current_node.children[letter_idx]
+        
+        current_node.end = True
+    
+    def search_word(self, word):
+        current_node = self.root
+
+        for letter in word:
+            letter_idx = ord(letter) - ord("a")
+
+            if not current_node.children[letter_idx]:
+                return False
+            
+            current_node = current_node.children[letter_idx]
+        
+        return current_node.end
+    
+    def search_prefix(self, prefix):
+        current_node = self.root
+
+        for letter in prefix:
+            letter_idx = ord(letter) - ord("a")
+
+            if not current_node.children[letter_idx]:
+                return False
+            
+            current_node = current_node.children[letter_idx]
+        
+        return True
 
 class Solution:
     """
@@ -103,13 +150,13 @@ class Solution:
                 tree.append(node.val)
             
         dfs(root)
-        return tree
+        return tree 
 
 # print(random.choice(["container-with-most-water", "trapping-rainwater"]))
 # print(random.choice(["typed-out-strings", "longest-substring-without-repeating", "is_almost_palindrome"]))
 # print(random.choice(["quick_sort", "binary_search"]))
 # print(random.choice(["reverse_partial_linked_list", "flatten_double_linked_list"]))
-print(random.choice(["max-depth", "level-order", "right-side-view", "count-nodes", "is_valid_bst"]))
+# print(random.choice(["max-depth", "level-order", "right-side-view", "count-nodes", "is_valid_bst"]))
 
 solution = Solution()
 
@@ -143,3 +190,8 @@ print("/// dfs ///")
 print(solution.binary_tree_dfs(root, "preorder"))
 print(solution.binary_tree_dfs(root, "inorder"))
 print(solution.binary_tree_dfs(root, "postorder"))
+
+trie = Trie()
+trie.insert("appls")
+print(trie.search_word("apple"))
+print(trie.search_prefix("app"))
