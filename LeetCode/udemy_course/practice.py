@@ -15,7 +15,7 @@ class TreeNode(object):
 class TrieNode:
     def __init__(self):
         self.end = False
-        self.children = [None] * 26
+        self.children = [None] * 26 #Change to hashmap to decrease space (26 => how ever many letter in the words) and to allow non-alphabetical characters
 class Trie:
     def __init__(self):
         self.root = TrieNode()
