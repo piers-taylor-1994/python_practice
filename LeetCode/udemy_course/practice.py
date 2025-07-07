@@ -81,6 +81,29 @@ class Solution:
                 queue.append(current_node.right)
         
         return tree
+    
+    def binary_tree_dfs(self, root, dfs_type):
+        tree = []
+
+        def dfs(node):
+            if not node:
+                return
+            
+            if dfs_type == "preorder":
+                tree.append(node.val)
+                dfs(node.left)
+                dfs(node.right)
+            elif dfs_type == "inorder":
+                dfs(node.left)
+                tree.append(node.val)
+                dfs(node.right)
+            else:
+                dfs(node.left)
+                dfs(node.right)
+                tree.append(node.val)
+            
+        dfs(root)
+        return tree
 
 # print(random.choice(["container-with-most-water", "trapping-rainwater"]))
 # print(random.choice(["typed-out-strings", "longest-substring-without-repeating", "is_almost_palindrome"]))
