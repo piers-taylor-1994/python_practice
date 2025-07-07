@@ -150,13 +150,43 @@ class Solution:
                 tree.append(node.val)
             
         dfs(root)
-        return tree 
+        return tree
+    
+    def matrix_bfs(self, matrix):
+        DIRECTIONS = [
+            (-1, 0),
+            (0, 1),
+            (1, 0),
+            (0, -1),
+        ]
 
+        if not matrix or not matrix[0]:
+            return []
+
+        result = []
+        queue = deque([(0,0)])
+        seen = set([(0, 0)])
+
+        while queue:
+            row, col = queue.popleft()
+            result.append(matrix[row][col])
+
+            for dr, dc in DIRECTIONS:
+                new_row = row + dr
+                new_col = col + dc
+
+                if new_row >= 0 and new_row < len(matrix) and new_col >= 0 and new_col < len(matrix[0]) and (new_row, new_col) not in seen:
+                    queue.append((new_row, new_col))
+                    seen.add((new_row, new_col))
+        
+        return result
+    
 # print(random.choice(["container-with-most-water", "trapping-rainwater"]))
 # print(random.choice(["typed-out-strings", "longest-substring-without-repeating", "is_almost_palindrome"]))
 # print(random.choice(["quick_sort", "binary_search"]))
 # print(random.choice(["reverse_partial_linked_list", "flatten_double_linked_list"]))
 # print(random.choice(["max-depth", "level-order", "right-side-view", "count-nodes", "is_valid_bst"]))
+print(random.choice(["num_islands", "orange_rotting", "walls_gates"]))
 
 solution = Solution()
 
@@ -195,3 +225,6 @@ trie = Trie()
 trie.insert("appls")
 print(trie.search_word("apple"))
 print(trie.search_prefix("app"))
+
+print(solution.matrix_bfs([[1,2,3,4,5], [6,7,8,9,10], [11,12,13,14,15], [16,17,18,19,20]]))
+print(solution.matrix_dfs([[1,2,3,4,5], [6,7,8,9,10], [11,12,13,14,15], [16,17,18,19,20]]))
