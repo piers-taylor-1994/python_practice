@@ -61,13 +61,13 @@ class Trie:
 
 class Solution:
     """
-    1. Arrays
-    2. Strings
-    3. Sorts/searches
-    4. Linked lists
-    5. Binary trees
-    6. Tries
-    7. Matrices
+    1. Arrays ✓ (07/07)
+    2. Strings ✓ (07/07)
+    3. Sorts/searches ✓ (07/07)
+    4. Linked lists ✓ (07/07)
+    5. Binary trees ✓ (07/07)
+    6. Tries ✓ (07/07)
+    7. Matrices ✓ (07/07)
     8. Stack/queues
     9. Graphs
     10. Heaps
