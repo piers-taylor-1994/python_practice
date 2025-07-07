@@ -39,13 +39,13 @@ class Solution:
         if not head or not head.next:
             return False
         
-        nodes = []
+        visited_nodes = set()
         current_node = head
 
         while current_node:
-            if current_node in nodes:
+            if current_node in visited_nodes:
                 return True
-            nodes.append(current_node)
+            visited_nodes.add(current_node)
             current_node = current_node.next
 
 # print(random.choice(["container-with-most-water", "trapping-rainwater"]))
