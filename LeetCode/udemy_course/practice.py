@@ -3,10 +3,13 @@ import random
 class Solution:
     def two_sum(self, nums, target):
         recorded_nums = {}
-        for i in range(len(nums)):
-            if target - nums[i] in recorded_nums:
-                return [recorded_nums[(target - nums[i])], i]
+        def rec(i):
+            if (target - nums[i]) in recorded_nums:
+                return [recorded_nums[target - nums[i]], i]
+            
             recorded_nums[nums[i]] = i
+            return rec(i + 1)
+        return rec(0)
 
 # print(random.choice(["two-sum", "container-with-most-water", "trapping-rainwater"]))
 solution = Solution()
