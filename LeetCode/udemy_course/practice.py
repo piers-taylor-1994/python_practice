@@ -1,3 +1,4 @@
+from collections import deque
 import random
 
 class Solution:
@@ -16,16 +17,19 @@ class Solution:
         return rec(0)
     
     def is_palindrome(self, s):
-        word = "".join([letter for letter in s if letter in "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"]).lower()
+        word = [letter for letter in s if letter in "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"]
         
-        left = 0
-        right = len(word) - 1
+        queue = deque(word)
+        
+        while queue:
+            if len(queue) < 2:
+                break
+            letter_1 = queue.popleft()
+            letter_2 = queue.pop()
 
-        while left < right:
-            if word[left] != word[right]:
+            if letter_1.lower() != letter_2.lower():
                 return False
-            left += 1
-            right -= 1
+        
         return True
 
 # print(random.choice(["container-with-most-water", "trapping-rainwater"]))
