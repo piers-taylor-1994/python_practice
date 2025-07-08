@@ -1,5 +1,6 @@
 from collections import deque
 import random
+import heapq
  
 class ListNode(object):
     def __init__(self, x):
@@ -58,6 +59,104 @@ class Trie:
             current_node = current_node.children[letter_idx]
         
         return True
+    
+class MinHeap():
+    def __init__(self):
+        self.heap = []
+    
+    def parent(self, i):
+        return (i - 1) // 2
+    
+    def left_child(self, i):
+        return (i * 2) + 1
+    
+    def right_child(self, i):
+        return (i * 2) + 2
+    
+    def swap(self, i, j):
+        self.heap[i], self.heap[j] = self.heap[j], self.heap[i]
+    
+    def insert(self, value):
+        self.heap.append(value)
+        val_idx = len(self.heap) - 1
+
+        while val_idx > 0:
+            parent_idx = self.parent(val_idx)
+
+            if self.heap[parent_idx] > self.heap[val_idx]:
+                self.swap(val_idx, parent_idx)
+                val_idx = parent_idx
+            else:
+                break
+    
+    def extract_minimum(self):
+        self.swap(0, len(self.heap) - 1)
+
+        min_value = self.heap.pop()
+
+        root_idx = 0
+
+        while root_idx < len(self.heap) - 1:
+            left_child = self.left_child(root_idx)
+            right_child = self.right_child(root_idx)
+            smallest = root_idx
+
+            if left_child < len(self.heap) and self.heap[left_child] < self.heap[smallest]:
+                smallest = left_child
+            if right_child < len(self.heap) and self.heap[right_child] < self.heap[smallest]:
+                smallest = right_child
+            if smallest == root_idx:
+                break
+
+            self.swap(root_idx, smallest)
+            root_idx = smallest
+        
+        return min_value
+    
+    def peek_minimum(self):
+        return self.heap[0] if self.heap else None
+    
+    def heapify(self, arr):
+        self.heap = arr
+
+        def heapify_function(root_idx):
+            while root_idx < len(self.heap) - 1:
+                left_child = self.left_child(root_idx)
+                right_child = self.right_child(root_idx)
+                smallest = root_idx
+
+                if left_child < len(self.heap) and self.heap[left_child] < self.heap[smallest]:
+                    smallest = left_child
+                if right_child < len(self.heap) and self.heap[right_child] < self.heap[smallest]:
+                    smallest = right_child
+                if smallest == root_idx:
+                    break
+
+                self.swap(root_idx, smallest)
+                root_idx = smallest
+
+        for i in range(self.parent(len(arr) - 1), -1, -1):
+            heapify_function(i)
+
+class MaxHeap:
+    def __init__(self):
+        self.heap = []
+
+    def return_heap(self):
+        return [-i for i in self.heap]
+
+    def insert(self, value):
+        heapq.heappush(self.heap, -value)
+
+    def extract_max(self):
+        return -heapq.heappop(self.heap)
+    
+    def peek_max(self):
+        return -self.heap[0] if self.heap else None
+    
+    def heapify(self, arr):
+        self.heap = [-i for i in arr]
+        heapq.heapify(self.heap)
 
 class Solution:
     """
@@ -328,3 +427,29 @@ graph = {
 }
 print(solution.graph_bfs(graph))
 print(solution.graph_dfs(graph))
+
+min_heap = MinHeap()
+min_heap.insert(0)
+min_heap.insert(10)
+min_heap.insert(5)
+min_heap.insert(3)
+min_heap.insert(7)
+min_heap.insert(9)
+print(min_heap.heap)
+min_heap.extract_minimum()
+print(min_heap.heap)
+min_heap.heapify([0, 10, 5, 3, 7, 9])
+print(min_heap.heap)
+
+max_heap = MaxHeap()
+max_heap.insert(0)
+max_heap.insert(10)
+max_heap.insert(5)
+max_heap.insert(3)
+max_heap.insert(7)
+max_heap.insert(9)
+print(max_heap.return_heap())
+max_heap.extract_max()
+print(max_heap.return_heap())
+max_heap.heapify([0, 10, 5, 3, 7, 9])
+print(max_heap.return_heap())
