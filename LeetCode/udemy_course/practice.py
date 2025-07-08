@@ -69,7 +69,7 @@ class Solution:
     6. Tries ✓ (07/07)
     7. Matrices ✓ (07/07)
     8. Stack/queues ✓ (08/07)
-    9. Graphs
+    9. Graphs ✓ (08/07)
     10. Heaps
     11. DP
     12. Backtracking
@@ -226,6 +226,46 @@ class Solution:
                 return False
         
         return len(stack) == 0
+    
+    def graph_bfs(self, graph):
+        if not graph:
+            return []
+        
+        tree = []
+        seen = set([0])
+        queue = deque([0])
+
+        while queue:
+            node = queue.popleft()
+            tree.append(node)
+
+            for edge in graph[node]:
+                if edge not in seen:
+                    queue.append(edge)
+                    seen.add(edge)
+        
+        return tree
+            
+    
+    def graph_dfs(self, graph):
+        if not graph:
+            return []
+        
+        tree = []
+        seen = set()
+
+        def dfs(node):
+            if node in seen:
+                return
+            
+            tree.append(node)
+            seen.add(node)
+
+            for edge in graph[node]:
+                dfs(edge)
+
+        dfs(0)
+        return tree
     
 # print(random.choice(["container-with-most-water", "trapping-rainwater"]))
 # print(random.choice(["typed-out-strings", "longest-substring-without-repeating", "is_almost_palindrome"]))
