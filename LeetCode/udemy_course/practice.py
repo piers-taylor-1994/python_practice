@@ -68,7 +68,7 @@ class Solution:
     5. Binary trees ✓ (07/07)
     6. Tries ✓ (07/07)
     7. Matrices ✓ (07/07)
-    8. Stack/queues
+    8. Stack/queues ✓ (08/07)
     9. Graphs
     10. Heaps
     11. DP
@@ -210,6 +210,23 @@ class Solution:
         dfs(0, 0)
         return result
     
+    def valid_parentheses(self, s):
+        mappings = {"{":"}", "(":")", "[":"]"}
+        stack = []
+
+        for bracket in s:
+            if bracket in mappings.keys():
+                stack.append(bracket)
+            elif stack:
+                open_bracket = stack.pop()
+
+                if bracket != mappings[open_bracket]:
+                    return False
+            else:
+                return False
+        
+        return len(stack) == 0
+    
 # print(random.choice(["container-with-most-water", "trapping-rainwater"]))
 # print(random.choice(["typed-out-strings", "longest-substring-without-repeating", "is_almost_palindrome"]))
 # print(random.choice(["quick_sort", "binary_search"]))
@@ -257,3 +274,17 @@ print(trie.search_prefix("app"))
 
 print(solution.matrix_bfs([[1,2,3,4,5], [6,7,8,9,10], [11,12,13,14,15], [16,17,18,19,20]]))
 print(solution.matrix_dfs([[1,2,3,4,5], [6,7,8,9,10], [11,12,13,14,15], [16,17,18,19,20]]))
+
+graph = {
+    0: [1, 3],
+    1: [0],
+    2: [3, 8],
+    3: [0, 4, 5, 2],
+    4: [3, 6],
+    5: [3],
+    6: [4, 7],
+    7: [6],
+    8: [2]
+}
+print(solution.graph_bfs(graph))
+print(solution.graph_dfs(graph))
