@@ -1,6 +1,3 @@
-from re import I
-
-
 class Solution:
     def min_cost_stairs_memo(self, cost):
         def dp(i, memo):

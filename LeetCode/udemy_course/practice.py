@@ -169,7 +169,7 @@ class Solution:
     7. Matrices ✓ (07/07)
     8. Stack/queues ✓ (08/07)
     9. Graphs ✓ (08/07)
-    10. Heaps
+    10. Heaps ✓ (08/07)
     11. DP
     12. Backtracking
 
@@ -366,6 +366,30 @@ class Solution:
         dfs(0)
         return tree
     
+    def fibonacci_sequence_memo(self, n):
+        memo = {}
+
+        def rec(i):
+            if i < 2:
+                return i
+            elif i in memo:
+                return memo[i]
+            
+            memo[i] = rec(i - 1) + rec(i - 2)
+            return memo[i]
+
+        return rec(n)
+    
+    def fibonacci_sequence_tabular(self, n):
+        dp = {}
+        dp[0] = 0
+        dp[1] = 1
+
+        for i in range(2, n + 1):
+            dp[i] = dp[i - 1] + dp[i - 2]
+
+        return dp[n]
+    
 # print(random.choice(["container-with-most-water", "trapping-rainwater"]))
 # print(random.choice(["typed-out-strings", "longest-substring-without-repeating", "is_almost_palindrome"]))
 # print(random.choice(["quick_sort", "binary_search"]))
@@ -453,3 +477,6 @@ max_heap.extract_max()
 print(max_heap.return_heap())
 max_heap.heapify([0, 10, 5, 3, 7, 9])
 print(max_heap.return_heap())
+
+print(solution.fibonacci_sequence_memo(4))
+print(solution.fibonacci_sequence_tabular(4))
