@@ -170,8 +170,8 @@ class Solution:
     8. Stack/queues ✓ (08/07)
     9. Graphs ✓ (08/07)
     10. Heaps ✓ (08/07)
-    11. DP
-    12. Backtracking
+    11. DP ✓ (08/07)
+    12. Backtracking ✓ (08/07)
 
     """
     def two_sum(self, nums, target):
@@ -390,6 +390,20 @@ class Solution:
 
         return dp[n]
     
+    def generate_all_subsets(self, arr):
+        results = []
+
+        def rec(index, subset):
+            results.append(subset[:])
+            
+            for i in range(index, len(arr)):
+                subset.append(arr[i])
+                rec(i + 1, subset)
+                subset.pop()
+
+        rec(0, [])
+        return results
+    
 # print(random.choice(["container-with-most-water", "trapping-rainwater"]))
 # print(random.choice(["typed-out-strings", "longest-substring-without-repeating", "is_almost_palindrome"]))
 # print(random.choice(["quick_sort", "binary_search"]))
@@ -480,3 +494,5 @@ print(max_heap.return_heap())
 
 print(solution.fibonacci_sequence_memo(4))
 print(solution.fibonacci_sequence_tabular(4))
+
+print(solution.generate_all_subsets([1,2,3]))
