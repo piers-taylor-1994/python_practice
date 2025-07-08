@@ -160,8 +160,8 @@ class MaxHeap:
 
 class Solution:
     """
-    1. Arrays ✓ 
-    2. Strings
+    1. Arrays ✓ (14/07)
+    2. Strings ✓ (14/07)
     3. Sorts/searches
     4. Linked lists
     5. Binary trees
@@ -213,19 +213,6 @@ class Solution:
                 collected_rainfall += min_height - height[i]
         
         return collected_rainfall
- 
-
-        def rec(i):
-            if i == height_length - 1:
-                return 0
-
-            min_height = min(minimum_heights_hash[i])
-
-            trapped_rainfall = min_height - height[i] if min_height - height[i] > 0 else 0
-
-            return trapped_rainfall + rec(i + 1)
-        
-        return rec(1)
     
     def is_palindrome(self, s):
         word = "".join([letter for letter in s if letter in "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"]).lower()
@@ -239,6 +226,21 @@ class Solution:
             left += 1
             right -= 1
         return True
+    
+    def is_almost_palindrome(self, s):
+        def rec(left, right, skipped):
+            if left >= right:
+                return True
+            if s[left] != s[right] and skipped:
+                return False
+            if s[left] == s[right]:
+                return rec(left + 1, right - 1, skipped)
+            
+            if rec(left + 1, right, True) or rec(left, right - 1, True):
+                return True
+            return False
+        
+        return rec(0, len(s) - 1, False)
     
     def linked_list_has_cycle(self, head):
         if not head or not head.next:
@@ -447,8 +449,8 @@ class Solution:
         rec(0, [])
         return results
     
-print(random.choice(["container-with-most-water", "trapping-rainwater"]))
-# print(random.choice(["typed-out-strings", "longest-substring-without-repeating", "is_almost_palindrome"]))
+# print(random.choice(["container-with-most-water"]))
+print(random.choice(["typed-out-strings", "longest-substring-without-repeating", "is_almost_palindrome"]))
 # print(random.choice(["quick_sort", "binary_search"]))
 # print(random.choice(["reverse_partial_linked_list", "flatten_double_linked_list"]))
 # print(random.choice(["max-depth", "level-order", "right-side-view", "count-nodes", "is_valid_bst"]))
@@ -460,86 +462,94 @@ print("Arrays")
 print(solution.two_sum([3,2,4], 6))
 print(solution.trapping_rainwater([4,2,0,3,2,5]))
 
-print("Strings")
+print("\nStrings")
 print(solution.is_palindrome("A man, a plan, a canal: Panama"))
+print(solution.is_almost_palindrome("abc"))
 
-#Linked lists
-head = ListNode(3)
-node_1 = ListNode(2)
-node_2 = ListNode(0)
-node_3 = ListNode(-4)
-head.next = node_1
-node_1.next = node_2
-node_2.next = node_3
-node_3.next = node_1
-print(solution.linked_list_has_cycle(head))
+print("\nLinked lists")
+# head = ListNode(3)
+# node_1 = ListNode(2)
+# node_2 = ListNode(0)
+# node_3 = ListNode(-4)
+# head.next = node_1
+# node_1.next = node_2
+# node_2.next = node_3
+# node_3.next = node_1
+# print(solution.linked_list_has_cycle(head))
 
-root = TreeNode(1)
-tree_node_2 = TreeNode(2)
-tree_node_3 = TreeNode(3)
-tree_node_4 = TreeNode(4)
-tree_node_5 = TreeNode(5)
-tree_node_6 = TreeNode(6)
-root.left = tree_node_2
-root.right = tree_node_3
-tree_node_2.left = tree_node_4
-tree_node_2.right = tree_node_5
-tree_node_3.left = tree_node_6
-print(solution.binary_tree_bfs(root))
-print("/// dfs ///")
-print(solution.binary_tree_dfs(root, "preorder"))
-print(solution.binary_tree_dfs(root, "inorder"))
-print(solution.binary_tree_dfs(root, "postorder"))
+print("\nBinary tree")
+# root = TreeNode(1)
+# tree_node_2 = TreeNode(2)
+# tree_node_3 = TreeNode(3)
+# tree_node_4 = TreeNode(4)
+# tree_node_5 = TreeNode(5)
+# tree_node_6 = TreeNode(6)
+# root.left = tree_node_2
+# root.right = tree_node_3
+# tree_node_2.left = tree_node_4
+# tree_node_2.right = tree_node_5
+# tree_node_3.left = tree_node_6
+# print(solution.binary_tree_bfs(root))
+# print("/// dfs ///")
+# print(solution.binary_tree_dfs(root, "preorder"))
+# print(solution.binary_tree_dfs(root, "inorder"))
+# print(solution.binary_tree_dfs(root, "postorder"))
 
-trie = Trie()
-trie.insert("appls")
-print(trie.search_word("apple"))
-print(trie.search_prefix("app"))
+print("\nTrie")
+# trie = Trie()
+# trie.insert("appls")
+# print(trie.search_word("apple"))
+# print(trie.search_prefix("app"))
 
-print(solution.matrix_bfs([[1,2,3,4,5], [6,7,8,9,10], [11,12,13,14,15], [16,17,18,19,20]]))
-print(solution.matrix_dfs([[1,2,3,4,5], [6,7,8,9,10], [11,12,13,14,15], [16,17,18,19,20]]))
+print("\nMatrix")
+# print(solution.matrix_bfs([[1,2,3,4,5], [6,7,8,9,10], [11,12,13,14,15], [16,17,18,19,20]]))
+# print(solution.matrix_dfs([[1,2,3,4,5], [6,7,8,9,10], [11,12,13,14,15], [16,17,18,19,20]]))
 
-graph = {
-    0: [1, 3],
-    1: [0],
-    2: [3, 8],
-    3: [0, 4, 5, 2],
-    4: [3, 6],
-    5: [3],
-    6: [4, 7],
-    7: [6],
-    8: [2]
-}
-print(solution.graph_bfs(graph))
-print(solution.graph_dfs(graph))
+print("\nGraph")
+# graph = {
+#     0: [1, 3],
+#     1: [0],
+#     2: [3, 8],
+#     3: [0, 4, 5, 2],
+#     4: [3, 6],
+#     5: [3],
+#     6: [4, 7],
+#     7: [6],
+#     8: [2]
+# }
+# print(solution.graph_bfs(graph))
+# print(solution.graph_dfs(graph))
 
-min_heap = MinHeap()
-min_heap.insert(0)
-min_heap.insert(10)
-min_heap.insert(5)
-min_heap.insert(3)
-min_heap.insert(7)
-min_heap.insert(9)
-print(min_heap.heap)
-min_heap.extract_minimum()
-print(min_heap.heap)
-min_heap.heapify([0, 10, 5, 3, 7, 9])
-print(min_heap.heap)
+print("\nHeaps")
+# min_heap = MinHeap()
+# min_heap.insert(0)
+# min_heap.insert(10)
+# min_heap.insert(5)
+# min_heap.insert(3)
+# min_heap.insert(7)
+# min_heap.insert(9)
+# print(min_heap.heap)
+# min_heap.extract_minimum()
+# print(min_heap.heap)
+# min_heap.heapify([0, 10, 5, 3, 7, 9])
+# print(min_heap.heap)
 
-max_heap = MaxHeap()
-max_heap.insert(0)
-max_heap.insert(10)
-max_heap.insert(5)
-max_heap.insert(3)
-max_heap.insert(7)
-max_heap.insert(9)
-print(max_heap.return_heap())
-max_heap.extract_max()
-print(max_heap.return_heap())
-max_heap.heapify([0, 10, 5, 3, 7, 9])
-print(max_heap.return_heap())
+# max_heap = MaxHeap()
+# max_heap.insert(0)
+# max_heap.insert(10)
+# max_heap.insert(5)
+# max_heap.insert(3)
+# max_heap.insert(7)
+# max_heap.insert(9)
+# print(max_heap.return_heap())
+# max_heap.extract_max()
+# print(max_heap.return_heap())
+# max_heap.heapify([0, 10, 5, 3, 7, 9])
+# print(max_heap.return_heap())
 
-print(solution.fibonacci_sequence_memo(4))
-print(solution.fibonacci_sequence_tabular(4))
+print("\nDP")
+# print(solution.fibonacci_sequence_memo(4))
+# print(solution.fibonacci_sequence_tabular(4))
 
-print(solution.generate_all_subsets([1,2,3]))
+print("\nBacktracking")
+# print(solution.generate_all_subsets([1,2,3]))
