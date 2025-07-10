@@ -91,7 +91,19 @@ class Solution:
         return rec(0, len(s) - 1, False)
     
     def binary_search(self, arr, target):
-        ...
+        left = 0
+        right = len(arr) - 1
+
+        while left <= right:
+            middle = (left + right) // 2
+
+            if arr[middle] > target:
+                right = middle - 1
+            elif arr[middle] < target:
+                left = middle + 1
+            else:
+                return middle
+        return -1
     
 # print(random.choice(["container-with-most-water"]))
 # print(random.choice(["typed-out-strings", "longest-substring-without-repeating"]))
@@ -107,6 +119,9 @@ print(solution.trapping_rainwater([4,2,0,3,2,5]))
 
 print("\nStrings")
 print(solution.is_almost_palindrome("abc"))
+
+print("\nSorts/searches")
+print(solution.binary_search([1,2,3,5,7,8,9,19,50,108], 19))
 
 print("\nLinked lists")
 
