@@ -3,3 +3,4 @@
 .env
 *.pyc
 *.css
+test.py
