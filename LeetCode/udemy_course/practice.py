@@ -97,10 +97,10 @@ class Solution:
         while left <= right:
             middle = (left + right) // 2
 
-            if arr[middle] > target:
-                right = middle - 1
-            elif arr[middle] < target:
+            if arr[middle] < target:
                 left = middle + 1
+            elif arr[middle] > target:
+                right = middle - 1
             else:
                 return middle
         return -1
