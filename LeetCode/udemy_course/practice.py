@@ -103,6 +103,7 @@ class Solution:
                 right = middle - 1
             else:
                 return middle
+            
         return -1
     
 # print(random.choice(["container-with-most-water"]))
