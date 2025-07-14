@@ -204,6 +204,16 @@ class Solution:
             
             minimum_heights_hash[j][1] = max_right
  
+        collected_rainfall = 0
+
+        for i in range(1, height_length - 1):
+            min_height = min(minimum_heights_hash[i])
+
+            if min_height - height[i] > 0:
+                collected_rainfall += min_height - height[i]
+        
+        return collected_rainfall
+ 
 
         def rec(i):
             if i == height_length - 1:
