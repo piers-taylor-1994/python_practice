@@ -33,7 +33,7 @@ class Solution:
     """
     1. Arrays ✓ (14/07)
     2. Strings ✓ (14/07)
-    3. Sorts/searches
+    3. Sorts/searches ✓ (14/07)
     4. Linked lists
     5. Binary trees
     6. Tries
@@ -107,7 +107,7 @@ class Solution:
     
 # print(random.choice(["container-with-most-water"]))
 # print(random.choice(["typed-out-strings", "longest-substring-without-repeating"]))
-print(random.choice(["quick_sort"]))
+# print(random.choice(["quick_sort"]))
 # print(random.choice(["reverse_partial_linked_list", "flatten_double_linked_list"]))
 # print(random.choice(["max-depth", "level-order", "right-side-view", "count-nodes", "is_valid_bst"]))
 # print(random.choice(["num_islands", "orange_rotting", "walls_gates"]))
