@@ -160,18 +160,18 @@ class MaxHeap:
 
 class Solution:
     """
-    1. Arrays ✓ (07/07)
-    2. Strings ✓ (07/07)
-    3. Sorts/searches ✓ (07/07)
-    4. Linked lists ✓ (07/07)
-    5. Binary trees ✓ (07/07)
-    6. Tries ✓ (07/07)
-    7. Matrices ✓ (07/07)
-    8. Stack/queues ✓ (08/07)
-    9. Graphs ✓ (08/07)
-    10. Heaps ✓ (08/07)
-    11. DP ✓ (08/07)
-    12. Backtracking ✓ (08/07)
+    1. Arrays ✓ 
+    2. Strings
+    3. Sorts/searches
+    4. Linked lists
+    5. Binary trees
+    6. Tries
+    7. Matrices
+    8. Stack/queues
+    9. Graphs
+    10. Heaps
+    11. DP
+    12. Backtracking
 
     """
     def two_sum(self, nums, target):
@@ -183,6 +183,39 @@ class Solution:
             recorded_nums[nums[i]] = i
             return rec(i + 1)
         return rec(0)
+    
+    def trapping_rainwater(self, height):
+        """Starting from 1 and ending before len - 1, calculate the max of left/right then use the minimum against the current value"""
+        height_length = len(height)
+
+        minimum_heights_hash = {i: [None, None] for i in range(0, height_length)}
+
+        max_left = 0
+        for i in range(0, height_length):
+            if height[i] > max_left:
+                max_left = height[i]
+            
+            minimum_heights_hash[i][0] = max_left
+        
+        max_right = 0
+        for j in range(height_length - 1, -1, -1):
+            if height[j] > max_right:
+                max_right = height[j]
+            
+            minimum_heights_hash[j][1] = max_right
+ 
+
+        def rec(i):
+            if i == height_length - 1:
+                return 0
+
+            min_height = min(minimum_heights_hash[i])
+
+            trapped_rainfall = min_height - height[i] if min_height - height[i] > 0 else 0
+
+            return trapped_rainfall + rec(i + 1)
+        
+        return rec(1)
     
     def is_palindrome(self, s):
         word = "".join([letter for letter in s if letter in "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"]).lower()
@@ -404,7 +437,7 @@ class Solution:
         rec(0, [])
         return results
     
-# print(random.choice(["container-with-most-water", "trapping-rainwater"]))
+print(random.choice(["container-with-most-water", "trapping-rainwater"]))
 # print(random.choice(["typed-out-strings", "longest-substring-without-repeating", "is_almost_palindrome"]))
 # print(random.choice(["quick_sort", "binary_search"]))
 # print(random.choice(["reverse_partial_linked_list", "flatten_double_linked_list"]))
@@ -413,10 +446,14 @@ class Solution:
 
 solution = Solution()
 
+print("Arrays")
 print(solution.two_sum([3,2,4], 6))
+print(solution.trapping_rainwater([4,2,0,3,2,5]))
 
+print("Strings")
 print(solution.is_palindrome("A man, a plan, a canal: Panama"))
 
+#Linked lists
 head = ListNode(3)
 node_1 = ListNode(2)
 node_2 = ListNode(0)
