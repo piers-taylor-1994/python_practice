@@ -53,6 +53,12 @@ class Solution:
         
         current = head
 
+        def rec2(node):
+            if not node.next:
+                return node
+            
+            return rec2(node.next)
+
         def rec(node):
             if not node:
                 return
@@ -65,8 +71,7 @@ class Solution:
                 node.next = child
 
                 if next:
-                    while child.next:
-                        child = child.next
+                    child = rec2(child)
                     child.next = next
                     next.prev = child
 
