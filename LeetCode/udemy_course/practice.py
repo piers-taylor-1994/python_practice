@@ -2,10 +2,12 @@ from collections import deque
 import random
 import heapq
  
-class ListNode(object):
-    def __init__(self, x):
-        self.val = x
-        self.next = None
+class Node(object):
+    def __init__(self, val, prev = None, next = None, child = None):
+        self.val = val
+        self.prev = prev
+        self.next = next
+        self.child = child
 
 class TreeNode(object):
     def __init__(self, val = 0, left = None, right = None):
@@ -45,85 +47,86 @@ class Solution:
     12. Backtracking
 
     """
-    def trapping_rainwater(self, height):
-        """Starting from 1 and ending before len - 1, calculate the max of left/right then use the minimum against the current value"""
-        height_length = len(height)
-
-        minimum_heights_hash = {i: [None, None] for i in range(0, height_length)}
-
-        max_left = 0
-        for i in range(0, height_length):
-            if height[i] > max_left:
-                max_left = height[i]
+    def flatten_doubly_linked_list(self, head):
+        if not head:
+            return None
             
-            minimum_heights_hash[i][0] = max_left
-        
-        max_right = 0
-        for j in range(height_length - 1, -1, -1):
-            if height[j] > max_right:
-                max_right = height[j]
-            
-            minimum_heights_hash[j][1] = max_right
- 
-        collected_rainfall = 0
+        current = head
 
-        for i in range(1, height_length - 1):
-            min_height = min(minimum_heights_hash[i])
+        while current:
+            if current.child:
+                child = current.child
+                next = current.next
 
-            if min_height - height[i] > 0:
-                collected_rainfall += min_height - height[i]
-        
-        return collected_rainfall
+                child.prev = current
+                current.next = child
+
+                if next:
+                    while child.next:
+                        child = child.next
+                        
+                    child.next = next
+                    next.prev = child
+                current.child = None
+            current = current.next
     
-    def is_almost_palindrome(self, s):
-        def rec(left, right, skipped):
-            if left >= right:
-                return True
-            if s[left] != s[right] and skipped:
-                return False
-            if s[left] == s[right]:
-                return rec(left + 1, right - 1, skipped)
-            
-            if rec(left + 1, right, True) or rec(left, right - 1, True):
-                return True
-            return False
         
-        return rec(0, len(s) - 1, False)
-    
-    def binary_search(self, arr, target):
-        left = 0
-        right = len(arr) - 1
-
-        while left <= right:
-            middle = (left + right) // 2
-
-            if arr[middle] > target:
-                right = middle - 1
-            elif arr[middle] < target:
-                left = middle + 1
-            else:
-                return middle
-        return -1
+        return head
     
 # print(random.choice(["container-with-most-water"]))
 # print(random.choice(["typed-out-strings", "longest-substring-without-repeating"]))
 # print(random.choice(["quick_sort"]))
-# print(random.choice(["reverse_partial_linked_list", "flatten_double_linked_list"]))
+# print(random.choice(["reverse_partial_linked_list"]))
 # print(random.choice(["max-depth", "level-order", "right-side-view", "count-nodes", "is_valid_bst"]))
 # print(random.choice(["num_islands", "orange_rotting", "walls_gates"]))
 
 solution = Solution()
 
 print("Arrays")
-print(solution.trapping_rainwater([4,2,0,3,2,5]))
 
 print("\nStrings")
-print(solution.is_almost_palindrome("abc"))
 
 print("\nSorts/searches")
-print(solution.binary_search([1,2,3,5,7,8,9,19,50,108], 19))
 
 print("\nLinked lists")
+head = Node(1)
+node2 = Node(2)
+node3 = Node(3)
+node4 = Node(4)
+node5 = Node(5)
+node6 = Node(6)
+node7 = Node(7)
+node8 = Node(8)
+node9 = Node(9)
+node10 = Node(10)
+node11 = Node(11)
+node12 = Node(12)
+head.next = node2
+node2.prev = head
+node2.next = node3
+node3.prev = node2
+node3.next = node4
+node3.child = node7
+node4.prev = node3
+node4.next = node5
+node5.prev = node4
+node5.next = node6
+node6.prev = node5
+node7.next = node8
+node8.prev = node7
+node8.next = node9
+node8.child = node11
+node9.prev = node8
+node9.next = node10
+node10.prev = node9
+node11.next = node12
+node12.prev = node11
+new_head = solution.flatten_doubly_linked_list(head)
+results = []
+while new_head:
+    results.append(new_head.val)
+    new_head = new_head.next
+print(results)
 
 print("\nBinary tree")
 # root = TreeNode(1)
