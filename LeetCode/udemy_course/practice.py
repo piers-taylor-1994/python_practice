@@ -51,21 +51,13 @@ class Solution:
         if not root:
             return 0
         
-        queue = deque([root])
-        depth = 0
-
-        while queue:
-            for _ in range(len(queue)):
-                current_node = queue.popleft()
-
-                if current_node.left:
-                    queue.append(current_node.left)
-                if current_node.right:
-                    queue.append(current_node.right)
+        def dfs(node, depth):
+            if not node:
+                return depth
             
-            depth += 1
+            return max(dfs(node.left, depth + 1), dfs(node.right, depth + 1))
         
-        return depth
+        return dfs(root, 0)
     
 # print(random.choice(["container-with-most-water"]))
 # print(random.choice(["typed-out-strings", "longest-substring-without-repeating"]))
