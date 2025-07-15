@@ -47,47 +47,31 @@ class Solution:
     12. Backtracking
 
     """
-    def flatten_doubly_linked_list(self, head):
-        if not head:
-            return None
+    def max_depth(self, root):
+        if not root:
+            return 0
         
-        current = head
+        queue = deque([root])
+        depth = 0
 
-        def rec2(node):
-            if not node.next:
-                return node
+        while queue:
+            for _ in range(len(queue)):
+                current_node = queue.popleft()
+
+                if current_node.left:
+                    queue.append(current_node.left)
+                if current_node.right:
+                    queue.append(current_node.right)
             
-            return rec2(node.next)
-
-        def rec(node):
-            if not node:
-                return
-            
-            if node.child:
-                child = node.child
-                next = node.next
-
-                child.prev = node
-                node.next = child
-
-                if next:
-                    child = rec2(child)
-                    child.next = next
-                    next.prev = child
-
-                node.child = None
-            
-            rec(node.next)
-            
-        rec(current)
+            depth += 1
         
-        return head
+        return depth
     
 # print(random.choice(["container-with-most-water"]))
 # print(random.choice(["typed-out-strings", "longest-substring-without-repeating"]))
 # print(random.choice(["quick_sort"]))
 # print(random.choice(["reverse_partial_linked_list"]))
-# print(random.choice(["max-depth", "level-order", "right-side-view", "count-nodes", "is_valid_bst"]))
+# print(random.choice(["level-order", "right-side-view", "count-nodes", "is_valid_bst"]))
 # print(random.choice(["num_islands", "orange_rotting", "walls_gates"]))
 
 solution = Solution()
@@ -99,57 +83,24 @@ print("\nStrings")
 print("\nSorts/searches")
 
 print("\nLinked lists")
-head = Node(1)
-node2 = Node(2)
-node3 = Node(3)
-node4 = Node(4)
-node5 = Node(5)
-node6 = Node(6)
-node7 = Node(7)
-node8 = Node(8)
-node9 = Node(9)
-node10 = Node(10)
-node11 = Node(11)
-node12 = Node(12)
-head.next = node2
-node2.prev = head
-node2.next = node3
-node3.prev = node2
-node3.next = node4
-node3.child = node7
-node4.prev = node3
-node4.next = node5
-node5.prev = node4
-node5.next = node6
-node6.prev = node5
-node7.next = node8
-node8.prev = node7
-node8.next = node9
-node8.child = node11
-node9.prev = node8
-node9.next = node10
-node10.prev = node9
-node11.next = node12
-node12.prev = node11
-new_head = solution.flatten_doubly_linked_list(head)
-results = []
-while new_head:
-    results.append(new_head.val)
-    new_head = new_head.next
-print(results)
+# new_head = solution.flatten_doubly_linked_list(head)
+# results = []
+# while new_head:
+#     results.append(new_head.val)
+#     new_head = new_head.next
+# print(results)
 
 print("\nBinary tree")
-# root = TreeNode(1)
-# tree_node_2 = TreeNode(2)
-# tree_node_3 = TreeNode(3)
-# tree_node_4 = TreeNode(4)
-# tree_node_5 = TreeNode(5)
-# tree_node_6 = TreeNode(6)
-# root.left = tree_node_2
-# root.right = tree_node_3
-# tree_node_2.left = tree_node_4
-# tree_node_2.right = tree_node_5
-# tree_node_3.left = tree_node_6
+root = TreeNode(3)
+tree_node_2 = TreeNode(9)
+tree_node_3 = TreeNode(20)
+tree_node_4 = TreeNode(15)
+tree_node_5 = TreeNode(7)
+root.left = tree_node_2
+root.right = tree_node_3
+tree_node_3.left = tree_node_4
+tree_node_3.right = tree_node_5
+print(solution.max_depth(root))
 
 print("\nTrie")
 # trie = Trie()
