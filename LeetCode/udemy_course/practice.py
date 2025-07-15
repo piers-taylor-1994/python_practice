@@ -50,26 +50,31 @@ class Solution:
     def flatten_doubly_linked_list(self, head):
         if not head:
             return None
-            
+        
         current = head
 
-        while current:
-            if current.child:
-                child = current.child
-                next = current.next
+        def rec(node):
+            if not node:
+                return
+            
+            if node.child:
+                child = node.child
+                next = node.next
 
-                child.prev = current
-                current.next = child
+                child.prev = node
+                node.next = child
 
                 if next:
                     while child.next:
                         child = child.next
-                        
                     child.next = next
                     next.prev = child
-                current.child = None
-            current = current.next
-    
+
+                node.child = None
+            
+            rec(node.next)
+            
+        rec(current)
         
         return head
     
