@@ -69,7 +69,7 @@ class Solution:
     3. Sorts/searches ✓ (14/07)
     4. Linked lists ✓ (15/07)
     5. Binary trees ✓ (15/07)
-    6. Tries
+    6. Tries ✓ (15/07)
     7. Matrices
     8. Stack/queues
     9. Graphs
