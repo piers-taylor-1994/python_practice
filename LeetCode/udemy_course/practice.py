@@ -17,12 +17,43 @@ class TreeNode(object):
 
 class TrieNode:
     def __init__(self):
-        ...
+        self.end = False
+        self.children = {}
 
 class Trie:
     def __init__(self):
-        ...
+        self.root = TrieNode()
     
+    def insert(self, word):
+        node = self.root
+
+        for letter in word:
+            if letter not in node.children:
+                node.children[letter] = TrieNode()
+            node = node.children[letter]
+        
+        node.end = True
+
+    def search_word(self, word):
+        node = self.root
+
+        for letter in word:
+            if letter not in node.children:
+                return False
+            node = node.children[letter]
+        
+        return node.end
+
+    def search_prefix(self, prefix):
+        node = self.root
+
+        for letter in prefix:
+            if letter not in node.children:
+                return False
+            node = node.children[letter]
+        
+        return True
+
 class MinHeap():
     def __init__(self):
         ...
@@ -36,8 +67,8 @@ class Solution:
     1. Arrays ✓ (14/07)
     2. Strings ✓ (14/07)
     3. Sorts/searches ✓ (14/07)
-    4. Linked lists
-    5. Binary trees
+    4. Linked lists ✓ (15/07)
+    5. Binary trees ✓ (15/07)
     6. Tries
     7. Matrices
     8. Stack/queues
@@ -47,17 +78,6 @@ class Solution:
     12. Backtracking
 
     """
-    def max_depth(self, root):
-        if not root:
-            return 0
-        
-        def dfs(node, depth):
-            if not node:
-                return depth
-            
-            return max(dfs(node.left, depth + 1), dfs(node.right, depth + 1))
-        
-        return dfs(root, 0)
     
 # print(random.choice(["container-with-most-water"]))
 # print(random.choice(["typed-out-strings", "longest-substring-without-repeating"]))
@@ -92,13 +112,12 @@ root.left = tree_node_2
 root.right = tree_node_3
 tree_node_3.left = tree_node_4
 tree_node_3.right = tree_node_5
-print(solution.max_depth(root))
 
 print("\nTrie")
-# trie = Trie()
-# trie.insert("appls")
-# print(trie.search_word("apple"))
-# print(trie.search_prefix("app"))
+trie = Trie()
+trie.insert("appls")
+print(trie.search_word("apple"))
+print(trie.search_prefix("app"))
 
 print("\nMatrix")
 # matrix = [[1,2,3,4,5], [6,7,8,9,10], [11,12,13,14,15], [16,17,18,19,20]]
