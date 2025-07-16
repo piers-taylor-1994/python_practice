@@ -71,7 +71,7 @@ class Solution:
     5. Binary trees ✓ (15/07)
     6. Tries ✓ (15/07)
     7. Greedy ✓ (16/07)
-    7. Matrices
+    7. Matrices ✓ (16/07)
     8. Stack/queues
     9. Graphs
     10. Heaps
@@ -80,32 +80,23 @@ class Solution:
 
     """
 
-    def num_islands(self, matrix):
-        directions = [
-            (-1, 0),
-            (0, 1),
-            (1, 0),
-            (0, -1),
-        ]
-        seen = set()
-        count = 0
+    def valid_parentheses(self, s):
+        parentheses = {"(": ")", "{": "}", "[": "]"}
+        stack = []
 
-        def dfs(r, c):
-            if r < 0 or r >= len(matrix) or c < 0 or c >= len(matrix[0]) or matrix[r][c] == "0" or (r, c) in seen:
-                return
-            
-            seen.add((r, c))
+        for bracket in s:
+            if bracket in parentheses:
+                stack.append(parentheses[bracket])
+            else:
+                if not stack:
+                    return False
+                
+                stored_bracket = stack.pop()
 
-            for dr, dc in directions:
-                dfs(dr + r, dc + c)
-
-        for row in range(len(matrix)):
-            for col in range(len(matrix[0])):
-                if matrix[row][col] == "1" and (row, col) not in seen:
-                    dfs(row, col)
-                    count += 1
-
-        return count
+                if stored_bracket != bracket:
+                    return False
+        
+        return len(stack) == 0
     
 # print(random.choice(["container-with-most-water"]))
 # print(random.choice(["typed-out-strings", "longest-substring-without-repeating"]))
@@ -154,7 +145,10 @@ matrix = [
   ["0","0","1","0","0"],
   ["0","0","0","1","1"]
 ]
-print(solution.num_islands(matrix))
+# print(solution.num_islands(matrix))
+
+print("\nStack")
+print(solution.valid_parentheses("()"))
 
 print("\nGraph")
 # graph = {
