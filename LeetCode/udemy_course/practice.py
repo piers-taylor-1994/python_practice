@@ -70,6 +70,7 @@ class Solution:
     4. Linked lists ✓ (15/07)
     5. Binary trees ✓ (15/07)
     6. Tries ✓ (15/07)
+    7. Greedy ✓ (16/07)
     7. Matrices
     8. Stack/queues
     9. Graphs
@@ -78,13 +79,40 @@ class Solution:
     12. Backtracking
 
     """
+
+    def num_islands(self, matrix):
+        directions = [
+            (-1, 0),
+            (0, 1),
+            (1, 0),
+            (0, -1),
+        ]
+        seen = set()
+        count = 0
+
+        def dfs(r, c):
+            if r < 0 or r >= len(matrix) or c < 0 or c >= len(matrix[0]) or matrix[r][c] == "0" or (r, c) in seen:
+                return
+            
+            seen.add((r, c))
+
+            for dr, dc in directions:
+                dfs(dr + r, dc + c)
+
+        for row in range(len(matrix)):
+            for col in range(len(matrix[0])):
+                if matrix[row][col] == "1" and (row, col) not in seen:
+                    dfs(row, col)
+                    count += 1
+
+        return count
     
 # print(random.choice(["container-with-most-water"]))
 # print(random.choice(["typed-out-strings", "longest-substring-without-repeating"]))
 # print(random.choice(["quick_sort"]))
 # print(random.choice(["reverse_partial_linked_list"]))
 # print(random.choice(["level-order", "right-side-view", "count-nodes", "is_valid_bst"]))
-# print(random.choice(["num_islands", "orange_rotting", "walls_gates"]))
+# print(random.choice(["orange_rotting", "walls_gates"]))
 
 solution = Solution()
 
@@ -120,7 +148,13 @@ print(trie.search_word("apple"))
 print(trie.search_prefix("app"))
 
 print("\nMatrix")
-# matrix = [[1,2,3,4,5], [6,7,8,9,10], [11,12,13,14,15], [16,17,18,19,20]]
+matrix = [
+  ["1","1","0","0","0"],
+  ["1","1","0","0","0"],
+  ["0","0","1","0","0"],
+  ["0","0","0","1","1"]
+]
+print(solution.num_islands(matrix))
 
 print("\nGraph")
 # graph = {
