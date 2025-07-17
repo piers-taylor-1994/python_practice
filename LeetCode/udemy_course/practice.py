@@ -89,17 +89,13 @@ class Solution:
             if manager[i]!= -1:
                 graph[manager[i]].append(i)
 
-        queue = deque([(headID, 0)])
-        max_time = 0
-
-        while queue:
-            node, time = queue.popleft()
-            max_time = max(max_time, time)
-
-            for edge in graph[node]:
-                queue.append((edge, time + informTime[node]))
+        def dfs(employee_id):
+            if not graph[employee_id]:
+                return 0
+            
+            return max([dfs(edge) for edge in graph[employee_id]]) + informTime[employee_id]
         
-        return max_time
+        return dfs(headID)
 
     
 # print(random.choice(["container-with-most-water"]))
