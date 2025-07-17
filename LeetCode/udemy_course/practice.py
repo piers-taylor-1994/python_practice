@@ -81,9 +81,6 @@ class Solution:
     """
 
     def num_of_minutes(self, n, headID, manager, informTime):
-        if n == 0:
-            return 0
-        
         graph = {i: [] for i in range(n)}
         for i in range(len(manager)):
             if manager[i]!= -1:
