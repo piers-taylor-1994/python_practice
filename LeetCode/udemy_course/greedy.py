@@ -50,6 +50,16 @@ class Solution:
                     break
         
         return count
+    
+    def jump_game(self, nums):
+        furthest = 0
+
+        for i in range(len(nums)):
+            if i > furthest:
+                return False
+            furthest = max(furthest, i + nums[i])
+        
+        return True
 
 
 solution = Solution()
@@ -62,3 +72,5 @@ print(solution.max_number_of_coins_picked([2, 4, 1, 6, 3, 5]))
 
 print(solution.assign_cookies([1,2,3], [1,1]))
 print(solution.assign_cookies([1,2], [2,3,4]))
+
+print(solution.jump_game([2,3,1,1,4]))
