@@ -109,7 +109,23 @@ class MinHeap():
 
 class MaxHeap:
     def __init__(self):
-        ...
+        self.heap = []
+
+    def return_heap(self):
+        return [-num for num in self.heap]
+
+    def insert(self, number):
+        heapq.heappush(self.heap, -number)
+
+    def extract_max(self):
+        if not self.heap:
+            return None
+        
+        return -heapq.heappop(self.heap)
+    
+    def heapify(self, arr):
+        self.heap = [-num for num in arr]
+        heapq.heapify(self.heap)
 
 class Solution:
     """
@@ -195,18 +211,18 @@ print(min_heap.heap)
 min_heap.extract_minimum()
 print(min_heap.heap)
 
-# max_heap = MaxHeap()
-# max_heap.insert(0)
-# max_heap.insert(10)
-# max_heap.insert(5)
-# max_heap.insert(3)
-# max_heap.insert(7)
-# max_heap.insert(9)
-# print(max_heap.return_heap())
-# max_heap.extract_max()
-# print(max_heap.return_heap())
-# max_heap.heapify([0, 10, 5, 3, 7, 9])
-# print(max_heap.return_heap())
+max_heap = MaxHeap()
+max_heap.insert(0)
+max_heap.insert(10)
+max_heap.insert(5)
+max_heap.insert(3)
+max_heap.insert(7)
+max_heap.insert(9)
+print(max_heap.return_heap())
+max_heap.extract_max()
+print(max_heap.return_heap())
+max_heap.heapify([0, 10, 5, 3, 7, 9])
+print(max_heap.return_heap())
 
 print("\nDP")
 
