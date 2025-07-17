@@ -73,7 +73,7 @@ class Solution:
     7. Greedy ✓ (16/07)
     7. Matrices ✓ (16/07)
     8. Stack/queues ✓ (16/07)
-    9. Graphs
+    9. Graphs ✓ (17/07)
     10. Heaps
     11. DP
     12. Backtracking
