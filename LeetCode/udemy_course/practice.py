@@ -56,7 +56,56 @@ class Trie:
 
 class MinHeap():
     def __init__(self):
-        ...
+        self.heap = []
+
+    def left_child(self, i):
+        return (i * 2) + 1
+    
+    def right_child(self, i):
+        return (i * 2) + 2
+    
+    def parent(self, i):
+        return (i - 1) // 2
+    
+    def swap(self, i, j):
+        self.heap[i], self.heap[j] = self.heap[j], self.heap[i]
+
+    def insert(self, number):
+        self.heap.append(number)
+
+        idx = len(self.heap) - 1
+
+        while idx > 0:
+            parent_idx = self.parent(idx)
+            if self.heap[parent_idx] <= self.heap[idx]:
+                break
+            self.swap(idx, parent_idx)
+
+    def extract_minimum(self):
+        if not self.heap:
+            return None
+        
+        self.swap(0, len(self.heap) - 1)
+
+        minimum = self.heap.pop()
+        idx = 0
+
+        while idx < len(self.heap) - 1:
+            smallest = idx
+            left_child = self.left_child(idx)
+            right_child = self.right_child(idx)
+
+            if left_child < len(self.heap) and self.heap[left_child] < self.heap[smallest]:
+                smallest = left_child
+            if right_child < len(self.heap) and self.heap[right_child] < self.heap[smallest]:
+                smallest = right_child
+            
+            if idx == smallest:
+                break
+            self.swap(idx, smallest)
+            idx = smallest
+        
+        return minimum
 
 class MaxHeap:
     def __init__(self):
@@ -70,7 +119,7 @@ class Solution:
     4. Linked lists ✓ (15/07)
     5. Binary trees ✓ (15/07)
     6. Tries ✓ (15/07)
-    7. Greedy ✓ (16/07)
+    7. Greedy ✓ (17/07)
     7. Matrices ✓ (16/07)
     8. Stack/queues ✓ (16/07)
     9. Graphs ✓ (17/07)
@@ -79,21 +128,6 @@ class Solution:
     12. Backtracking
 
     """
-
-    def num_of_minutes(self, n, headID, manager, informTime):
-        graph = {i: [] for i in range(n)}
-        for i in range(len(manager)):
-            if manager[i]!= -1:
-                graph[manager[i]].append(i)
-
-        def dfs(employee_id):
-            if not graph[employee_id]:
-                return 0
-            
-            return max([dfs(edge) for edge in graph[employee_id]]) + informTime[employee_id]
-        
-        return dfs(headID)
-
     
 # print(random.choice(["container-with-most-water"]))
 # print(random.choice(["typed-out-strings", "longest-substring-without-repeating"]))
@@ -148,21 +182,18 @@ matrix = [
 print("\nStack")
 
 print("\nGraph")
-print(solution.num_of_minutes(7, 0, [-1,0,0,0,3,3,5], [1,0,0,2,0,3,0]))
 
 print("\nHeaps")
-# min_heap = MinHeap()
-# min_heap.insert(0)
-# min_heap.insert(10)
-# min_heap.insert(5)
-# min_heap.insert(3)
-# min_heap.insert(7)
-# min_heap.insert(9)
-# print(min_heap.heap)
-# min_heap.extract_minimum()
-# print(min_heap.heap)
-# min_heap.heapify([0, 10, 5, 3, 7, 9])
-# print(min_heap.heap)
+min_heap = MinHeap()
+min_heap.insert(0)
+min_heap.insert(10)
+min_heap.insert(5)
+min_heap.insert(3)
+min_heap.insert(7)
+min_heap.insert(9)
+print(min_heap.heap)
+min_heap.extract_minimum()
+print(min_heap.heap)
 
 # max_heap = MaxHeap()
 # max_heap.insert(0)
