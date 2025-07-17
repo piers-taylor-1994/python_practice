@@ -72,7 +72,7 @@ class Solution:
     6. Tries ✓ (15/07)
     7. Greedy ✓ (16/07)
     7. Matrices ✓ (16/07)
-    8. Stack/queues
+    8. Stack/queues ✓ (16/07)
     9. Graphs
     10. Heaps
     11. DP
@@ -80,23 +80,27 @@ class Solution:
 
     """
 
-    def valid_parentheses(self, s):
-        parentheses = {"(": ")", "{": "}", "[": "]"}
-        stack = []
-
-        for bracket in s:
-            if bracket in parentheses:
-                stack.append(parentheses[bracket])
-            else:
-                if not stack:
-                    return False
-                
-                stored_bracket = stack.pop()
-
-                if stored_bracket != bracket:
-                    return False
+    def num_of_minutes(self, n, headID, manager, informTime):
+        if n == 0:
+            return 0
         
-        return len(stack) == 0
+        graph = {i: [] for i in range(n)}
+        for i in range(len(manager)):
+            if manager[i]!= -1:
+                graph[manager[i]].append(i)
+
+        queue = deque([(headID, 0)])
+        max_time = 0
+
+        while queue:
+            node, time = queue.popleft()
+            max_time = max(max_time, time)
+
+            for edge in graph[node]:
+                queue.append((edge, time + informTime[node]))
+        
+        return max_time
+
     
 # print(random.choice(["container-with-most-water"]))
 # print(random.choice(["typed-out-strings", "longest-substring-without-repeating"]))
@@ -104,6 +108,7 @@ class Solution:
 # print(random.choice(["reverse_partial_linked_list"]))
 # print(random.choice(["level-order", "right-side-view", "count-nodes", "is_valid_bst"]))
 # print(random.choice(["orange_rotting", "walls_gates"]))
+print(random.choice(["can_finish", "network_delay_time"]))
 
 solution = Solution()
 
@@ -148,20 +153,9 @@ matrix = [
 # print(solution.num_islands(matrix))
 
 print("\nStack")
-print(solution.valid_parentheses("()"))
 
 print("\nGraph")
-# graph = {
-#     0: [1, 3],
-#     1: [0],
-#     2: [3, 8],
-#     3: [0, 4, 5, 2],
-#     4: [3, 6],
-#     5: [3],
-#     6: [4, 7],
-#     7: [6],
-#     8: [2]
-# }
+print(solution.num_of_minutes(7, 0, [-1,0,0,0,3,3,5], [1,0,0,2,0,3,0]))
 
 print("\nHeaps")
 # min_heap = MinHeap()
