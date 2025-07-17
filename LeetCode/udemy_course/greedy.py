@@ -60,6 +60,24 @@ class Solution:
             furthest = max(furthest, i + nums[i])
         
         return True
+    
+    def minimum_coins_change(self, coins:list[int], amount):
+        coins.sort(reverse=True)
+
+        total = 0
+        count = 0
+        marker = 0
+        while total < amount:
+            if coins[marker] + total <= amount:
+                total += coins[marker]
+                count += 1
+            else:
+                marker += 1
+
+                if marker >= len(coins):
+                    break
+        
+        return count
 
 
 solution = Solution()
@@ -74,3 +92,5 @@ print(solution.assign_cookies([1,2,3], [1,1]))
 print(solution.assign_cookies([1,2], [2,3,4]))
 
 print(solution.jump_game([2,3,1,1,4]))
+
+print(solution.minimum_coins_change([1, 3, 4], 6))
