@@ -1,8 +1,10 @@
 class Solution:
     """
-    Usually have to do some kind of sorting at the beginning
-    Greedy is all about making the best immediate choice at the time, ignoring the score of everything else
-    Usually use a loop (for loops, pointers etc)
+    -Usually have to do some kind of sorting at the beginning
+    -Greedy algorithms attempt to construct an optimal solution step-by-step by choosing the most beneficial 
+        option at each point—without reconsidering previous choices.
+    -Usually use a loop (for loops, pointers etc)
+    -Usually initialise variable/s at the beginning to track current state, count etc
     """
     def coin_change(self, coins: list[int], target):
         coins.sort(reverse=True)
