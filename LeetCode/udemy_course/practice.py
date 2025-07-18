@@ -27,11 +27,35 @@ class Solution:
     8. Stack/queues ✓ (16/07)
     9. Graphs ✓ (17/07)
     10. Heaps ✓ (17/07)
-    11. Bitmask
+    11. Bitmask ✓ (17/07)
     12. DP
     13. Backtracking
 
     """
+    def house_robber_memo(self, nums):
+        memo = {}
+        def rec(i):
+            if i == 0:
+                return nums[0]
+            elif i == 1:
+                return max(nums[0], nums[1])
+            elif i in memo:
+                return memo[i]
+            
+            memo[i] = max(nums[i] + rec(i - 2), rec(i - 1))
+            return memo[i]
+        
+        return rec(len(nums) - 1)
+    
+    def house_robbert_tabular(self, nums):
+        dp = [0] * len(nums)
+        dp[0] = nums[0]
+        dp[1] = max(nums[0], nums[1])
+
+        for i in range(2, len(nums)):
+            dp[i] = max(nums[i] + dp[i - 2], dp[i - 1])
+        
+        return dp[len(nums) - 1]
     
 # print(random.choice(["container-with-most-water"]))
 # print(random.choice(["typed-out-strings", "longest-substring-without-repeating"]))
@@ -40,6 +64,7 @@ class Solution:
 # print(random.choice(["level-order", "right-side-view", "count-nodes", "is_valid_bst"]))
 # print(random.choice(["orange_rotting", "walls_gates"]))
 # print(random.choice(["can_finish", "network_delay_time"]))
+# print(random.choice(["min_cost_stairs", "coin_change", "knapsack", "unique_paths", "min_path", "longest_common_subsequence", "edit_distance", "knight_probability", "dice_roll", "travelling_salesman", "job_assignment"]))
 
 solution = Solution()
 
@@ -74,14 +99,7 @@ solution = Solution()
 # max_heap.heapify([0, 10, 5, 3, 7, 9])
 # print(max_heap.return_heap())
 
-
-arr = [12]
-array_length = len(arr)
-bitmask = 1 << arr[0]
-print(bitmask == (1 << array_length) - 1)
-
-arr.append(50)
-bitmask |= 1 << 50
-
-if not (bitmask & 1 << 50):
-    print("50 not in bitmask")
+print(solution.house_robber_memo([1,2,3,1]))
+print(solution.house_robbert_tabular([1,2,3,1]))
+print(solution.house_robber_memo([2,7,9,3,1]))
+print(solution.house_robbert_tabular([2,7,9,3,1]))
