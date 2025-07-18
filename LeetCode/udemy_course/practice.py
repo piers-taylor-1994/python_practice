@@ -32,30 +32,6 @@ class Solution:
     13. Backtracking
 
     """
-    def house_robber_memo(self, nums):
-        memo = {}
-        def rec(i):
-            if i == 0:
-                return nums[0]
-            elif i == 1:
-                return max(nums[0], nums[1])
-            elif i in memo:
-                return memo[i]
-            
-            memo[i] = max(nums[i] + rec(i - 2), rec(i - 1))
-            return memo[i]
-        
-        return rec(len(nums) - 1)
-    
-    def house_robbert_tabular(self, nums):
-        dp = [0] * len(nums)
-        dp[0] = nums[0]
-        dp[1] = max(nums[0], nums[1])
-
-        for i in range(2, len(nums)):
-            dp[i] = max(nums[i] + dp[i - 2], dp[i - 1])
-        
-        return dp[len(nums) - 1]
     
 # print(random.choice(["container-with-most-water"]))
 # print(random.choice(["typed-out-strings", "longest-substring-without-repeating"]))
@@ -98,8 +74,3 @@ solution = Solution()
 # print(max_heap.return_heap())
 # max_heap.heapify([0, 10, 5, 3, 7, 9])
 # print(max_heap.return_heap())
-
-print(solution.house_robber_memo([1,2,3,1]))
-print(solution.house_robbert_tabular([1,2,3,1]))
-print(solution.house_robber_memo([2,7,9,3,1]))
-print(solution.house_robbert_tabular([2,7,9,3,1]))
