@@ -1,6 +1,6 @@
 class Solution:
     """
-    -Usually have to do some kind of sorting at the beginning
+    -Usually have to do some kind of sorting at the beginning (not always obviously sorted ascending, can be descending, or sorted from end instead of start)
     -Greedy algorithms attempt to construct an optimal solution step-by-step by choosing the most beneficial 
         option at each point—without reconsidering previous choices.
     -Usually use a loop (for loops, pointers etc)
