@@ -1,4 +1,9 @@
 class Solution:
+    """
+    Usually have to do some kind of sorting at the beginning
+    Greedy is all about making the best immediate choice at the time, ignoring the score of everything else
+    Usually use a loop (for loops, pointers etc)
+    """
     def coin_change(self, coins: list[int], target):
         coins.sort(reverse=True)
         coins_used = []
