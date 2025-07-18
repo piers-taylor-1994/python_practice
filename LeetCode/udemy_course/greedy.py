@@ -85,6 +85,40 @@ class Solution:
                     break
         
         return count
+    
+    def minimum_platforms_needed(self, arrival, departure):
+        arrival.sort()
+        departure.sort()
+        i = 0
+        j = 0
+        platforms_needed = 0
+        min_platforms = 0
+
+        while i < len(arrival):
+            if arrival[i] < departure[j]:
+                platforms_needed += 1
+                min_platforms = max(min_platforms, platforms_needed)
+                i += 1
+            else:
+                platforms_needed -= 1
+                j += 1
+        
+        return min_platforms
+    
+    def max_activities(self, start, end):
+        start_end = [(start[i], end[i]) for i in range(len(start))]
+        start_end.sort(key=lambda x:x[1])
+
+        current_end = 0
+        max_activities = 0
+
+        for start, end in start_end:
+            if start >= current_end:
+                max_activities += 1
+                current_end = end
+        
+        return max_activities
+
 
 
 solution = Solution()
@@ -101,3 +135,7 @@ print(solution.assign_cookies([1,2], [2,3,4]))
 print(solution.jump_game([2,3,1,1,4]))
 
 print(solution.minimum_coins_change([1, 3, 4], 6))
+
+print(solution.minimum_platforms_needed([900, 940, 950, 1100, 1500, 1800], [910, 1200, 1120, 1130, 1900, 2000]))
+
+print(solution.max_activities([1, 3, 0, 5, 8, 5], [2, 4, 6, 7, 9, 9]))
