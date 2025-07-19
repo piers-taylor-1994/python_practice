@@ -32,6 +32,14 @@ class Solution:
     13. Backtracking
 
     """
+
+    def prefix_sum(self, nums):
+        prefix = [nums[0]]
+
+        for i in range(1, len(nums)):
+            prefix.append(prefix[i - 1] + nums[i])
+        
+        return prefix
     
 # print(random.choice(["container-with-most-water"]))
 # print(random.choice(["typed-out-strings", "longest-substring-without-repeating"]))
@@ -74,3 +82,5 @@ solution = Solution()
 # print(max_heap.return_heap())
 # max_heap.heapify([0, 10, 5, 3, 7, 9])
 # print(max_heap.return_heap())
+
+print(solution.prefix_sum([1,5,7,12,15,30]))
