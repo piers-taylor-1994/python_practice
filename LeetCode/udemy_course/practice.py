@@ -34,12 +34,10 @@ class Solution:
     """
 
     def prefix_sum(self, nums):
-        prefix = [nums[0]]
-
         for i in range(1, len(nums)):
-            prefix.append(prefix[i - 1] + nums[i])
+            nums[i] += nums[i - 1]
         
-        return prefix
+        return nums
     
 # print(random.choice(["container-with-most-water"]))
 # print(random.choice(["typed-out-strings", "longest-substring-without-repeating"]))
