@@ -35,16 +35,10 @@ class Solution:
         for log in logs:
             user_1, user_2, _ = log.split()
 
-            if user_1 in users_active_count:
-                users_active_count[user_1] += 1
-            else:
-                users_active_count[user_1] = 1
+            users_active_count[user_1] = users_active_count.get(user_1, 0) + 1
             
             if user_1 != user_2:
-                if user_2 in users_active_count:
-                    users_active_count[user_2] += 1
-                else:
-                    users_active_count[user_2] = 1
+                users_active_count[user_2] = users_active_count.get(user_2, 0) + 1
         
         filtered_users_active_count = [(count, user) for user, count in users_active_count.items() if count >= threshold]
         sorted_users_active_count = sorted(filtered_users_active_count, key=lambda item: (item[0], int(item[1])))
