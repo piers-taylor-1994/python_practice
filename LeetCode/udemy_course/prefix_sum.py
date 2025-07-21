@@ -1,5 +1,7 @@
 import bisect
 
+from sortedcontainers import SortedList
+
 class Solution:
     def numberOfItems(self, s: str, startIndices: list[int], endIndices: list[int]) -> list[int]:
         pipe_indices = []
@@ -50,15 +52,16 @@ class Solution:
         return total
     
     def countSmaller(self, nums):
-        results = []
-        sorted_list = []
+        result = []
+        sorted_list = SortedList()
 
         for num in nums[::-1]:
             idx = bisect.bisect_left(sorted_list, num)
-            results.append(idx)
-            bisect.insort(sorted_list, num)
-        
-        return results[::-1]
+            result.append(idx)
+            sorted_list.add(num)
+            
+        return result[::-1]
+
     def countGreater(self, nums):
         results = []
         sorted_list = []
