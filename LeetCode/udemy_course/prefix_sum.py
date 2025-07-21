@@ -44,9 +44,8 @@ class Solution:
 
         for num in nums:
             prefix += num
-            #This works backwards. If this is > 0, there's a subarray with the current num that == k
             total += count_map.get(prefix - k, 0)
-            count_map[prefix] = count_map.get(prefix, 0) + 1    
+            count_map[prefix] = count_map.get(prefix, 0) + 1
         
         return total
     
