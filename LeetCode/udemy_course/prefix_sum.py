@@ -72,6 +72,22 @@ class Solution:
             bisect.insort(sorted_list, -num)
         
         return results[::-1]
+    
+    def countRangeSum(self, nums, lower, upper):
+        sorted_list = SortedList()
+        prefix = 0
+        count = 0
+
+        sorted_list.add(0)
+
+        for num in nums:
+            prefix += num
+            left = sorted_list.bisect_left(prefix - upper)
+            right = sorted_list.bisect_right(prefix - lower)
+            count += right - left
+            sorted_list.add(prefix)
+
+        return count
 
 solution = Solution()
 
@@ -81,3 +97,5 @@ print(solution.subarraySum([1,2,3], 3))
 
 print(solution.countSmaller([5,2,6,1]))
 print(solution.countGreater([5,2,6,1]))
+
+print(solution.countRangeSum([-2, 5, -1], -2, 2))
