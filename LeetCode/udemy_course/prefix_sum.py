@@ -36,10 +36,22 @@ class Solution:
             results.append(items)
         
         return results
-            
 
+    def subarraySum(self, nums, k):
+        prefix = 0
+        count_map = {0: 1}
+        total = 0
 
+        for num in nums:
+            prefix += num
+            #This works backwards. If this is > 0, there's a subarray with the current num that == k
+            total += count_map.get(prefix - k, 0)
+            count_map[prefix] = count_map.get(prefix, 0) + 1    
+        
+        return total
 
 solution = Solution()
 
 print(solution.numberOfItems("|**|*|", [1,1], [5,6]))
+
+print(solution.subarraySum([1,2,3], 3))
