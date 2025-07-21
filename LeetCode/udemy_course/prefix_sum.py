@@ -39,14 +39,14 @@ class Solution:
 
     def subarraySum(self, nums, k):
         prefix = 0
-        count_map = {0:1}
+        count_map = {prefix:1}
         total = 0
 
         for num in nums:
             prefix += num
             total += count_map.get(prefix - k, 0)
             count_map[prefix] = count_map.get(prefix, 0) + 1
-        
+            
         return total
     
     def countSmaller(self, nums):
