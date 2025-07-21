@@ -5,10 +5,10 @@ from sortedcontainers import SortedDict, SortedList
 class Solution:
     def numberOfItems(self, s: str, startIndices: list[int], endIndices: list[int]) -> list[int]:
         pipe_indices = []
-        prefix_items = [0] * len(s)
-        count = 0
+        prefix_sum = [0] * len(s)
         inside = False
         results = []
+        count = 0
 
         for i in range(len(s)):
             if s[i] == "|":
@@ -16,26 +16,23 @@ class Solution:
                 inside = True
             elif inside:
                 count += 1
-            prefix_items[i] = count
-
+            prefix_sum[i] = count
+        
         for i in range(len(startIndices)):
             start = startIndices[i] - 1
             end = endIndices[i] - 1
 
-            left_idx = bisect.bisect_left(pipe_indices, start)
-            right_idx = bisect.bisect_right(pipe_indices, end) - 1
+            start_idx = bisect.bisect_left(pipe_indices, start)
+            end_idx = bisect.bisect_right(pipe_indices, end) - 1
 
-            if left_idx < len(pipe_indices) and right_idx >= 0 and left_idx < right_idx:
-                left_pipe_pos = pipe_indices[left_idx]
-                right_pipe_pos = pipe_indices[right_idx]
+            if start_idx < len(s) and end_idx >= 0 and start_idx < end_idx:
+                start_pipe = pipe_indices[start_idx]
+                end_pipe = pipe_indices[end_idx]
 
-                left_items = prefix_items[left_pipe_pos]
-                right_items = prefix_items[right_pipe_pos]
-                items = right_items - left_items
-            else:
-                items = 0
-            
-            results.append(items)
+                left_prefix = prefix_sum[start_pipe]
+                right_prefix = prefix_sum[end_pipe]
+
+                results.append(right_prefix - left_prefix)
         
         return results
 
