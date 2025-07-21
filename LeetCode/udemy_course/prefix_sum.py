@@ -49,9 +49,34 @@ class Solution:
             count_map[prefix] = count_map.get(prefix, 0) + 1    
         
         return total
+    
+    def countSmaller(self, nums):
+        results = []
+        sorted_list = []
+
+        for num in nums[::-1]:
+            idx = bisect.bisect_left(sorted_list, num)
+            results.append(idx)
+            bisect.insort(sorted_list, num)
+        
+        return results[::-1]
+    
+    def countGreater(self, nums):
+        results = []
+        sorted_list = []
+
+        for num in nums[::-1]:
+            idx = bisect.bisect_right(sorted_list, -num)
+            results.append(idx)
+            bisect.insort(sorted_list, -num)
+        
+        return results[::-1]
 
 solution = Solution()
 
 print(solution.numberOfItems("|**|*|", [1,1], [5,6]))
 
 print(solution.subarraySum([1,2,3], 3))
+
+print(solution.countSmaller([5,2,6,1]))
+print(solution.countGreater([5,2,6,1]))
