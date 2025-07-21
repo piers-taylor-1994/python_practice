@@ -39,7 +39,7 @@ class Solution:
 
     def subarraySum(self, nums, k):
         prefix = 0
-        count_map = {0: 1}
+        count_map = {0:1}
         total = 0
 
         for num in nums:
@@ -59,7 +59,6 @@ class Solution:
             bisect.insort(sorted_list, num)
         
         return results[::-1]
-    
     def countGreater(self, nums):
         results = []
         sorted_list = []
