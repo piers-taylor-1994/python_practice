@@ -16,33 +16,52 @@ class MaxHeap:
 
 class Solution:
     """
-    1. Arrays ✓ (14/07)
-    2. Strings ✓ (14/07)
-    3. Sorts/searches ✓ (14/07)
-    4. Linked lists ✓ (15/07)
-    5. Binary trees ✓ (15/07)
-    6. Tries ✓ (15/07)
-    7. Greedy ✓ (17/07)
-    7. Matrices ✓ (16/07)
-    8. Stack/queues ✓ (16/07)
-    9. Graphs ✓ (17/07)
-    10. Heaps ✓ (17/07)
-    11. Bitmask ✓ (17/07)
-    12. DP ✓ (18/07)
-    13. Backtracking ✓ (18/07)
-
+    1. Arrays ✓ (22/07)
+    2. Strings
+    3. Linked lists
+    4. Binary trees
+    5. Tries
+    6. Greedy
+    7. Matrices
+    8. Graphs
+    9. Heaps
+    10. Bitmask
+    11. DP
+    12. Backtracking
+    13. Prefix sum ✓ (22/07)
+    14. Sliding window ✓ (22/07)
     """
+
+    def lengthOfLongestSubstring(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        left = 0
+        longest_subarray = 0
+        current_subarray = set()
+
+        for right in range(len(s)):
+            while s[right] in current_subarray:
+                left += 1
+                current_subarray.remove(s[left])
+            current_subarray.add(s[right])
+            longest_subarray = max(longest_subarray, (right - left) + 1)
+
+        return longest_subarray
     
-# print(random.choice(["container-with-most-water"]))
-# print(random.choice(["typed-out-strings", "longest-substring-without-repeating"]))
+# print(random.choice([]))
+print(random.choice(["typed-out-strings"]))
 # print(random.choice(["quick_sort"]))
 # print(random.choice(["reverse_partial_linked_list"]))
 # print(random.choice(["level-order", "right-side-view", "count-nodes", "is_valid_bst"]))
 # print(random.choice(["orange_rotting", "walls_gates"]))
 # print(random.choice(["can_finish", "network_delay_time"]))
-# print(random.choice(["min_cost_stairs", "coin_change", "knapsack", "unique_paths", "min_path", "longest_common_subsequence", "edit_distance", "knight_probability", "dice_roll", "travelling_salesman", "job_assignment"]))
+# print(random.choice(["subset sum/partition", "grid/pathfinding", "string manipulation", "decision based", "probability and counting", "bitmask"]))
 
 solution = Solution()
+
+print(solution.lengthOfLongestSubstring("pwwkew"))
 
 # print("\nTrie")
 # trie = Trie()
@@ -74,5 +93,3 @@ solution = Solution()
 # print(max_heap.return_heap())
 # max_heap.heapify([0, 10, 5, 3, 7, 9])
 # print(max_heap.return_heap())
-
-print(solution.prefix_sum([1,5,7,12,15,30]))
