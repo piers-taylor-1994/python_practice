@@ -28,16 +28,10 @@ class Solution:
     9. Graphs ✓ (17/07)
     10. Heaps ✓ (17/07)
     11. Bitmask ✓ (17/07)
-    12. DP
-    13. Backtracking
+    12. DP ✓ (18/07)
+    13. Backtracking ✓ (18/07)
 
     """
-
-    def prefix_sum(self, nums):
-        for i in range(1, len(nums)):
-            nums[i] += nums[i - 1]
-        
-        return nums
     
 # print(random.choice(["container-with-most-water"]))
 # print(random.choice(["typed-out-strings", "longest-substring-without-repeating"]))

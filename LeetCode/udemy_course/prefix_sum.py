@@ -85,6 +85,53 @@ class Solution:
             sorted_list.add(prefix)
 
         return count
+    
+    def basic_prefix(self, nums):
+        results = [0] * len(nums)
+        results[0] = nums[0]
+
+        for i in range(1, len(nums)):
+            results[i] = results[i-1] + nums[i]
+        
+        return results
+    
+    def range_sum(self, nums, i, j):
+        prefix_sum = [0] * len(nums)
+        prefix_sum[0] = nums[0]
+
+        for k in range(1, len(nums)):
+            prefix_sum[k] = prefix_sum[k - 1] + nums[k]
+        
+        if i == 0:
+            return prefix_sum[j]
+        return prefix_sum[j] - prefix_sum[i - 1]
+    
+    def even_numbers_prefix(self, nums):
+        prefix_sum = [0] * len(nums)
+        count = 1 if nums[0] % 2 == 0 else 0
+        prefix_sum[0] = count
+
+        for i in range(1, len(nums)):
+            if nums[i] % 2 == 0:
+                count += 1
+            prefix_sum[i] = count
+        
+        return prefix_sum
+    
+    def even_numbers_prefix_range(self, nums, i, j):
+        prefix_sum = [0] * len(nums)
+        count = 1 if nums[0] % 2 == 0 else 0
+        prefix_sum[0] = count
+
+        for k in range(1, len(nums)):
+            if nums[k] % 2 == 0:
+                count += 1
+            prefix_sum[k] = count
+        
+        if i == 0:
+            return prefix_sum[j]
+        return prefix_sum[j] - prefix_sum[i - 1]
+
 
 solution = Solution()
 
@@ -96,3 +143,11 @@ print(solution.countSmaller([5,2,6,1]))
 print(solution.countGreater([5,2,6,1]))
 
 print(solution.countRangeSum([-2, 5, -1], -2, 2))
+
+print(solution.basic_prefix([1,2,3,4,5]))
+
+print(solution.range_sum([2,4,6,8,10], 1, 3))
+
+print(solution.even_numbers_prefix([1,2,4,5,6]))
+
+print(solution.even_numbers_prefix_range([1,2,4,5,6], 2, 4))
