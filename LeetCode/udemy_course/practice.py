@@ -1,6 +1,7 @@
 from collections import deque
 import random
 import heapq
+from re import sub
  
 class Node(object):
     def __init__(self, val, prev = None, next = None, child = None):
@@ -38,17 +39,17 @@ class Solution:
         :rtype: int
         """
         left = 0
-        longest_subarray = 0
-        current_subarray = set()
+        subarray = []
+        longest = 0
 
         for right in range(len(s)):
-            while s[right] in current_subarray:
+            while s[right] in subarray:
+                subarray.remove(s[left])
                 left += 1
-                current_subarray.remove(s[left])
-            current_subarray.add(s[right])
-            longest_subarray = max(longest_subarray, (right - left) + 1)
-
-        return longest_subarray
+            subarray.append(s[right])
+            longest = max(longest, right - left + 1)
+        
+        return longest
     
 # print(random.choice([]))
 print(random.choice(["typed-out-strings"]))
