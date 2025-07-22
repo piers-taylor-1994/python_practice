@@ -18,7 +18,7 @@ class MaxHeap:
 class Solution:
     """
     1. Arrays ✓ (22/07)
-    2. Strings
+    2. Strings ✓ (22/07)
     3. Linked lists
     4. Binary trees
     5. Tries
