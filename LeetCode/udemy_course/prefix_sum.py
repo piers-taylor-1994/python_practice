@@ -49,6 +49,29 @@ class Solution:
             return prefix_sum[j]
         return prefix_sum[j] - prefix_sum[i - 1]
     
+    def max_sum_subarray_length(self, nums, k):
+        subarray = sum(nums[:k])
+        max_subarray = subarray
+
+        for i in range(1, len(nums) - k + 1):
+            subarray = subarray - nums[i - 1] + nums[i + k - 1]
+            max_subarray = max(max_subarray, subarray)
+        
+        return max_subarray
+    
+    def max_sum_subarray_length_prefix(self, nums, k):
+        prefix = [0] * (len(nums) + 1)
+        max_subarray = 0
+
+        for i in range(len(nums)):
+            prefix[i + 1] = prefix[i] + nums[i]
+        
+        for i in range(len(nums) - k + 1):
+            subarray = prefix[i + k] - prefix[i]
+            max_subarray = max(max_subarray, subarray)
+        
+        return max_subarray
+    
     def numberOfItems(self, s: str, startIndices: list[int], endIndices: list[int]) -> list[int]:
         pipe_indices = []
         prefix_sum = [0] * len(s)
@@ -141,6 +164,9 @@ print(solution.range_sum([2,4,6,8,10], 1, 3))
 print(solution.even_numbers_prefix([1,2,4,5,6]))
 
 print(solution.even_numbers_prefix_range([1,2,4,5,6], 2, 4))
+
+print(solution.max_sum_subarray_length([2,1,5,1,3,2], 3))
+print(solution.max_sum_subarray_length_prefix([2,1,5,1,3,2], 3))
 
 print(solution.numberOfItems("|**|*|", [1,1], [5,6]))
 
