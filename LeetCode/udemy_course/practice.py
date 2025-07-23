@@ -46,7 +46,7 @@ class Solution:
             if not node:
                 return
             
-            if not result[level]:
+            if len(result) == level:
                 result.append([node.val])
             else:
                 result[level].append(node.val)
