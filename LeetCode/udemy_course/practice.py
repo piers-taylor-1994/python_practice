@@ -23,7 +23,7 @@ class Solution:
     1. Arrays ✓ (22/07)
     2. Strings ✓ (22/07)
     3. Linked lists ✓ (23/07)
-    4. Binary trees
+    4. Binary trees ✓ (23/07)
     5. Tries
     6. Greedy
     7. Matrices
