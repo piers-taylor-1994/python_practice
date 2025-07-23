@@ -36,7 +36,7 @@ class Solution:
     14. Sliding window ✓ (22/07)
     """
 
-    def level_order_traversal_bfs(self, root):
+    def level_order_traversal_dfs(self, root):
         if not root:
             return []
         
