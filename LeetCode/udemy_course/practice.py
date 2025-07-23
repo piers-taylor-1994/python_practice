@@ -5,7 +5,10 @@ from re import sub
  
 class Node(object):
     def __init__(self, val, prev = None, next = None, child = None):
-        ...
+        self.val = val
+        self.prev = prev
+        self.next = next
+        self.child = child
 
 class MinHeap():
     def __init__(self):
@@ -33,28 +36,43 @@ class Solution:
     14. Sliding window ✓ (22/07)
     """
 
-    def lengthOfLongestSubstring(self, s):
-        """
-        :type s: str
-        :rtype: int
-        """
-        left = 0
-        subarray = []
-        longest = 0
-
-        for right in range(len(s)):
-            while s[right] in subarray:
-                subarray.remove(s[left])
-                left += 1
-            subarray.append(s[right])
-            longest = max(longest, right - left + 1)
+    def partially_reverse_linked_list(self, head, left, right):
+        if not head.next:
+            return head
         
-        return longest
+        node = head
+        node_before_reverse = head
+        index = 1
+
+        while index != left:
+            node_before_reverse = node
+            node = node.next
+            index += 1
+
+        tail = node
+        prev = None
+
+        while left <= index <= right:
+            next = node.next
+            node.next = prev
+            prev = node
+            node = next
+            index += 1
+
+        node_before_reverse.next = prev
+        tail.next = node
+
+        return head
+        
+
+                
+            
+
     
 # print(random.choice([]))
-print(random.choice(["typed-out-strings"]))
+# print(random.choice(["typed-out-strings"]))
 # print(random.choice(["quick_sort"]))
-# print(random.choice(["reverse_partial_linked_list"]))
+# print(random.choice([]))
 # print(random.choice(["level-order", "right-side-view", "count-nodes", "is_valid_bst"]))
 # print(random.choice(["orange_rotting", "walls_gates"]))
 # print(random.choice(["can_finish", "network_delay_time"]))
@@ -62,7 +80,16 @@ print(random.choice(["typed-out-strings"]))
 
 solution = Solution()
 
-print(solution.lengthOfLongestSubstring("pwwkew"))
+head = Node(1)
+node_2 = Node(2)
+node_3 = Node(3)
+node_4 = Node(4)
+node_5 = Node(5)
+head.next = node_2
+node_2.next = node_3
+node_3.next = node_4
+node_4.next = node_5
+print(solution.partially_reverse_linked_list(head, 2, 4))
 
 # print("\nTrie")
 # trie = Trie()
