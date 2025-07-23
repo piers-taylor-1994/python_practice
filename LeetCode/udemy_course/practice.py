@@ -50,19 +50,19 @@ class Solution:
             index += 1
 
         tail = node
-        prev = None
+        new_list = None
 
         while left <= index <= right:
             next = node.next
-            node.next = prev
-            prev = node
+            node.next = new_list
+            new_list = node
             node = next
             index += 1
 
-        node_before_reverse.next = prev
+        node_before_reverse.next = new_list
         tail.next = node
 
-        return head if left > 1 else prev
+        return head if left > 1 else new_list
         
 
                 
