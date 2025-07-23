@@ -36,38 +36,26 @@ class Solution:
     14. Sliding window ✓ (22/07)
     """
 
-    def partially_reverse_linked_list(self, head, left, right):
-        if not head.next:
-            return head
+    def level_order_traversal_bfs(self, root):
+        if not root:
+            return []
         
-        node = head
-        node_before_reverse = head
-        index = 1
-
-        while index != left:
-            node_before_reverse = node
-            node = node.next
-            index += 1
-
-        tail = node
-        new_list = None
-
-        while left <= index <= right:
-            next = node.next
-            node.next = new_list
-            new_list = node
-            node = next
-            index += 1
-
-        node_before_reverse.next = new_list
-        tail.next = node
-
-        return head if left > 1 else new_list
+        result = []
         
-
-                
+        def dfs(node, level):
+            if not node:
+                return
             
-
+            if not result[level]:
+                result.append([node.val])
+            else:
+                result[level].append(node.val)
+            
+            dfs(node.left, level + 1)
+            dfs(node.right, level + 1)
+    
+        dfs(root, 0)
+        return result
     
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
@@ -79,17 +67,6 @@ class Solution:
 # print(random.choice(["subset sum/partition", "grid/pathfinding", "string manipulation", "decision based", "probability and counting", "bitmask"]))
 
 solution = Solution()
-
-head = Node(1)
-node_2 = Node(2)
-node_3 = Node(3)
-node_4 = Node(4)
-node_5 = Node(5)
-head.next = node_2
-node_2.next = node_3
-node_3.next = node_4
-node_4.next = node_5
-print(solution.partially_reverse_linked_list(head, 2, 4))
 
 # print("\nTrie")
 # trie = Trie()
