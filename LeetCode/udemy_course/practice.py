@@ -62,7 +62,7 @@ class Solution:
         node_before_reverse.next = prev
         tail.next = node
 
-        return head
+        return head if left > 1 else prev
         
 
                 
