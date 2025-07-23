@@ -22,7 +22,7 @@ class Solution:
     """
     1. Arrays ✓ (22/07)
     2. Strings ✓ (22/07)
-    3. Linked lists
+    3. Linked lists ✓ (23/07)
     4. Binary trees
     5. Tries
     6. Greedy
@@ -73,7 +73,7 @@ class Solution:
 # print(random.choice(["typed-out-strings"]))
 # print(random.choice(["quick_sort"]))
 # print(random.choice([]))
-# print(random.choice(["level-order", "right-side-view", "count-nodes", "is_valid_bst"]))
+# print(random.choice(["right-side-view", "count-nodes", "is_valid_bst"]))
 # print(random.choice(["orange_rotting", "walls_gates"]))
 # print(random.choice(["can_finish", "network_delay_time"]))
 # print(random.choice(["subset sum/partition", "grid/pathfinding", "string manipulation", "decision based", "probability and counting", "bitmask"]))
