@@ -1,7 +1,6 @@
 from collections import deque
 import random
 import heapq
-from re import sub
  
 class Node(object):
     def __init__(self, val, prev = None, next = None, child = None):
@@ -18,13 +17,60 @@ class MaxHeap:
     def __init__(self):
         ...
 
+class TrieNode:
+    def __init__(self):
+        self.end = False
+        self.children = [None] * 26
+class Trie:
+    def __init__(self):
+        self.root = TrieNode()
+
+    def insert(self, word):
+        node = self.root
+
+        for character in word:
+            character_idx = ord(character) - ord("a")
+
+            if not node.children[character_idx]:
+                node.children[character_idx] = TrieNode()
+            
+            node = node.children[character_idx]
+        
+        node.end = True
+    
+    def search_word(self, word):
+        node = self.root
+
+        for character in word:
+            character_idx = ord(character) - ord("a")
+
+            if not node.children[character_idx]:
+                return False
+            
+            node = node.children[character_idx]
+        
+        return node.end
+
+    def search_prefix(self, prefix):
+        node = self.root
+
+        for character in prefix:
+            character_idx = ord(character) - ord("a")
+
+            if not node.children[character_idx]:
+                return False
+            
+            node = node.children[character_idx]
+        
+        return True
+
 class Solution:
     """
     1. Arrays ✓ (22/07)
     2. Strings ✓ (22/07)
     3. Linked lists ✓ (23/07)
     4. Binary trees ✓ (23/07)
-    5. Tries
+    5. Tries ✓ (23/07)
     6. Greedy
     7. Matrices
     8. Graphs
@@ -35,28 +81,6 @@ class Solution:
     13. Prefix sum ✓ (22/07)
     14. Sliding window ✓ (22/07)
     """
-
-    def level_order_traversal_bfs(self, root):
-        if not root:
-            return []
-        
-        result = []
-        queue = deque([root])
-
-        while queue:
-            level_order = []
-            for _ in range(len(queue)):
-                node = queue.popleft()
-
-                if node.left:
-                    queue.append(node.left)
-                if node.right:
-                    queue.append(node.right)
-                
-                level_order.append(node.val)
-            result.append(level_order)
-        
-        return result
     
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
@@ -69,22 +93,11 @@ class Solution:
 
 solution = Solution()
 
-head = Node(1)
-node_2 = Node(2)
-node_3 = Node(3)
-node_4 = Node(4)
-node_5 = Node(5)
-head.next = node_2
-node_2.next = node_3
-node_3.next = node_4
-node_4.next = node_5
-print(solution.partially_reverse_linked_list(head, 2, 4))
-
-# print("\nTrie")
-# trie = Trie()
-# trie.insert("appls")
-# print(trie.search_word("apple"))
-# print(trie.search_prefix("app"))
+print("\nTrie")
+trie = Trie()
+trie.insert("appls")
+print(trie.search_word("apple"))
+print(trie.search_prefix("app"))
 
 # print("\nHeaps")
 # min_heap = MinHeap()
