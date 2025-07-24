@@ -32,7 +32,7 @@ class Solution:
     4. Binary trees ✓ (23/07)
     5. Tries ✓ (23/07)
     6. Greedy ✓ (24/07)
-    7. Matrices
+    7. Matrices ✓ (24/07)
     8. Graphs
     9. Heaps
     10. Bitmask
