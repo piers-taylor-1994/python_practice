@@ -31,7 +31,7 @@ class Solution:
     3. Linked lists ✓ (24/07)
     4. Binary trees ✓ (23/07)
     5. Tries ✓ (23/07)
-    6. Greedy
+    6. Greedy ✓ (24/07)
     7. Matrices
     8. Graphs
     9. Heaps
@@ -42,37 +42,65 @@ class Solution:
     14. Sliding window ✓ (22/07)
     """
 
-    def getStrength(self, machines:list[list[int]]):
-        smallest_average_machine = (float('inf'), 0)
-        machines_copy = machines[::]
-        lowest_powers = []
-
-        for i, machine in enumerate(machines_copy):
-            machine.sort()
-            machine_lowest_power = machine.pop(0)
-            machine_minimum_power = machine[0]
-            
-            if machine_minimum_power < smallest_average_machine[0]:
-                smallest_average_machine = (machine_minimum_power, i)
-            lowest_powers.append(machine_lowest_power)
+    def oranges_rotting(self, matrix):
+        if not matrix or not matrix[0]:
+            return 0
         
-        machines_copy[smallest_average_machine[1]] += lowest_powers
+        DIRECTIONS = [
+            (-1, 0),
+            (0, 1),
+            (1, 0),
+            (0, -1)
+        ]
 
-        return sum([min(machine) for machine in machines_copy])
+        rotten_oranges = set()
+        fresh_oranges = 0
+
+        for i in range(len(matrix)):
+            for j in range(len(matrix[0])):
+                if matrix[i][j] == 1:
+                    fresh_oranges += 1
+                elif matrix[i][j] == 2:
+                    rotten_oranges.add((i, j))
+        
+        if fresh_oranges == 0:
+            return 0
+        
+        seen = rotten_oranges
+        queue = deque(rotten_oranges)
+        minutes = -1
+
+        while queue:
+            for _ in range(len(queue)):
+                row, col = queue.popleft()
+
+                for dr, dc in DIRECTIONS:
+                    new_row = row + dr
+                    new_col = col + dc
+
+                    if 0 <= new_row < len(matrix) and 0 <= new_col < len(matrix[0]) and (new_row, new_col) not in seen and matrix[new_row][new_col] == 1:
+                        queue.append((new_row, new_col))
+                        seen.add((new_row, new_col))
+                        fresh_oranges -= 1
+            minutes += 1
+        
+        return minutes if fresh_oranges == 0 else -1
+
+
     
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
 # print(random.choice(["quick_sort"]))
 # print(random.choice([]))
 # print(random.choice(["right-side-view", "count-nodes", "is_valid_bst"]))
-# print(random.choice(["orange_rotting", "walls_gates"]))
+# print(random.choice(["walls_gates"]))
 # print(random.choice(["can_finish", "network_delay_time"]))
 # print(random.choice(["subset sum/partition", "grid/pathfinding", "string manipulation", "decision based", "probability and counting", "bitmask"]))
 
 solution = Solution()
 
-print(solution.getStrength([[1,5], [4,3], [2,10]]))
-print(solution.getStrength([[6, 1, 7, 4, 5], [2, 1, 2, 1, 3], [2, 2, 2, 2, 2], [2, 5, 3, 3, 4]]))
+print(solution.oranges_rotting([[2,1,1],[1,1,0],[0,1,1]]))
+print(solution.oranges_rotting([[0, 1]]))
 
 # head = Node(1)
 # node_1 = Node(2)
