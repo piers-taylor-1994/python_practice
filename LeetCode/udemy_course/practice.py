@@ -42,34 +42,30 @@ class Solution:
     14. Sliding window ✓ (22/07)
     """
 
-    def reverse_partially_linked_list(self, head, left, right):
-        if not head or not head.next:
+    def flatten_doubly_linked_list(self, head):
+        if not head:
             return head
 
         current = head
-        node_before_reverse = head
-        idx = 1
-        tail = None
-        prev = None
+        
+        while current:
+            if current.child:
+                next = current.next
+                child = current.child
+                current.next = child
+                child.prev = current
 
-        while idx <= right:
-            next = current.next
-            
-            if left <= idx <= right:
-                if idx == left:
-                    tail = current
-                current.next = prev
-                prev = current
-            else:
-                node_before_reverse = current
-                
-            current = next
-            idx += 1
+                if next:
+                    while child.next:
+                        child = child.next
 
-        node_before_reverse.next = prev
-        tail.next = current
+                    child.next = next
+                    next.prev = child
 
-        return head if left > 1 else prev
+                current.child = None
+            current = current.next
+        
+        return head
     
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
