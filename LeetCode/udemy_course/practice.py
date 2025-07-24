@@ -19,56 +19,16 @@ class MaxHeap:
 
 class TrieNode:
     def __init__(self):
-        self.end = False
-        self.children = [None] * 26
+        ...
 class Trie:
     def __init__(self):
-        self.root = TrieNode()
-
-    def insert(self, word):
-        node = self.root
-
-        for character in word:
-            character_idx = ord(character) - ord("a")
-
-            if not node.children[character_idx]:
-                node.children[character_idx] = TrieNode()
-            
-            node = node.children[character_idx]
-        
-        node.end = True
-    
-    def search_word(self, word):
-        node = self.root
-
-        for character in word:
-            character_idx = ord(character) - ord("a")
-
-            if not node.children[character_idx]:
-                return False
-            
-            node = node.children[character_idx]
-        
-        return node.end
-
-    def search_prefix(self, prefix):
-        node = self.root
-
-        for character in prefix:
-            character_idx = ord(character) - ord("a")
-
-            if not node.children[character_idx]:
-                return False
-            
-            node = node.children[character_idx]
-        
-        return True
+        ...
 
 class Solution:
     """
     1. Arrays ✓ (22/07)
     2. Strings ✓ (22/07)
-    3. Linked lists ✓ (23/07)
+    3. Linked lists ✓ (24/07)
     4. Binary trees ✓ (23/07)
     5. Tries ✓ (23/07)
     6. Greedy
@@ -81,6 +41,24 @@ class Solution:
     13. Prefix sum ✓ (22/07)
     14. Sliding window ✓ (22/07)
     """
+
+    def reverse_linked_list(self, head):
+        if not head or not head.next:
+            return head
+        
+        current = head
+
+        def rec(current, prev):
+            if not current:
+                return prev
+            
+            next = current.next
+            current.next = prev
+            prev = current
+
+            return rec(next, prev)
+        
+        return rec(current, None)
     
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
@@ -93,11 +71,15 @@ class Solution:
 
 solution = Solution()
 
-print("\nTrie")
-trie = Trie()
-trie.insert("appls")
-print(trie.search_word("apple"))
-print(trie.search_prefix("app"))
+head = Node(1)
+node_1 = Node(2)
+node_2 = Node(3)
+node_3 = Node(4)
+node_4 = Node(5)
+head.next = node_1
+node_1.next = node_2
+node_2.next = node_3
+node_3.next = node_4
 
 # print("\nHeaps")
 # min_heap = MinHeap()
