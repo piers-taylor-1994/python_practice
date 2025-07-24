@@ -49,19 +49,20 @@ class Solution:
         current = head
         node_before_reverse = head
         idx = 1
-
-        while idx < left:
-            node_before_reverse = current
-            current = current.next
-            idx += 1
-
-        tail = current
+        tail = None
         prev = None
-        
-        while left <= idx <= right:
+
+        while idx <= right:
             next = current.next
-            current.next = prev
-            prev = current
+            
+            if left <= idx <= right:
+                if idx == left:
+                    tail = current
+                current.next = prev
+                prev = current
+            else:
+                node_before_reverse = current
+                
             current = next
             idx += 1
 
