@@ -42,30 +42,23 @@ class Solution:
     14. Sliding window ✓ (22/07)
     """
 
-    def flatten_doubly_linked_list(self, head):
-        if not head:
-            return head
+    def getStrength(self, machines:list[list[int]]):
+        smallest_average_machine = (float('inf'), 0)
+        machines_copy = machines[::]
+        lowest_powers = []
 
-        current = head
+        for i, machine in enumerate(machines_copy):
+            machine.sort()
+            machine_lowest_power = machine.pop(0)
+            machine_minimum_power = machine[0]
+            
+            if machine_minimum_power < smallest_average_machine[0]:
+                smallest_average_machine = (machine_minimum_power, i)
+            lowest_powers.append(machine_lowest_power)
         
-        while current:
-            if current.child:
-                next = current.next
-                child = current.child
-                current.next = child
-                child.prev = current
+        machines_copy[smallest_average_machine[1]] += lowest_powers
 
-                if next:
-                    while child.next:
-                        child = child.next
-
-                    child.next = next
-                    next.prev = child
-
-                current.child = None
-            current = current.next
-        
-        return head
+        return sum([min(machine) for machine in machines_copy])
     
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
@@ -78,15 +71,18 @@ class Solution:
 
 solution = Solution()
 
-head = Node(1)
-node_1 = Node(2)
-node_2 = Node(3)
-node_3 = Node(4)
-node_4 = Node(5)
-head.next = node_1
-node_1.next = node_2
-node_2.next = node_3
-node_3.next = node_4
+print(solution.getStrength([[1,5], [4,3], [2,10]]))
+print(solution.getStrength([[6, 1, 7, 4, 5], [2, 1, 2, 1, 3], [2, 2, 2, 2, 2], [2, 5, 3, 3, 4]]))
+
+# head = Node(1)
+# node_1 = Node(2)
+# node_2 = Node(3)
+# node_3 = Node(4)
+# node_4 = Node(5)
+# head.next = node_1
+# node_1.next = node_2
+# node_2.next = node_3
+# node_3.next = node_4
 
 # print("\nHeaps")
 # min_heap = MinHeap()
