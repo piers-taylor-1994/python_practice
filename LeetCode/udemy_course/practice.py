@@ -43,29 +43,33 @@ class Solution:
     """
 
     def canFinish(self, numCourses, prerequisites):
-        if numCourses == 1 or len(prerequisites) <= 1:
+        if numCourses == 1:
             return True
         
         graph = {i:[] for i in range(numCourses)}
+        inDegree = {i:0 for i in range(numCourses)}
         for end, start in prerequisites:
             graph[start].append(end)
+            inDegree[end] += 1
 
-        for start in graph:
-            seen = set(graph[start])
-            queue = deque(graph[start])
+        stack = []
+        for i in range(len(inDegree)):
+            if inDegree[i] == 0:
+                stack.append(i)
 
-            while queue:
-                node = queue.popleft()
+        count = 0
 
-                for edge in graph[node]:
-                    if edge == start:
-                        return False
-                    
-                    if edge not in seen:
-                        queue.append(edge)
-                        seen.add(edge)
+        while stack:
+            node = stack.pop()
+            count += 1
+
+            for edge in graph[node]:
+                inDegree[edge] -= 1
+
+                if inDegree[edge] == 0:
+                    stack.append(edge)
         
-        return True
+        return numCourses == count
     
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
