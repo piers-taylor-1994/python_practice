@@ -70,6 +70,14 @@ class Solution:
             return memo[(m, n)]
 
         return rec(m, n)
+    def unique_paths_tabular(self, m, n):
+        dp = [[1] * n for _ in range(m)] 
+
+        for i in range(1, m):
+            for j in range(1, n):
+                dp[i][j] = dp[i - 1][j] + dp[i][j - 1]
+        
+        return dp[m - 1][n - 1]
     
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
@@ -85,6 +93,7 @@ class Solution:
 solution = Solution()
 
 print(solution.unique_paths_memo(3, 7))
+print(solution.unique_paths_tabular(3, 7))
 
 # head = Node(1)
 # node_1 = Node(2)
