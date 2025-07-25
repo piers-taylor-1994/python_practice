@@ -69,6 +69,7 @@ class Solution:
 
         return second
     
+    #subset sum/partition
     def coin_change_memo(self, coins, amount):
         def dp(current_amount, memo):
             if current_amount == 0:
@@ -116,6 +117,7 @@ class Solution:
 
         return dp(0, capacity, {})
     
+    #grid/pathfinding
     def unique_paths_memo(self, m, n):
         def dp(m, n, memo):
             if m == 1 or n == 1:
@@ -174,6 +176,7 @@ class Solution:
         
         return dp[(len(grid) - 1, len(grid[0]) - 1)]
     
+    #string manipulation
     def longest_common_subsequence(self, text1, text2):
         memo = {}
         def dp(i, j):
@@ -213,6 +216,7 @@ class Solution:
 
         return dp(len(word1), len(word2))
     
+    #decision based problems
     def house_robber(self, nums):
         memo = {}
 
@@ -257,6 +261,7 @@ class Solution:
             furthest = max(furthest, i + nums[i])
         return True
     
+    #probability & counting
     def knight_probability_memo(self, n, k, row, column):
         moves = [(-2,-1), (-2,1), (-1,2), (1,2), (2,1), (2,-1), (1,-2), (-1,-2)]
         memo = {}
@@ -295,6 +300,7 @@ class Solution:
     # Adding a new "i" to current bitmask ->                                bitmask | 1 << i
     # Skipping over i if it's already in bitmask ->                         if not (bitmask & 1 << i)
     
+    #bitmask
     def travelling_salesman(self, n, cost):
         memo = {}
         def dp(current_city, seen):
