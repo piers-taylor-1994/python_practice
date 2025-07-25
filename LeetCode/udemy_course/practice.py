@@ -15,7 +15,22 @@ class MinHeap():
 
 class MaxHeap:
     def __init__(self):
-        ...
+        self.heap = []
+        heapq.heapify(self.heap)
+
+    def return_heap(self):
+        return [-val for val in self.heap]
+
+    def insert(self, value):
+        heapq.heappush(self.heap, -value)
+    
+    def extract_max(self):
+        return -heapq.heappop(self.heap)
+    
+    def heapify(self, arr):
+        arr_to_heap = [-val for val in arr]
+        heapq.heapify(arr_to_heap)
+        self.heap = arr_to_heap
 
 class TrieNode:
     def __init__(self):
@@ -41,35 +56,6 @@ class Solution:
     13. Prefix sum ✓ (22/07)
     14. Sliding window ✓ (22/07)
     """
-
-    def canFinish(self, numCourses, prerequisites):
-        if numCourses == 1:
-            return True
-        
-        graph = {i:[] for i in range(numCourses)}
-        inDegree = {i:0 for i in range(numCourses)}
-        for end, start in prerequisites:
-            graph[start].append(end)
-            inDegree[end] += 1
-
-        stack = []
-        for i in range(len(inDegree)):
-            if inDegree[i] == 0:
-                stack.append(i)
-
-        count = 0
-
-        while stack:
-            node = stack.pop()
-            count += 1
-
-            for edge in graph[node]:
-                inDegree[edge] -= 1
-
-                if inDegree[edge] == 0:
-                    stack.append(edge)
-        
-        return numCourses == count
     
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
@@ -81,10 +67,6 @@ class Solution:
 # print(random.choice(["subset sum/partition", "grid/pathfinding", "string manipulation", "decision based", "probability and counting", "bitmask"]))
 
 solution = Solution()
-
-# print(solution.canFinish(2, [[1,0], [0,1]]))
-# print(solution.canFinish(20, [[0,10],[3,18],[5,5],[6,11],[11,14],[13,1],[15,1],[17,4]]))
-print(solution.canFinish(3, [[0,1],[0,2],[1,2]]))
 
 # head = Node(1)
 # node_1 = Node(2)
@@ -108,15 +90,15 @@ print(solution.canFinish(3, [[0,1],[0,2],[1,2]]))
 # min_heap.extract_minimum()
 # print(min_heap.heap)
 
-# max_heap = MaxHeap()
-# max_heap.insert(0)
-# max_heap.insert(10)
-# max_heap.insert(5)
-# max_heap.insert(3)
-# max_heap.insert(7)
-# max_heap.insert(9)
-# print(max_heap.return_heap())
-# max_heap.extract_max()
-# print(max_heap.return_heap())
-# max_heap.heapify([0, 10, 5, 3, 7, 9])
-# print(max_heap.return_heap())
+max_heap = MaxHeap()
+max_heap.insert(0)
+max_heap.insert(10)
+max_heap.insert(5)
+max_heap.insert(3)
+max_heap.insert(7)
+max_heap.insert(9)
+print(max_heap.return_heap())
+max_heap.extract_max()
+print(max_heap.return_heap())
+max_heap.heapify([0, 10, 5, 3, 7, 9])
+print(max_heap.return_heap())
