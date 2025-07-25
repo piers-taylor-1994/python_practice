@@ -33,7 +33,7 @@ class Solution:
     5. Tries ✓ (23/07)
     6. Greedy ✓ (24/07)
     7. Matrices ✓ (24/07)
-    8. Graphs
+    8. Graphs ✓ (25/07)
     9. Heaps
     10. Bitmask
     11. DP
@@ -42,51 +42,30 @@ class Solution:
     14. Sliding window ✓ (22/07)
     """
 
-    def oranges_rotting(self, matrix):
-        if not matrix or not matrix[0]:
-            return 0
+    def canFinish(self, numCourses, prerequisites):
+        if numCourses == 1 or len(prerequisites) <= 1:
+            return True
         
-        DIRECTIONS = [
-            (-1, 0),
-            (0, 1),
-            (1, 0),
-            (0, -1)
-        ]
+        graph = {i:[] for i in range(numCourses)}
+        for end, start in prerequisites:
+            graph[start].append(end)
 
-        rotten_oranges = set()
-        fresh_oranges = 0
+        for start in graph:
+            seen = set(graph[start])
+            queue = deque(graph[start])
 
-        for i in range(len(matrix)):
-            for j in range(len(matrix[0])):
-                if matrix[i][j] == 1:
-                    fresh_oranges += 1
-                elif matrix[i][j] == 2:
-                    rotten_oranges.add((i, j))
+            while queue:
+                node = queue.popleft()
+
+                for edge in graph[node]:
+                    if edge == start:
+                        return False
+                    
+                    if edge not in seen:
+                        queue.append(edge)
+                        seen.add(edge)
         
-        if fresh_oranges == 0:
-            return 0
-        
-        seen = rotten_oranges
-        queue = deque(rotten_oranges)
-        minutes = -1
-
-        while queue:
-            for _ in range(len(queue)):
-                row, col = queue.popleft()
-
-                for dr, dc in DIRECTIONS:
-                    new_row = row + dr
-                    new_col = col + dc
-
-                    if 0 <= new_row < len(matrix) and 0 <= new_col < len(matrix[0]) and (new_row, new_col) not in seen and matrix[new_row][new_col] == 1:
-                        queue.append((new_row, new_col))
-                        seen.add((new_row, new_col))
-                        fresh_oranges -= 1
-            minutes += 1
-        
-        return minutes if fresh_oranges == 0 else -1
-
-
+        return True
     
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
@@ -94,13 +73,14 @@ class Solution:
 # print(random.choice([]))
 # print(random.choice(["right-side-view", "count-nodes", "is_valid_bst"]))
 # print(random.choice(["walls_gates"]))
-# print(random.choice(["can_finish", "network_delay_time"]))
+# print(random.choice(["network_delay_time"]))
 # print(random.choice(["subset sum/partition", "grid/pathfinding", "string manipulation", "decision based", "probability and counting", "bitmask"]))
 
 solution = Solution()
 
-print(solution.oranges_rotting([[2,1,1],[1,1,0],[0,1,1]]))
-print(solution.oranges_rotting([[0, 1]]))
+# print(solution.canFinish(2, [[1,0], [0,1]]))
+# print(solution.canFinish(20, [[0,10],[3,18],[5,5],[6,11],[11,14],[13,1],[15,1],[17,4]]))
+print(solution.canFinish(3, [[0,1],[0,2],[1,2]]))
 
 # head = Node(1)
 # node_1 = Node(2)
