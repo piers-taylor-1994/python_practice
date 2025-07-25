@@ -49,7 +49,7 @@ class Solution:
     6. Greedy ✓ (24/07)
     7. Matrices ✓ (24/07)
     8. Graphs ✓ (25/07)
-    9. Heaps
+    9. Heaps ✓ (25/07)
     10. Bitmask
     11. DP
     12. Backtracking
