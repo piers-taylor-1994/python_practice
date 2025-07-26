@@ -56,6 +56,7 @@ class Solution:
     13. Prefix sum ✓ (22/07)
     14. Sliding window ✓ (22/07)
     """
+    # [1,2,3] 3 => [[1,2], [3]]
     def subarrays_equal_k(self, nums, k):
         prefix = 0
         hash_map = {0: 1}
@@ -68,6 +69,7 @@ class Solution:
         
         return total
     
+    # "cbaebabacd", "abc" => [0, 6]
     def find_all_anagrams(self, s, p):
         results = []
         p_count = Counter(p)
@@ -90,6 +92,7 @@ class Solution:
         
         return results
     
+    # "ADOBECODEBANC", "ABC" => "BANC"
     def minimum_window_substring(self, s, t):
         t_count = Counter(t)
         s_count = Counter()
