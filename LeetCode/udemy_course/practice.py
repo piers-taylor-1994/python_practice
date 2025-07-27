@@ -73,9 +73,9 @@ class Solution:
     
     def permutations(self, nums):
         results = []
-        used_nums = set()
 
-        def rec(arr):
+
+        def rec(arr, used):
             if arr and len(arr) == len(nums):
                 results.append(arr[:])
                 return
@@ -83,13 +83,11 @@ class Solution:
             for num in nums:
                 if num not in arr:
                     arr.append(num)
-                    used_nums.add(num)
-                    rec(arr)
+                    rec(arr, used + [num])
 
                     arr.pop()
-                    used_nums.remove(num)
         
-        rec([])
+        rec([], [])
         return results
     
 # print(random.choice([]))
