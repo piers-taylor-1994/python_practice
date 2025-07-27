@@ -57,27 +57,19 @@ class Solution:
     14. Sliding window ✓ (22/07)
     """
 
-    def unique_paths_memo(self, m, n):
-        memo = {}
+    def generate_all_subsets(self, nums):
+        results = []
 
-        def rec(m, n):
-            if m == 1 or n == 1:
-                return 1
-            elif (m, n) in memo:
-                return memo[(m, n)]
+        def rec(index, subset):
+            results.append(subset[:])
 
-            memo[(m, n)] = rec(m - 1, n) + rec(m, n - 1)
-            return memo[(m, n)]
-
-        return rec(m, n)
-    def unique_paths_tabular(self, m, n):
-        dp = [[1] * n for _ in range(m)] 
-
-        for i in range(1, m):
-            for j in range(1, n):
-                dp[i][j] = dp[i - 1][j] + dp[i][j - 1]
+            for i in range(index, len(nums)):
+                subset.append(nums[i])
+                rec(i + 1, subset)
+                subset.pop()
         
-        return dp[m - 1][n - 1]
+        rec(0, [])
+        return results
     
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
@@ -92,8 +84,7 @@ class Solution:
 
 solution = Solution()
 
-print(solution.unique_paths_memo(3, 7))
-print(solution.unique_paths_tabular(3, 7))
+print(solution.generate_all_subsets([1,2,3]))
 
 # head = Node(1)
 # node_1 = Node(2)
