@@ -71,6 +71,27 @@ class Solution:
         rec(0, [])
         return results
     
+    def permutations(self, nums):
+        results = []
+        used_nums = set()
+
+        def rec(arr):
+            if arr and len(arr) == len(nums):
+                results.append(arr[:])
+                return
+
+            for num in nums:
+                if num not in arr:
+                    arr.append(num)
+                    used_nums.add(num)
+                    rec(arr)
+
+                    arr.pop()
+                    used_nums.remove(num)
+        
+        rec([])
+        return results
+    
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
 # print(random.choice(["quick_sort"]))
@@ -85,6 +106,7 @@ class Solution:
 solution = Solution()
 
 print(solution.generate_all_subsets([1,2,3]))
+print(solution.permutations([1,2,3]))
 
 # head = Node(1)
 # node_1 = Node(2)
