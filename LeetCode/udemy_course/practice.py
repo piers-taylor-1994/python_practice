@@ -89,6 +89,25 @@ class Solution:
         rec([], [])
         return results
     
+    def combination_sum(self, nums, target):
+        nums.sort()
+        results = []
+
+        def rec(index, total, subset):          
+            if total == target:
+                results.append(subset[:])
+                return
+            elif total > target:
+                return
+            
+            for i in range(index, len(nums)):
+                subset.append(nums[i])
+                rec(i, total + nums[i], subset) 
+                subset.pop()
+        
+        rec(0, 0, [])
+        return results
+    
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
 # print(random.choice(["quick_sort"]))
@@ -104,6 +123,7 @@ solution = Solution()
 
 print(solution.generate_all_subsets([1,2,3]))
 print(solution.permutations([1,2,3]))
+print(solution.combination_sum([7,3,2], 18))
 
 # head = Node(1)
 # node_1 = Node(2)
