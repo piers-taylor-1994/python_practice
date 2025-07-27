@@ -74,7 +74,6 @@ class Solution:
     def permutations(self, nums):
         results = []
 
-
         def rec(arr, used):
             if arr and len(arr) == len(nums):
                 results.append(arr[:])
