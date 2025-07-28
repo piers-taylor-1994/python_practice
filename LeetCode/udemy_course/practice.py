@@ -1,4 +1,4 @@
-from collections import deque
+from collections import Counter, deque
 import random
 import heapq
  
@@ -56,57 +56,65 @@ class Solution:
     13. Prefix sum ✓ (22/07)
     14. Sliding window ✓ (22/07)
     """
+    def subarrays_equal_k(self, nums, k):
+        prefix = 0
+        hash_map = {0: 1}
+        total = 0
 
-    def generate_all_subsets(self, nums):
-        results = []
-
-        def rec(index, subset):
-            results.append(subset[:])
-
-            for i in range(index, len(nums)):
-                subset.append(nums[i])
-                rec(i + 1, subset)
-                subset.pop()
+        for i in range(len(nums)):
+            prefix += nums[i]
+            total += hash_map.get(prefix - k, 0)
+            hash_map[prefix] = hash_map.get(prefix, 0) + 1
         
-        rec(0, [])
-        return results
+        return total
     
-    def permutations(self, nums):
+    def find_all_anagrams(self, s, p):
         results = []
+        p_count = Counter(p)
+        s_count = Counter(s[:len(p)])
 
-        def rec(arr, used):
-            if arr and len(arr) == len(nums):
-                results.append(arr[:])
-                return
+        for i in range(len(p) - 1, len(s)):
+            start_idx = (i - len(p)) + 1
 
-            for num in nums:
-                if num not in arr:
-                    arr.append(num)
-                    rec(arr, used + [num])
+            if start_idx > 0:
+                s_count[s[i]] = s_count.get(s[i], 0) + 1
 
-                    arr.pop()
-        
-        rec([], [])
-        return results
-    
-    def combination_sum(self, nums, target):
-        nums.sort()
-        results = []
-
-        def rec(index, total, subset):          
-            if total == target:
-                results.append(subset[:])
-                return
-            elif total > target:
-                return
+                if s_count[s[start_idx - 1]] == 1:
+                    del s_count[s[start_idx - 1]]
+                else:
+                    s_count[s[start_idx - 1]] -= 1
             
-            for i in range(index, len(nums)):
-                subset.append(nums[i])
-                rec(i, total + nums[i], subset) 
-                subset.pop()
+
+            if p_count == s_count:
+                results.append(start_idx)
         
-        rec(0, 0, [])
         return results
+    
+    def minimum_window_substring(self, s, t):
+        t_count = Counter(t)
+        s_count = Counter()
+        result = ""
+        min_length = float('inf')
+        left = 0
+
+        for right in range(len(s)):
+            s_count[s[right]] += 1
+
+            while s_count >= t_count:
+                window_length = right - left + 1
+                if window_length < min_length:
+                    min_length = window_length
+                    result = s[left:right + 1]
+                
+                if s_count[s[left]] == 1:
+                    del s_count[s[left]]
+                else:
+                    s_count[s[left]] -= 1
+                
+                left += 1
+        
+        return result
+
     
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
@@ -120,10 +128,12 @@ class Solution:
 # print(random.choice(["subset sum/partition", "string manipulation", "decision based", "probability and counting", "bitmask"]))
 
 solution = Solution()
+print(solution.subarrays_equal_k([1,2,3], 3))
+print(solution.subarrays_equal_k([1,-1, 0], 0))
 
-print(solution.generate_all_subsets([1,2,3]))
-print(solution.permutations([1,2,3]))
-print(solution.combination_sum([7,3,2], 18))
+print(solution.find_all_anagrams("cbaebabacd", "abc"))
+
+print(solution.minimum_window_substring("ADOBECODEBANC", "ABC"))
 
 # head = Node(1)
 # node_1 = Node(2)
