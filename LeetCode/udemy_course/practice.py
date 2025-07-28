@@ -59,14 +59,14 @@ class Solution:
     # nums=[1,2,3] k=3 => 2 ([1,2], [3])
     def subarrays_equal_k(self, nums, k):
         prefix = 0
-        subarray_count = {prefix : 1}
+        subarray_count = {prefix: 1}
         total = 0
 
         for num in nums:
             prefix += num
             total += subarray_count.get(prefix - k, 0)
             subarray_count[prefix] = subarray_count.get(prefix, 0) + 1
-        
+            
         return total
     
     # s="cbaebabacd" p="abc" => [0, 6]
