@@ -56,67 +56,26 @@ class Solution:
     13. Prefix sum ✓ (22/07)
     14. Sliding window ✓ (22/07)
     """
-    # [1,2,3] 3 => [[1,2], [3]]
+    # nums=[1,2,3] k=3 => 2 ([1,2], [3])
     def subarrays_equal_k(self, nums, k):
         prefix = 0
-        hash_map = {0: 1}
+        subarray_count = {prefix : 1}
         total = 0
 
-        for i in range(len(nums)):
-            prefix += nums[i]
-            total += hash_map.get(prefix - k, 0)
-            hash_map[prefix] = hash_map.get(prefix, 0) + 1
+        for num in nums:
+            prefix += num
+            total += subarray_count.get(prefix - k, 0)
+            subarray_count[prefix] = subarray_count.get(prefix, 0) + 1
         
         return total
     
-    # "cbaebabacd", "abc" => [0, 6]
+    # s="cbaebabacd" p="abc" => [0, 6]
     def find_all_anagrams(self, s, p):
-        results = []
-        p_count = Counter(p)
-        s_count = Counter(s[:len(p)])
-
-        for i in range(len(p) - 1, len(s)):
-            start_idx = (i - len(p)) + 1
-
-            if start_idx > 0:
-                s_count[s[i]] = s_count.get(s[i], 0) + 1
-
-                if s_count[s[start_idx - 1]] == 1:
-                    del s_count[s[start_idx - 1]]
-                else:
-                    s_count[s[start_idx - 1]] -= 1
-            
-
-            if p_count == s_count:
-                results.append(start_idx)
-        
-        return results
+        ...
     
-    # "ADOBECODEBANC", "ABC" => "BANC"
+    # s="ADOBECODEBANC" t="ABC" => "BANC"
     def minimum_window_substring(self, s, t):
-        t_count = Counter(t)
-        s_count = Counter()
-        result = ""
-        min_length = float('inf')
-        left = 0
-
-        for right in range(len(s)):
-            s_count[s[right]] += 1
-
-            while s_count >= t_count:
-                window_length = right - left + 1
-                if window_length < min_length:
-                    min_length = window_length
-                    result = s[left:right + 1]
-                
-                if s_count[s[left]] == 1:
-                    del s_count[s[left]]
-                else:
-                    s_count[s[left]] -= 1
-                
-                left += 1
-        
-        return result
+        ...
 
     
 # print(random.choice([]))
