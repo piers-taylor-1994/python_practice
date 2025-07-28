@@ -91,7 +91,29 @@ class Solution:
     
     # s="ADOBECODEBANC" t="ABC" => "BANC"
     def minimum_window_substring(self, s, t):
-        ...
+        t_count = Counter(t)
+        s_count = Counter(s[:len(t)])
+        min_window = float('inf')
+        result = ""
+        left = 0
+
+        for right in range(len(t) - 1, len(s)):
+            s_count[s[right]] += 1
+
+            while s_count >= t_count:
+                current_window = right - left + 1
+
+                if current_window < min_window:
+                    min_window = current_window
+                    result = s[left:right + 1]
+                
+                s_count[s[left]] -= 1
+                if s_count[s[left]] == 0:
+                    del s_count[s[left]]
+                
+                left += 1
+        
+        return result
 
     
 # print(random.choice([]))
