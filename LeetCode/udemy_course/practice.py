@@ -94,7 +94,7 @@ class Solution:
         
         return window_range
     
-    def binary_tree_paths(self, root):
+    def binary_tree_paths_dfs(self, root):
         if not root:
             return []
         
@@ -137,7 +137,7 @@ node_5 = TreeNode(5)
 root.left = node_2
 root.right = node_3
 node_2.left = node_5
-print(solution.binary_tree_paths(root))
+print(solution.binary_tree_paths_dfs(root))
 
 # head = Node(1)
 # node_1 = Node(2)
