@@ -65,56 +65,8 @@ class Solution:
             prefix += num
             total += subarray_count.get(prefix - k, 0)
             subarray_count[prefix] = subarray_count.get(prefix, 0) + 1
-
+        
         return total
-    
-    # s="cbaebabacd" p="abc" => [0, 6]
-    def find_all_anagrams(self, s, p):
-        p_count = Counter(p)
-        s_count = Counter(s[:len(p)])
-        results = []
-        
-        for end in range(len(p) - 1, len(s)):
-            start = end - len(p) + 1
-
-            if start > 0:
-                s_count[s[end]] += 1
-                s_count[s[start - 1]] -= 1
-
-                if s_count[s[start - 1]] == 0:
-                    del s_count[s[start - 1]]
-            
-            if p_count == s_count:
-                results.append(start)
-            
-        return results
-    
-    # s="ADOBECODEBANC" t="ABC" => "BANC"
-    def minimum_window_substring(self, s, t):
-        t_count = Counter(t)
-        s_count = Counter(s[:len(t)])
-        min_window = float('inf')
-        result = ""
-        left = 0
-
-        for right in range(len(t) - 1, len(s)):
-            s_count[s[right]] += 1
-
-            while s_count >= t_count:
-                current_window = right - left + 1
-
-                if current_window < min_window:
-                    min_window = current_window
-                    result = s[left:right + 1]
-                
-                s_count[s[left]] -= 1
-                if s_count[s[left]] == 0:
-                    del s_count[s[left]]
-                
-                left += 1
-        
-        return result
-
     
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
@@ -130,10 +82,6 @@ class Solution:
 solution = Solution()
 print(solution.subarrays_equal_k([1,2,3], 3))
 print(solution.subarrays_equal_k([1,-1, 0], 0))
-
-print(solution.find_all_anagrams("cbaebabacd", "abc"))
-
-print(solution.minimum_window_substring("ADOBECODEBANC", "ABC"))
 
 # head = Node(1)
 # node_1 = Node(2)
