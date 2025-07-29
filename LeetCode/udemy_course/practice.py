@@ -113,6 +113,31 @@ class Solution:
         dfs(root, [])
         return results
     
+    def binary_tree_paths_bfs(self, root):
+        if not root:
+            return []
+        
+        results = []
+        stack = []
+
+        if root.left:
+            stack.append((root.left, [root.val]))
+        if root.right:
+            stack.append((root.right, [root.val]))
+        
+        while stack:
+            node, path = stack.pop()
+
+            if not node.left and not node.right:
+                results.append(path + [node.val])
+            else:
+                if node.left:
+                    stack.append((node.left, path + [node.val]))
+                if node.right:
+                    stack.append((node.right, path + [node.val]))
+        
+        return results
+    
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
 # print(random.choice(["quick_sort"]))
@@ -138,6 +163,7 @@ root.left = node_2
 root.right = node_3
 node_2.left = node_5
 print(solution.binary_tree_paths_dfs(root))
+print(solution.binary_tree_paths_bfs(root))
 
 # head = Node(1)
 # node_1 = Node(2)
