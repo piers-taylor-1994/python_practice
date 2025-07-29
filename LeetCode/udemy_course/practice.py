@@ -172,21 +172,22 @@ class Solution:
     def combination_sum_2(self, candidates, target):
         candidates.sort()
         results = []
-        used = set()
 
         def rec(index, subarray, total):
             if total == target:
-                if tuple(subarray) not in used:
-                    results.append(subarray[:])
-                    used.add(tuple(subarray[:]))
+                results.append(subarray[:])
                 return
             elif total > target:
                 return
             
+            prev = -1
             for i in range(index, len(candidates)):
+                if candidates[i] == prev:
+                    continue
                 subarray.append(candidates[i])
                 rec(i + 1, subarray, total + candidates[i])
                 subarray.pop()
+                prev = candidates[i]
 
         rec(0, [], 0)
         return results
