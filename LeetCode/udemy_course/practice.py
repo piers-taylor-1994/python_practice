@@ -1,6 +1,7 @@
 from collections import Counter, deque
 import random
 import heapq
+import bisect
  
 class Node(object):
     def __init__(self, val, prev = None, next = None, child = None):
@@ -158,7 +159,17 @@ class Solution:
         return results
     
     def find_right_interval(self, intervals):
-        ...
+        results = []
+
+        for interval in intervals:
+            right_interval = bisect.bisect_right(intervals, interval)
+
+            if right_interval == len(intervals):
+                results.append(-1)
+            else:
+                results.append(right_interval)
+        
+        return results
     
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
@@ -188,6 +199,8 @@ print(solution.binary_tree_paths_dfs(root))
 print(solution.binary_tree_paths_bfs(root))
 
 print(solution.partition_labels("ababcbacadefegdehijhklij"))
+
+print(solution.find_right_interval([[1,2], [2,3], [3,4]]))
 
 # head = Node(1)
 # node_1 = Node(2)
