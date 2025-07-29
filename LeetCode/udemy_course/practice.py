@@ -141,7 +141,6 @@ class Solution:
     def partition_labels(self, s):
         s_count = Counter(s)
         current_letters = set()
-        rolling_index_total = 0
         results = []
 
         for i in range(len(s)):
@@ -154,7 +153,7 @@ class Solution:
                 current_letters.remove(s[i])
 
             if not current_letters:
-                results.append(i - rolling_index_total + 1) if not results else results.append(i -  sum(results) + 1)
+                results.append(i + 1) if not results else results.append(i -  sum(results) + 1)
         
         return results
     
