@@ -153,9 +153,12 @@ class Solution:
                 current_letters.remove(s[i])
 
             if not current_letters:
-                results.append(i + 1) if not results else results.append(i -  sum(results) + 1)
+                results.append(i - sum(results) + 1)
         
         return results
+    
+    def find_right_interval(self, intervals):
+        ...
     
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
