@@ -119,23 +119,23 @@ class Solution:
             return []
         
         results = []
-        stack = []
+        queue = deque()
 
         if root.left:
-            stack.append((root.left, [root.val]))
+            queue.append((root.left, [root.val]))
         if root.right:
-            stack.append((root.right, [root.val]))
+            queue.append((root.right, [root.val]))
         
-        while stack:
-            node, path = stack.pop()
+        while queue:
+            node, path = queue.popleft()
 
             if not node.left and not node.right:
                 results.append(path + [node.val])
             else:
                 if node.left:
-                    stack.append((node.left, path + [node.val]))
+                    queue.append((node.left, path + [node.val]))
                 if node.right:
-                    stack.append((node.right, path + [node.val]))
+                    queue.append((node.right, path + [node.val]))
         
         return results
     
