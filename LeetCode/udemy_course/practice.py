@@ -68,6 +68,26 @@ class Solution:
         
         return total
     
+    # target=7 nums=[2,3,1,2,4,3] => 2 (4[4], 3[5])
+    def minimum_size_subarray_sum(self, target, nums):
+        window_total = 0
+        window_range = 0
+        left = 0
+
+        for right in range(len(nums)):
+            window_total += nums[right]
+
+            while left <= right and window_total >= target:
+                current_range = right - left + 1
+
+                if window_range == 0 or current_range < window_range:
+                    window_range = current_range
+                
+                window_total -= nums[left]
+                left += 1
+        
+        return window_range
+    
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
 # print(random.choice(["quick_sort"]))
@@ -82,6 +102,8 @@ class Solution:
 solution = Solution()
 print(solution.subarrays_equal_k([1,2,3], 3))
 print(solution.subarrays_equal_k([1,-1, 0], 0))
+
+print(solution.minimum_size_subarray_sum(7, [2,3,1,2,4,3]))
 
 # head = Node(1)
 # node_1 = Node(2)
