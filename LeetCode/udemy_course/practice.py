@@ -171,6 +171,27 @@ class Solution:
         
         return results
     
+    def combination_sum_2(self, candidates, target):
+        candidates.sort()
+        results = []
+
+        def rec(index, subarray, total):
+            if total == target:
+                if subarray not in results:
+                    results.append(subarray[:])
+                return
+            elif total > target:
+                return
+            
+            for i in range(index, len(candidates)):
+                subarray.append(candidates[i])
+                rec(i + 1, subarray, total + candidates[i])
+                subarray.pop()
+
+        rec(0, [], 0)
+        return results
+
+    
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
 # print(random.choice(["quick_sort"]))
@@ -201,6 +222,8 @@ print(solution.binary_tree_paths_bfs(root))
 print(solution.partition_labels("ababcbacadefegdehijhklij"))
 
 print(solution.find_right_interval([[1,2], [2,3], [3,4]]))
+
+print(solution.combination_sum_2([10,1,2,7,6,1,5], 8))
 
 # head = Node(1)
 # node_1 = Node(2)
