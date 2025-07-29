@@ -138,6 +138,26 @@ class Solution:
         
         return results
     
+    def partition_labels(self, s):
+        s_count = Counter(s)
+        current_letters = set()
+        rolling_index_total = 0
+        results = []
+
+        for i in range(len(s)):
+            if s[i] not in current_letters:
+                current_letters.add(s[i])
+            
+            s_count[s[i]] -= 1
+
+            if s_count[s[i]] == 0:
+                current_letters.remove(s[i])
+
+            if not current_letters:
+                results.append(i - rolling_index_total + 1) if not results else results.append(i -  sum(results) + 1)
+        
+        return results
+    
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
 # print(random.choice(["quick_sort"]))
@@ -164,6 +184,8 @@ root.right = node_3
 node_2.left = node_5
 print(solution.binary_tree_paths_dfs(root))
 print(solution.binary_tree_paths_bfs(root))
+
+print(solution.partition_labels("ababcbacadefegdehijhklij"))
 
 # head = Node(1)
 # node_1 = Node(2)
