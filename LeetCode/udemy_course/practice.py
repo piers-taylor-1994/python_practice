@@ -62,7 +62,6 @@ class Solution:
     13. Prefix sum ✓ (22/07)
     14. Sliding window ✓ (22/07)
     """
-    # nums=[1,2,3] k=3 => 2 ([1,2], [3])
     def subarrays_equal_k(self, nums, k):
         prefix = 0
         subarray_count = {prefix: 1}
@@ -75,7 +74,6 @@ class Solution:
         
         return total
     
-    # target=7 nums=[2,3,1,2,4,3] => 2 (4[4], 3[5])
     def minimum_size_subarray_sum(self, target, nums):
         window_total = 0
         window_range = 0
@@ -174,11 +172,13 @@ class Solution:
     def combination_sum_2(self, candidates, target):
         candidates.sort()
         results = []
+        used = set()
 
         def rec(index, subarray, total):
             if total == target:
-                if subarray not in results:
+                if tuple(subarray) not in used:
                     results.append(subarray[:])
+                    used.add(tuple(subarray[:]))
                 return
             elif total > target:
                 return
