@@ -9,6 +9,12 @@ class Node(object):
         self.next = next
         self.child = child
 
+class TreeNode(object):
+    def __init__(self, val):
+        self.val = val
+        self.left = None
+        self.right = None
+
 class MinHeap():
     def __init__(self):
         ...
@@ -88,6 +94,25 @@ class Solution:
         
         return window_range
     
+    def binary_tree_paths(self, root):
+        if not root:
+            return []
+        
+        results = []
+
+        def dfs(node, current_path):
+            if not node.left and not node.right:
+                results.append(current_path + [node.val])
+                return
+            
+            if node.left:
+                dfs(node.left, current_path + [node.val])
+            if node.right:
+                dfs(node.right, current_path + [node.val])
+        
+        dfs(root, [])
+        return results
+    
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
 # print(random.choice(["quick_sort"]))
@@ -104,6 +129,15 @@ print(solution.subarrays_equal_k([1,2,3], 3))
 print(solution.subarrays_equal_k([1,-1, 0], 0))
 
 print(solution.minimum_size_subarray_sum(7, [2,3,1,2,4,3]))
+
+root = TreeNode(1)
+node_2 = TreeNode(2)
+node_3 = TreeNode(3)
+node_5 = TreeNode(5)
+root.left = node_2
+root.right = node_3
+node_2.left = node_5
+print(solution.binary_tree_paths(root))
 
 # head = Node(1)
 # node_1 = Node(2)
