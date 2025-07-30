@@ -119,6 +119,16 @@ class Solution:
         
         return jumps
     
+    def jump_game_2_2(self, nums):
+        target = len(nums) - 1
+        furthest = 0
+
+        for i in range(len(nums)):
+            furthest = max(nums[i] + i, furthest)
+            if target <= furthest:
+                return i
+        
+    
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
 # print(random.choice(["quick_sort"]))
@@ -138,6 +148,8 @@ print(solution.longest_substring_k_distinct_chars("eceba", 2))
 
 print(solution.jump_game_2([2,3,1,1,4]))
 print(solution.jump_game_2([2,0,1,3,1,1,4]))
+print(solution.jump_game_2_2([2,3,1,1,4]))
+print(solution.jump_game_2_2([2,0,1,3,1,1,4]))
 
 # head = Node(1)
 # node_1 = Node(2)
