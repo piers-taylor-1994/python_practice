@@ -121,12 +121,22 @@ class Solution:
     
     def jump_game_2_2(self, nums):
         target = len(nums) - 1
-        furthest = 0
+        jumps_map = {0:0} #index = jumps
 
-        for i in range(len(nums)):
-            furthest = max(nums[i] + i, furthest)
-            if target <= furthest:
-                return i
+        for position in range(len(nums)):
+            if target in jumps_map:
+                break
+
+            if position not in jumps_map:
+                continue
+            else:
+                for jump in range(1, nums[position] + 1):
+                    new_position = position + jump
+                    
+                    if new_position not in jumps_map:
+                        jumps_map[new_position] = jumps_map[position] + 1
+        
+        return jumps_map[target]
             
     def max_events_can_attend(self, events):
         sorted_events = sorted(events, key=lambda x:(x[1] - x[0], x[0]))
@@ -182,9 +192,9 @@ print(solution.jump_game_2([2,0,1,3,1,1,4]))
 print(solution.jump_game_2_2([2,3,1,1,4]))
 print(solution.jump_game_2_2([2,0,1,3,1,1,4]))
 
-print(solution.max_events_can_attend([[1,5], [1,2], [2,3], [3,4]]))
+# print(solution.max_events_can_attend([[1,5], [1,2], [2,3], [3,4]]))
 
-print(solution.sliding_window_max([1,3,-1,-3,5,3,6,7], 3))
+# print(solution.sliding_window_max([1,3,-1,-3,5,3,6,7], 3))
 
 # head = Node(1)
 # node_1 = Node(2)
