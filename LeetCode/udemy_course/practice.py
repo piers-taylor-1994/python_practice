@@ -127,6 +127,18 @@ class Solution:
             furthest = max(nums[i] + i, furthest)
             if target <= furthest:
                 return i
+            
+    def max_events_can_attend(self, events):
+        sorted_events = sorted(events, key=lambda x:(x[1] - x[0]))
+        attended_events = set()
+        events = 0
+
+        for start, end in sorted_events:
+            if start not in attended_events:
+                attended_events = attended_events.union(set([day for day in range(start, end)]))
+                events += 1
+        
+        return events
         
     
 # print(random.choice([]))
@@ -150,6 +162,8 @@ print(solution.jump_game_2([2,3,1,1,4]))
 print(solution.jump_game_2([2,0,1,3,1,1,4]))
 print(solution.jump_game_2_2([2,3,1,1,4]))
 print(solution.jump_game_2_2([2,0,1,3,1,1,4]))
+
+print(solution.max_events_can_attend([[1,5], [1,2], [2,3], [3,4]]))
 
 # head = Node(1)
 # node_1 = Node(2)
