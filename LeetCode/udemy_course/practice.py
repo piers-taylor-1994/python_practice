@@ -79,6 +79,28 @@ class Solution:
         
         return minimum_window_range
     
+    def longest_substring_k_distinct_chars(self, s, k):
+        current_chars = {}
+        longest_substring_length = 0
+        left = 0
+
+        for right in range(len(s)):
+            right_char = s[right]
+            current_chars[right_char] = current_chars.get(right_char, 0) + 1
+
+            if len(current_chars) <= k:
+                longest_substring_length = max(longest_substring_length, right - left + 1)
+            
+            while len(current_chars) > k:
+                left_char = s[left]
+                current_chars[left_char] -= 1
+                if current_chars[left_char] == 0:
+                    del current_chars[left_char]
+                left += 1
+        
+        return longest_substring_length
+
+    
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
 # print(random.choice(["quick_sort"]))
