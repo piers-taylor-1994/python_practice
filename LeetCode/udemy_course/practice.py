@@ -101,16 +101,16 @@ class Solution:
         return longest_substring_length
     
     def jump_game_2(self, nums):
+        furthest = 0
+        current_furthest = 0
         jumps = 0
-        farthest = 0
-        current_farthest = 0
 
-        for i in range(len(nums) - 1):
-            farthest = max(i + nums[i], farthest)
+        for i in range(len(nums)):
+            furthest = max(furthest, i + nums[i])
 
-            if i == current_farthest:
+            if i == current_furthest:
                 jumps += 1
-                current_farthest = farthest
+                current_furthest = furthest
         
         return jumps
             
