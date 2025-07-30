@@ -77,7 +77,7 @@ class Solution:
                 current_window_total -= nums[left]
                 left += 1
         
-        return minimum_window_range
+        return minimum_window_range if minimum_window_range != float('inf') else 0
     
     def longest_substring_k_distinct_chars(self, s, k):
         current_chars = {}
@@ -101,50 +101,29 @@ class Solution:
         return longest_substring_length
     
     def jump_game_2(self, nums):
-        target = len(nums) - 1
-        queue = deque([0])
-        jumps = -1
+        jumps = 0
+        farthest = 0
+        current_farthest = 0
 
-        if target == 0:
-            return 0
+        for i in range(len(nums) - 1):
+            farthest = max(i + nums[i], farthest)
 
-        while queue:
-            jumps += 1
-            for _ in range(len(queue)):
-                position = queue.popleft()
-                if position == target:
-                    return jumps
-                
-                queue += [position + i for i in range(nums[position], 0, -1)]
+            if i == current_farthest:
+                jumps += 1
+                current_farthest = farthest
         
         return jumps
-    
-    def jump_game_2_2(self, nums):
-        target = len(nums) - 1
-        jumps_map = {0:0} #index = jumps
-
-        for position in range(len(nums)):
-            if position not in jumps_map:
-                continue
-            else:
-                for jump in range(nums[position], 0, -1):
-                    new_position = position + jump
-                    
-                    if new_position not in jumps_map:
-                        jumps_map[new_position] = jumps_map[position] + 1
-
-                        if new_position == target:
-                            return jumps_map[position] + 1
             
     def max_events_can_attend(self, events):
-        sorted_events = sorted(events, key=lambda x:(x[1] - x[0], x[0]))
+        sorted_events = sorted(events, key=lambda x: x[1])
         attended_events = set()
         events = 0
 
         for start, end in sorted_events:
-            if start not in attended_events:
-                attended_events = attended_events.union(set([day for day in range(start, end)]))
-                events += 1
+            for day in range(start, end + 1):
+                if day not in attended_events:
+                    attended_events.add(day)
+                    events += 1
         
         return events
     
@@ -187,8 +166,6 @@ print(solution.longest_substring_k_distinct_chars("eceba", 2))
 
 print(solution.jump_game_2([2,3,1,1,4]))
 print(solution.jump_game_2([2,0,1,3,1,1,4]))
-print(solution.jump_game_2_2([2,3,1,1,4]))
-print(solution.jump_game_2_2([2,0,1,3,1,1,4]))
 
 print(solution.max_events_can_attend([[1,5], [1,2], [2,3], [3,4]]))
 
