@@ -100,6 +100,25 @@ class Solution:
         
         return longest_substring_length
     
+    def jump_game_2(self, nums):
+        target = len(nums) - 1
+        queue = deque([0])
+        jumps = -1
+
+        if target == 0:
+            return 0
+
+        while queue:
+            jumps += 1
+            for _ in range(len(queue)):
+                position = queue.popleft()
+                if position == target:
+                    return jumps
+                
+                queue += [position + i for i in range(nums[position], 0, -1)]
+        
+        return jumps
+    
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
 # print(random.choice(["quick_sort"]))
@@ -116,6 +135,9 @@ solution = Solution()
 print(solution.minimum_size_subarray_sum(7, [2,3,1,2,4,3]))
 
 print(solution.longest_substring_k_distinct_chars("eceba", 2))
+
+print(solution.jump_game_2([2,3,1,1,4]))
+print(solution.jump_game_2([2,0,1,3,1,1,4]))
 
 # head = Node(1)
 # node_1 = Node(2)
