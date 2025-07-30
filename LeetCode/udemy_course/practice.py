@@ -127,7 +127,7 @@ class Solution:
             if position not in jumps_map:
                 continue
             else:
-                for jump in range(1, nums[position] + 1):
+                for jump in range(nums[position], 0, -1):
                     new_position = position + jump
                     
                     if new_position not in jumps_map:
