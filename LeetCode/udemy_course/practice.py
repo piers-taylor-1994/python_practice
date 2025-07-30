@@ -115,17 +115,17 @@ class Solution:
         return jumps
             
     def max_events_can_attend(self, events):
-        sorted_events = sorted(events, key=lambda x: x[1])
-        attended_events = set()
-        events = 0
+        sorted_events = sorted(events, key=lambda x:x[1])
+        attended_days = set()
+        events_count = 0
 
         for start, end in sorted_events:
             for day in range(start, end + 1):
-                if day not in attended_events:
-                    attended_events.add(day)
-                    events += 1
+                if day not in attended_days:
+                    attended_days.add(day)
+                    events_count += 1
         
-        return events
+        return events_count
     
     def sliding_window_max(self, nums, k):
         window = deque(nums[:k])
