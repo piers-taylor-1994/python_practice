@@ -62,135 +62,22 @@ class Solution:
     13. Prefix sum ✓ (22/07)
     14. Sliding window ✓ (22/07)
     """
-    # nums=[1,2,3] k=3 => 2 ([1,2], [3])
-    def subarrays_equal_k(self, nums, k):
-        prefix = 0
-        subarray_count = {prefix: 1}
-        total = 0
-
-        for num in nums:
-            prefix += num
-            total += subarray_count.get(prefix - k, 0)
-            subarray_count[prefix] = subarray_count.get(prefix, 0) + 1
-        
-        return total
-    
     # target=7 nums=[2,3,1,2,4,3] => 2 (4[4], 3[5])
     def minimum_size_subarray_sum(self, target, nums):
-        window_total = 0
-        window_range = 0
+        minimum_window_range = float('inf')
+        current_window_total = 0
         left = 0
 
         for right in range(len(nums)):
-            window_total += nums[right]
+            current_window_total += nums[right]
 
-            while left <= right and window_total >= target:
-                current_range = right - left + 1
+            while current_window_total >= target:
+                minimum_window_range = min(minimum_window_range, right - left + 1)
 
-                if window_range == 0 or current_range < window_range:
-                    window_range = current_range
-                
-                window_total -= nums[left]
+                current_window_total -= nums[left]
                 left += 1
         
-        return window_range
-    
-    def binary_tree_paths_dfs(self, root):
-        if not root:
-            return []
-        
-        results = []
-
-        def dfs(node, current_path):
-            if not node.left and not node.right:
-                results.append(current_path + [node.val])
-                return
-            
-            if node.left:
-                dfs(node.left, current_path + [node.val])
-            if node.right:
-                dfs(node.right, current_path + [node.val])
-        
-        dfs(root, [])
-        return results
-    
-    def binary_tree_paths_bfs(self, root):
-        if not root:
-            return []
-        
-        results = []
-        queue = deque()
-
-        if root.left:
-            queue.append((root.left, [root.val]))
-        if root.right:
-            queue.append((root.right, [root.val]))
-        
-        while queue:
-            node, path = queue.popleft()
-
-            if not node.left and not node.right:
-                results.append(path + [node.val])
-            else:
-                if node.left:
-                    queue.append((node.left, path + [node.val]))
-                if node.right:
-                    queue.append((node.right, path + [node.val]))
-        
-        return results
-    
-    def partition_labels(self, s):
-        s_count = Counter(s)
-        current_letters = set()
-        results = []
-
-        for i in range(len(s)):
-            if s[i] not in current_letters:
-                current_letters.add(s[i])
-            
-            s_count[s[i]] -= 1
-
-            if s_count[s[i]] == 0:
-                current_letters.remove(s[i])
-
-            if not current_letters:
-                results.append(i - sum(results) + 1)
-        
-        return results
-    
-    def find_right_interval(self, intervals):
-        results = []
-
-        for interval in intervals:
-            right_interval = bisect.bisect_right(intervals, interval)
-
-            if right_interval == len(intervals):
-                results.append(-1)
-            else:
-                results.append(right_interval)
-        
-        return results
-    
-    def combination_sum_2(self, candidates, target):
-        candidates.sort()
-        results = []
-
-        def rec(index, subarray, total):
-            if total == target:
-                if subarray not in results:
-                    results.append(subarray[:])
-                return
-            elif total > target:
-                return
-            
-            for i in range(index, len(candidates)):
-                subarray.append(candidates[i])
-                rec(i + 1, subarray, total + candidates[i])
-                subarray.pop()
-
-        rec(0, [], 0)
-        return results
-
+        return minimum_window_range
     
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
@@ -204,26 +91,7 @@ class Solution:
 # print(random.choice(["subset sum/partition", "string manipulation", "decision based", "probability and counting", "bitmask"]))
 
 solution = Solution()
-print(solution.subarrays_equal_k([1,2,3], 3))
-print(solution.subarrays_equal_k([1,-1, 0], 0))
-
 print(solution.minimum_size_subarray_sum(7, [2,3,1,2,4,3]))
-
-root = TreeNode(1)
-node_2 = TreeNode(2)
-node_3 = TreeNode(3)
-node_5 = TreeNode(5)
-root.left = node_2
-root.right = node_3
-node_2.left = node_5
-print(solution.binary_tree_paths_dfs(root))
-print(solution.binary_tree_paths_bfs(root))
-
-print(solution.partition_labels("ababcbacadefegdehijhklij"))
-
-print(solution.find_right_interval([[1,2], [2,3], [3,4]]))
-
-print(solution.combination_sum_2([10,1,2,7,6,1,5], 8))
 
 # head = Node(1)
 # node_1 = Node(2)
