@@ -129,7 +129,7 @@ class Solution:
                 return i
             
     def max_events_can_attend(self, events):
-        sorted_events = sorted(events, key=lambda x:(x[1] - x[0]))
+        sorted_events = sorted(events, key=lambda x:(x[1] - x[0], x[0]))
         attended_events = set()
         events = 0
 
