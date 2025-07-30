@@ -99,7 +99,6 @@ class Solution:
                 left += 1
         
         return longest_substring_length
-
     
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
@@ -113,7 +112,10 @@ class Solution:
 # print(random.choice(["subset sum/partition", "string manipulation", "decision based", "probability and counting", "bitmask"]))
 
 solution = Solution()
+
 print(solution.minimum_size_subarray_sum(7, [2,3,1,2,4,3]))
+
+print(solution.longest_substring_k_distinct_chars("eceba", 2))
 
 # head = Node(1)
 # node_1 = Node(2)
