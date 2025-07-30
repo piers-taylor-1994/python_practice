@@ -124,9 +124,6 @@ class Solution:
         jumps_map = {0:0} #index = jumps
 
         for position in range(len(nums)):
-            if target in jumps_map:
-                break
-
             if position not in jumps_map:
                 continue
             else:
@@ -135,8 +132,9 @@ class Solution:
                     
                     if new_position not in jumps_map:
                         jumps_map[new_position] = jumps_map[position] + 1
-        
-        return jumps_map[target]
+
+                        if new_position == target:
+                            return jumps_map[position] + 1
             
     def max_events_can_attend(self, events):
         sorted_events = sorted(events, key=lambda x:(x[1] - x[0], x[0]))
