@@ -151,12 +151,12 @@ class Solution:
         return events
     
     def sliding_window_max(self, nums, k):
-        window = nums[:k]
+        window = deque(nums[:k])
         current_max = max(window)
         results = [current_max]
 
         for i in range(1, len(nums) - k + 1):
-            dropped_value = window.pop(0)
+            dropped_value = window.popleft()
             new_value = nums[i + k - 1]
             window.append(new_value)
 
@@ -192,9 +192,9 @@ print(solution.jump_game_2([2,0,1,3,1,1,4]))
 print(solution.jump_game_2_2([2,3,1,1,4]))
 print(solution.jump_game_2_2([2,0,1,3,1,1,4]))
 
-# print(solution.max_events_can_attend([[1,5], [1,2], [2,3], [3,4]]))
+print(solution.max_events_can_attend([[1,5], [1,2], [2,3], [3,4]]))
 
-# print(solution.sliding_window_max([1,3,-1,-3,5,3,6,7], 3))
+print(solution.sliding_window_max([1,3,-1,-3,5,3,6,7], 3))
 
 # head = Node(1)
 # node_1 = Node(2)
