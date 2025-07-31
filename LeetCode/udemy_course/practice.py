@@ -68,7 +68,7 @@ class Solution:
 
         prefix = [0] * (nums_length + 1)
         for i in range(nums_length):
-            prefix[i + 1] = nums[i] + prefix[i]
+            prefix[i + 1] = prefix[i] + nums[i]
         
         queue = deque([0])
         max_length = 0
