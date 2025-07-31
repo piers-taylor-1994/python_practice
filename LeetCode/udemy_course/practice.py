@@ -62,90 +62,31 @@ class Solution:
     13. Prefix sum ✓ (22/07)
     14. Sliding window ✓ (22/07)
     """
-    # target=7 nums=[2,3,1,2,4,3] => 2 (4[4], 3[5])
-    def minimum_size_subarray_sum(self, target, nums):
-        minimum_window_range = float('inf')
-        current_window_total = 0
-        left = 0
 
-        for right in range(len(nums)):
-            current_window_total += nums[right]
-
-            while current_window_total >= target:
-                minimum_window_range = min(minimum_window_range, right - left + 1)
-
-                current_window_total -= nums[left]
-                left += 1
+    def longest_subarray_sum_equalorless_target(self, nums, target):
+        nums_length = len(nums)
         
-        return minimum_window_range if minimum_window_range != float('inf') else 0
-    
-    def longest_substring_k_distinct_chars(self, s, k):
-        current_chars = {}
-        longest_substring_length = 0
-        left = 0
+        prefix = [0] * (nums_length + 1)
 
-        for right in range(len(s)):
-            right_char = s[right]
-            current_chars[right_char] = current_chars.get(right_char, 0) + 1
+        for i in range(nums_length):
+            prefix[i + 1] = prefix[i] + nums[i]
+        
+        queue = deque([0])
+        max_length = 0
 
-            if len(current_chars) <= k:
-                longest_substring_length = max(longest_substring_length, right - left + 1)
+        for i in range(1, len(prefix)):
+            while queue and prefix[i] - prefix[queue[0]] > target:
+                queue.popleft()
+
+            if queue:
+                max_length = max(max_length, i - queue[0])
             
-            while len(current_chars) > k:
-                left_char = s[left]
-                current_chars[left_char] -= 1
-                if current_chars[left_char] == 0:
-                    del current_chars[left_char]
-                left += 1
-        
-        return longest_substring_length
-    
-    def jump_game_2(self, nums):
-        furthest = 0
-        current_furthest = 0
-        jumps = 0
-
-        for i in range(len(nums)):
-            furthest = max(furthest, i + nums[i])
-
-            if i == current_furthest:
-                jumps += 1
-                current_furthest = furthest
-        
-        return jumps
+            while queue and prefix[i] <= prefix[queue[-1]]:
+                queue.pop()
             
-    def max_events_can_attend(self, events):
-        sorted_events = sorted(events, key=lambda x:x[1])
-        attended_days = set()
-        events_count = 0
-
-        for start, end in sorted_events:
-            for day in range(start, end + 1):
-                if day not in attended_days:
-                    attended_days.add(day)
-                    events_count += 1
+            queue.append(i)
         
-        return events_count
-    
-    def sliding_window_max(self, nums, k):
-        window = deque(nums[:k])
-        current_max = max(window)
-        results = [current_max]
-
-        for i in range(1, len(nums) - k + 1):
-            dropped_value = window.popleft()
-            new_value = nums[i + k - 1]
-            window.append(new_value)
-
-            if new_value > current_max:
-                results.append(new_value)
-                current_max = new_value
-            elif dropped_value != current_max:
-                results.append(current_max)
-            else:
-                results.append(max(window))
-        
-        return results
+        return max_length
     
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
@@ -160,16 +101,7 @@ class Solution:
 
 solution = Solution()
 
-print(solution.minimum_size_subarray_sum(7, [2,3,1,2,4,3]))
-
-print(solution.longest_substring_k_distinct_chars("eceba", 2))
-
-print(solution.jump_game_2([2,3,1,1,4]))
-print(solution.jump_game_2([2,0,1,3,1,1,4]))
-
-print(solution.max_events_can_attend([[1,5], [1,2], [2,3], [3,4]]))
-
-print(solution.sliding_window_max([1,3,-1,-3,5,3,6,7], 3))
+print(solution.longest_subarray_sum_equalorless_target([2,-1,2], 3))
 
 # head = Node(1)
 # node_1 = Node(2)
