@@ -116,6 +116,7 @@ class Solution:
             if queue:
                 max_length = max(max_length, i - queue[0])
             
+            #incoming value is smaller so pop all that are bigger
             while queue and prefix[i] <= prefix[queue[-1]]:
                 queue.pop()
             
@@ -173,6 +174,39 @@ class Solution:
         
         return results
     
+    def longest_subarray_sum_equalorless_target_2(self, nums, target):
+        total = 0
+        max_longest = 0
+        left = 0
+
+        for right in range(len(nums)):
+            total += nums[right]
+
+            while total > target:
+                total -= nums[left]
+                left += 1
+            
+            max_longest = max(max_longest, right - left + 1)
+        
+        return max_longest
+    
+    def shortest_subarray_equal_k(self, nums, k):
+        total = 0
+        min_shortest = float('inf')
+        left = 0
+
+        for right in range(len(nums)):
+            total += nums[right]
+
+            while total >= k:
+                min_shortest = min(min_shortest, right - left + 1)
+
+                total -= nums[left]
+                left += 1
+        
+        return min_shortest if min_shortest != float('inf') else -1
+
+    
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
 # print(random.choice(["quick_sort"]))
@@ -187,17 +221,22 @@ class Solution:
 solution = Solution()
 
 print(solution.longest_subarray_sum_equalorless_target([2,-1,2], 3))
+print(solution.longest_subarray_sum_equalorless_target_2([2,-1,2], 3))
 
-print(solution.jump_game_2([2,3,1,1,4]))
+print(solution.shortest_subarray_equal_k([1], 1))
+print(solution.shortest_subarray_equal_k([1,2], 4))
+print(solution.shortest_subarray_equal_k([2,-1,2], 3))
 
-print(solution.task_schedule_max_profit([(2, 100), (1, 19), (2, 27), (1, 25), (3, 15)]))
+# print(solution.jump_game_2([2,3,1,1,4]))
 
-trie = Trie()
-trie.insert_word("appls")
-print(trie.search_word("apple"))
-print(trie.search_prefix("app"))
+# print(solution.task_schedule_max_profit([(2, 100), (1, 19), (2, 27), (1, 25), (3, 15)]))
 
-print(solution.max_in_each_window([1,3,-1,-3,5,3,6,7], 3))
+# trie = Trie()
+# trie.insert_word("appls")
+# print(trie.search_word("apple"))
+# print(trie.search_prefix("app"))
+
+# print(solution.max_in_each_window([1,3,-1,-3,5,3,6,7], 3))
 
 # head = Node(1)
 # node_1 = Node(2)
