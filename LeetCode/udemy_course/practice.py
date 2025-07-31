@@ -80,6 +80,7 @@ class Trie:
         
         return True
 
+
 class Solution:
     """
     1. Arrays ✓ (22/07)
@@ -150,6 +151,27 @@ class Solution:
         
         return total_profit
     
+    def max_in_each_window(self, nums, k):
+        q = deque()
+        results = []
+
+        for i in range(len(nums)):
+            #out of range
+            while q and q[0] < i - k + 1:
+                q.popleft()
+            
+            #incoming value is bigger so pop all that are smaller
+            while q and nums[q[-1]] < nums[i]:
+                q.pop()
+            
+            #this value must be smaller thus if there are any values they must be bigger than what's going in
+            q.append(i)
+
+            if i >= k - 1:
+                results.append(nums[q[0]])
+        
+        return results
+    
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
 # print(random.choice(["quick_sort"]))
@@ -173,6 +195,8 @@ trie = Trie()
 trie.insert_word("appls")
 print(trie.search_word("apple"))
 print(trie.search_prefix("app"))
+
+print(solution.max_in_each_window([1,3,-1,-3,5,3,6,7], 3))
 
 # head = Node(1)
 # node_1 = Node(2)
