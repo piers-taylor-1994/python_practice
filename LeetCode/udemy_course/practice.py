@@ -65,11 +65,10 @@ class Solution:
 
     def longest_subarray_sum_equalorless_target(self, nums, target):
         nums_length = len(nums)
-        
-        prefix = [0] * (nums_length + 1)
 
+        prefix = [0] * (nums_length + 1)
         for i in range(nums_length):
-            prefix[i + 1] = prefix[i] + nums[i]
+            prefix[i + 1] = nums[i] + prefix[i]
         
         queue = deque([0])
         max_length = 0
@@ -77,7 +76,7 @@ class Solution:
         for i in range(1, len(prefix)):
             while queue and prefix[i] - prefix[queue[0]] > target:
                 queue.popleft()
-
+            
             if queue:
                 max_length = max(max_length, i - queue[0])
             
