@@ -87,6 +87,20 @@ class Solution:
         
         return max_length
     
+    def jump_game_2(self, nums):
+        furthest = 0
+        current_furthest = 0
+        jumps = 0
+
+        for i in range(len(nums) - 1):
+            furthest = max(furthest, i + nums[i])
+
+            if i == current_furthest:
+                current_furthest = furthest
+                jumps += 1
+        
+        return jumps
+    
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
 # print(random.choice(["quick_sort"]))
@@ -101,6 +115,8 @@ class Solution:
 solution = Solution()
 
 print(solution.longest_subarray_sum_equalorless_target([2,-1,2], 3))
+
+print(solution.jump_game_2([2,3,1,1,4]))
 
 # head = Node(1)
 # node_1 = Node(2)
