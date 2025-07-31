@@ -167,6 +167,7 @@ class Solution:
             #this value must be smaller thus if there are any values they must be bigger than what's going in
             q.append(i)
 
+            #if first window has developed i.e i >= 3 - 1(2)
             if i >= k - 1:
                 results.append(nums[q[0]])
         
