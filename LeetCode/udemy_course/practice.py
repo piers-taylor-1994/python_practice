@@ -41,9 +41,44 @@ class MaxHeap:
 
 class TrieNode:
     def __init__(self):
-        ...
+        self.end = False
+        self.children = {}
 class Trie:
-    def __init__(self):        ...
+    def __init__(self):
+        self.root = TrieNode()
+
+    def insert_word(self, word):
+        node = self.root
+
+        for char in word:
+            if char not in node.children:
+                node.children[char] = TrieNode()
+            
+            node = node.children[char]
+        
+        node.end = True
+    
+    def search_word(self, word):
+        node = self.root
+
+        for char in word:
+            if char not in node.children:
+                return False
+            
+            node = node.children[char]
+        
+        return node.end
+    
+    def search_prefix(self, prefix):
+        node = self.root
+
+        for char in prefix:
+            if char not in node.children:
+                return False
+            
+            node = node.children[char]
+        
+        return True
 
 class Solution:
     """
@@ -101,6 +136,20 @@ class Solution:
         
         return jumps
     
+    def task_schedule_max_profit(self, tasks):
+        sorted_tasks = sorted(tasks, key=lambda x:-x[1])
+        days_taken = set()
+        total_profit = 0
+
+        for deadline, profit in sorted_tasks:
+            for day in range(deadline, 0, -1):
+                if day not in days_taken:
+                    total_profit += profit
+                    days_taken.add(day)
+                    break
+        
+        return total_profit
+    
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
 # print(random.choice(["quick_sort"]))
@@ -117,6 +166,13 @@ solution = Solution()
 print(solution.longest_subarray_sum_equalorless_target([2,-1,2], 3))
 
 print(solution.jump_game_2([2,3,1,1,4]))
+
+print(solution.task_schedule_max_profit([(2, 100), (1, 19), (2, 27), (1, 25), (3, 15)]))
+
+trie = Trie()
+trie.insert_word("appls")
+print(trie.search_word("apple"))
+print(trie.search_prefix("app"))
 
 # head = Node(1)
 # node_1 = Node(2)
