@@ -101,26 +101,24 @@ class Solution:
 
     def longest_subarray_sum_equalorless_target(self, nums, target):
         nums_length = len(nums)
-
         prefix = [0] * (nums_length + 1)
         for i in range(nums_length):
             prefix[i + 1] = prefix[i] + nums[i]
-        
-        queue = deque([0])
+
+        q = deque([0])
         max_length = 0
 
         for i in range(1, len(prefix)):
-            while queue and prefix[i] - prefix[queue[0]] > target:
-                queue.popleft()
+            while q and prefix[i] - prefix[q[0]] > target:
+                q.popleft()
             
-            if queue:
-                max_length = max(max_length, i - queue[0])
+            while q and prefix[i] <= prefix[q[-1]]:
+                q.pop()
+
+            if q:
+                max_length = max(max_length, i - q[0])
             
-            #incoming value is smaller so pop all that are bigger
-            while queue and prefix[i] <= prefix[queue[-1]]:
-                queue.pop()
-            
-            queue.append(i)
+            q.append(i)
         
         return max_length
     
@@ -219,9 +217,9 @@ solution = Solution()
 print(solution.longest_subarray_sum_equalorless_target([2,-1,2], 3))
 print(solution.longest_subarray_sum_equalorless_target_2([2,-1,2], 3))
 
-print(solution.shortest_subarray_equal_k([1], 1))
-print(solution.shortest_subarray_equal_k([1,2], 4))
-print(solution.shortest_subarray_equal_k([2,-1,2], 3))
+# print(solution.shortest_subarray_equal_k([1], 1))
+# print(solution.shortest_subarray_equal_k([1,2], 4))
+# print(solution.shortest_subarray_equal_k([2,-1,2], 3))
 
 # print(solution.jump_game_2([2,3,1,1,4]))
 
