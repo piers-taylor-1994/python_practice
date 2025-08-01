@@ -157,19 +157,15 @@ class Solution:
         results = []
 
         for i in range(len(nums)):
-            #out of range
-            while q and q[0] < i - k + 1:
+            while q and q[0] <= i - k:
                 q.popleft()
             
-            #incoming value is bigger so pop all that are smaller
-            while q and nums[q[-1]] < nums[i]:
+            while q and nums[i] >= nums[q[-1]]:
                 q.pop()
             
-            #this value must be smaller thus if there are any values they must be bigger than what's going in
             q.append(i)
 
-            #if first window has developed i.e i >= 3 - 1(2)
-            if i >= k - 1:
+            if i - k + 1 >= 0:
                 results.append(nums[q[0]])
         
         return results
@@ -236,7 +232,7 @@ print(solution.shortest_subarray_equal_k([2,-1,2], 3))
 # print(trie.search_word("apple"))
 # print(trie.search_prefix("app"))
 
-# print(solution.max_in_each_window([1,3,-1,-3,5,3,6,7], 3))
+print(solution.max_in_each_window([1,3,-1,-3,5,3,6,7], 3))
 
 # head = Node(1)
 # node_1 = Node(2)
