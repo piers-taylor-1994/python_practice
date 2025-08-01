@@ -3,5 +3,4 @@
 .env
 *.pyc
 *.css
-test.py
-test_2.py
+LeetCode/tests/
