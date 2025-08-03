@@ -147,7 +147,8 @@ class Solution:
 
 solution = Solution()
 
-
+print(solution.climbStairs_memo(2))
+print(solution.climbStairs_tabular(2))
 
 # head = Node(1)
 # node_1 = Node(2)
