@@ -100,10 +100,29 @@ class Solution:
     """
 
     def longest_subarray_sum_equalorless_target(self, nums, target):
-        ...        
+        prefix = [0] * (len(nums) + 1)
+        for i in range(len(nums)):
+            prefix[i + 1] = prefix[i] + nums[i]
+        
+        longest_arr = 0
+        q = deque([])
+
+        for i in range(len(prefix)):
+            while q and prefix[i] - prefix[q[0]] > target:
+                q.popleft()
+            
+            while q and prefix[i] <= prefix[q[-1]]:
+                q.pop()
+
+            q.append(i)
+            
+            if q:
+                longest_arr = max(longest_arr, i - q[0])
+        
+        return longest_arr
     
     def max_in_each_window(self, nums, k):
-        q = deque()
+        q = deque([])
         results = []
 
         for i in range(len(nums)):
@@ -119,6 +138,30 @@ class Solution:
                 results.append(nums[q[0]])
         
         return results
+    
+    def shortestSubarray(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: int
+        """
+        prefix = [0] * (len(nums) + 1)
+        for i in range(len(nums)):
+            prefix[i + 1] = prefix[i] + nums[i]
+
+        shortest_subarray = float('inf')
+        q = deque()
+
+        for i in range(len(prefix)):
+            while q and prefix[i] - prefix[q[0]] >= k:
+                shortest_subarray = min(shortest_subarray, i - q.popleft())
+            
+            while q and prefix[i] <= prefix[q[-1]]:
+                q.pop()
+            
+            q.append(i)
+        
+        return shortest_subarray if shortest_subarray != float('inf') else -1
 
     
 # print(random.choice([]))
@@ -150,6 +193,8 @@ print(solution.longest_subarray_sum_equalorless_target([2,-1,2], 3))
 # print(trie.search_prefix("app"))
 
 print(solution.max_in_each_window([1,3,-1,-3,5,3,6,7], 3))
+
+print(solution.shortestSubarray([2, -1, 2], 3))
 
 # head = Node(1)
 # node_1 = Node(2)
