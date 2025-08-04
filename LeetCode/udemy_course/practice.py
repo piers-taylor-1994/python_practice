@@ -100,55 +100,7 @@ class Solution:
     """
 
     def longest_subarray_sum_equalorless_target(self, nums, target):
-        nums_length = len(nums)
-        prefix = [0] * (nums_length + 1)
-        for i in range(nums_length):
-            prefix[i + 1] = prefix[i] + nums[i]
-
-        q = deque([0])
-        max_length = 0
-
-        for i in range(1, len(prefix)):
-            while q and prefix[i] - prefix[q[0]] > target:
-                q.popleft()
-            
-            while q and prefix[i] <= prefix[q[-1]]:
-                q.pop()
-
-            if q:
-                max_length = max(max_length, i - q[0])
-            
-            q.append(i)
-        
-        return max_length
-    
-    def jump_game_2(self, nums):
-        furthest = 0
-        current_furthest = 0
-        jumps = 0
-
-        for i in range(len(nums) - 1):
-            furthest = max(furthest, i + nums[i])
-
-            if i == current_furthest:
-                current_furthest = furthest
-                jumps += 1
-        
-        return jumps
-    
-    def task_schedule_max_profit(self, tasks):
-        sorted_tasks = sorted(tasks, key=lambda x:-x[1])
-        days_taken = set()
-        total_profit = 0
-
-        for deadline, profit in sorted_tasks:
-            for day in range(deadline, 0, -1):
-                if day not in days_taken:
-                    total_profit += profit
-                    days_taken.add(day)
-                    break
-        
-        return total_profit
+        ...        
     
     def max_in_each_window(self, nums, k):
         q = deque()
@@ -162,43 +114,11 @@ class Solution:
                 q.pop()
             
             q.append(i)
-
-            if i - k + 1 >= 0:
+            
+            if i >= k - 1:
                 results.append(nums[q[0]])
         
         return results
-    
-    def longest_subarray_sum_equalorless_target_2(self, nums, target):
-        total = 0
-        max_longest = 0
-        left = 0
-
-        for right in range(len(nums)):
-            total += nums[right]
-
-            while total > target:
-                total -= nums[left]
-                left += 1
-            
-            max_longest = max(max_longest, right - left + 1)
-        
-        return max_longest
-    
-    def shortest_subarray_equal_k(self, nums, k):
-        total = 0
-        min_shortest = float('inf')
-        left = 0
-
-        for right in range(len(nums)):
-            total += nums[right]
-
-            while total >= k:
-                min_shortest = min(min_shortest, right - left + 1)
-
-                total -= nums[left]
-                left += 1
-        
-        return min_shortest if min_shortest != float('inf') else -1
 
     
 # print(random.choice([]))
@@ -215,7 +135,6 @@ class Solution:
 solution = Solution()
 
 print(solution.longest_subarray_sum_equalorless_target([2,-1,2], 3))
-print(solution.longest_subarray_sum_equalorless_target_2([2,-1,2], 3))
 
 # print(solution.shortest_subarray_equal_k([1], 1))
 # print(solution.shortest_subarray_equal_k([1,2], 4))
