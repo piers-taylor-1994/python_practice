@@ -100,17 +100,21 @@ class Solution:
     """
     def __init__(self):
         self.DIRECTIONS = [
-            (-1, 0),
-            (0, 1),
-            (1, 0),
-            (0, -1)
+            (-1, 0), #up
+            (0, 1), #right
+            (1, 0), #down
+            (0, -1) #left
         ]
 
-        self.DIRECTIONS_2 = self.DIRECTIONS + [
-            (-1, 1),
-            (1, 1),
-            (1, -1),
-            (-1, -1)
+        self.DIRECTIONS_2 = [
+            (1, 1), #down-right
+            (0, 1), #right
+            (1, 0), #down
+            (-1, 0), #up
+            (-1, 1), #up-right
+            (1, -1), #down-left
+            (0, -1), #left
+            (-1, -1) #up-left
         ]
 
     def num_islands(self, matrix):
@@ -219,25 +223,37 @@ class Solution:
         target = (len(matrix) - 1, len(matrix[0]) - 1)
         shortest_path = 0
 
-        queue = deque([(0, 0)])
-        seen = set([(0, 0)])
+        # queue = deque([(0, 0)])
+        # seen = set([(0, 0)])        
 
-        while queue:
-            for _ in range(len(queue)):
-                row, col = queue.popleft()
+        # while queue:
+        #     for _ in range(len(queue)):
+        #         row, col = queue.popleft()
 
-                for dr, dc in self.DIRECTIONS_2:
-                    new_row = dr + row
-                    new_col = dc + col
+        #         for dr, dc in self.DIRECTIONS_2:
+        #             new_row = dr + row
+        #             new_col = dc + col
 
-                    if 0 <= new_row < len(matrix) and 0 <= new_col < len(matrix[0]) and (new_row, new_col) not in seen and matrix[new_row][new_col] == 0:
-                        if (new_row, new_col) == target:
-                            return shortest_path + 1
+        #             if 0 <= new_row < len(matrix) and 0 <= new_col < len(matrix[0]) and (new_row, new_col) not in seen and matrix[new_row][new_col] == 0:
+        #                 if (new_row, new_col) == target:
+        #                     return shortest_path + 1
                         
-                        seen.add((new_row, new_col))
-                        queue.append((new_row, new_col))
+        #                 seen.add((new_row, new_col))
+        #                 queue.append((new_row, new_col))
 
-            shortest_path += 1
+        #     shortest_path += 1
+
+        def dfs(row, col):
+            if row < 0 or row >= len(matrix) or col < 0 or col >= len(matrix[0]) or matrix[row][col] == 1:
+                return float('inf')
+            if (row, col) == target:
+                return 0
+            
+            matrix[row][col] = 1
+
+            return 1 + min([dfs(dr + row, dc + col) for dr, dc in self.DIRECTIONS_2])
+        
+        return dfs(0, 0)
 
     
 # print(random.choice([]))
