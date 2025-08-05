@@ -106,10 +106,11 @@ class Solution:
             (0, -1) #left
         ]
 
-        self.DIRECTIONS_2 = [
-            (1, 1), #down-right
-            (0, 1), #right
-            (1, 0), #down
+        self.DIRECTIONS_2 = self.DIRECTIONS + [
+            (-1, 1),
+            (1, 1),
+            (1, -1),        
+            (-1, -1)
         ]
 
     def num_islands(self, matrix):
@@ -223,6 +224,9 @@ class Solution:
 
     #0 - open 1 - blocked (can use diagonal!)
     def shortest_path_bfs(self, matrix):
+        if not matrix or not matrix[0] or matrix[0][0] == 1:
+            return -1
+
         target = (len(matrix) - 1, len(matrix[0]) - 1)
         shortest_path = 0
 
@@ -245,22 +249,7 @@ class Solution:
                         queue.append((new_row, new_col))
 
             shortest_path += 1
-
-    #0 - open 1 - blocked (can use diagonal!)
-    def shortest_path_dfs(self, matrix):
-        target = (len(matrix) - 1, len(matrix[0]) - 1)
-
-        def dfs(row, col):
-            if row < 0 or row >= len(matrix) or col < 0 or col >= len(matrix[0]) or matrix[row][col] == 1:
-                return float('inf')
-            if (row, col) == target:
-                return 0
-            
-            matrix[row][col] = 1
-
-            return 1 + min([dfs(dr + row, dc + col) for dr, dc in self.DIRECTIONS_2])
-        
-        return dfs(0, 0)
+        return -1
 
     
 # print(random.choice([]))
@@ -318,13 +307,6 @@ print(solution.shortest_path_bfs([
     [0,1],
     [1,0]])) #->1
 print(solution.shortest_path_bfs([
-  [0,0,0],
-  [1,1,0],
-  [1,1,0]])) #-> 4
-print(solution.shortest_path_dfs([
-    [0,1],
-    [1,0]])) #->1
-print(solution.shortest_path_dfs([
   [0,0,0],
   [1,1,0],
   [1,1,0]])) #-> 4
