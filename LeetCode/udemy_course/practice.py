@@ -126,6 +126,17 @@ class Solution:
         
         return num_islands
     
+    def largest_island(self, matrix):
+        ...
+
+    #0 - empty 1 - orange 2 - rotten
+    def rotten_oranges(self, matrix):
+        ...
+
+    #0 - open 1 - blocked (can use diagonal!)
+    def shortest_path(self, matrix):
+        ...
+    
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
 # print(random.choice(["quick_sort"]))
@@ -147,6 +158,39 @@ print(solution.num_islands([
 ]
 ))
 
+print(solution.largest_island(grid = [
+  [0,0,1,0,0,0,0,1,0,0,0,0,0],
+  [0,0,0,0,0,0,0,1,1,1,0,0,0],
+  [0,1,1,0,1,0,0,0,0,0,0,0,0],
+  [0,1,0,0,1,1,0,0,1,0,1,0,0],
+  [0,1,0,0,1,1,0,0,1,1,1,0,0],
+  [0,0,0,0,0,0,0,0,0,0,1,0,0],
+  [0,0,0,0,0,0,0,1,1,1,0,0,0],
+  [0,0,0,0,0,0,0,1,1,0,0,0,0]
+]
+)) #-> 6
+
+print(solution.rotten_oranges([
+  [2,1,1],
+  [1,1,0],
+  [0,1,1]
+]
+)) #-> 4
+
+print(solution.shortest_path(
+    [
+  [0,1],
+  [1,0]
+]
+)) #->1
+print(solution.shortest_path(
+    [
+  [0,0,0],
+  [1,1,0],
+  [1,1,0]
+]
+)) #-> 4
+
 # head = Node(1)
 # node_1 = Node(2)
 # node_2 = Node(3)
@@ -156,6 +200,7 @@ print(solution.num_islands([
 # node_1.next = node_2
 # node_2.next = node_3
 # node_3.next = node_4
+
 
 # print("\nHeaps")
 # min_heap = MinHeap()
