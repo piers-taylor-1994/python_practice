@@ -99,72 +99,32 @@ class Solution:
     14. Sliding window ✓ (22/07)
     """
 
-    def longest_subarray_sum_equalorless_target(self, nums, target):
-        prefix = [0] * (len(nums) + 1)
-        for i in range(len(nums)):
-            prefix[i + 1] = prefix[i] + nums[i]
+    def num_islands(self, matrix):
+        DIRECTIONS = [
+            (-1, 0),
+            (0, 1),
+            (1, 0),
+            (0, -1)
+        ]
+
+        def dfs(row, col):
+            if row < 0 or row >= len(matrix) or col < 0 or col >= len(matrix[0]) or matrix[row][col] == "0":
+                return
+            
+            matrix[row][col] = "0"
+
+            for dr, dc in DIRECTIONS:
+                dfs(dr + row, dc + col)
+
+        num_islands = 0
+
+        for i in range(len(matrix)):
+            for j in range(len(matrix[0])):
+                if matrix[i][j] == "1":
+                    num_islands += 1
+                    dfs(i, j)
         
-        longest_arr = 0
-        q = deque([])
-
-        for i in range(len(prefix)):
-            while q and prefix[i] - prefix[q[0]] > target:
-                q.popleft()
-            
-            while q and prefix[i] <= prefix[q[-1]]:
-                q.pop()
-
-            q.append(i)
-            
-            if q:
-                longest_arr = max(longest_arr, i - q[0])
-        
-        return longest_arr
-    
-    def max_in_each_window(self, nums, k):
-        q = deque()
-        results = []
-
-        for i in range(len(nums)):
-            while q and q[0] <= i - k:
-                q.popleft()
-            
-            while q and nums[i] >= nums[q[-1]]:
-                q.pop()
-            
-            q.append(i)
-            
-            if i >= k - 1:
-                results.append(nums[q[0]])
-        
-        return results
-    
-    def shortestSubarray(self, nums, k):
-        """
-        :type nums: List[int]
-        :type k: int
-        :rtype: int
-        """
-        nums_len = len(nums)
-        
-        prefix = [0] * (nums_len + 1)
-        for i in range(nums_len):
-            prefix[i + 1] = prefix[i] + nums[i]
-
-        shortest_subarray = float('inf')
-        q = deque()
-
-        for i in range(len(prefix)):
-            while q and prefix[i] - prefix[q[0]] >= k:
-                shortest_subarray = min(shortest_subarray, i - q.popleft())
-
-            while q and prefix[i] <= prefix[q[-1]]:
-                q.pop()
-
-            q.append(i)
-
-        return shortest_subarray if shortest_subarray != float('inf') else -1
-
+        return num_islands
     
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
@@ -179,24 +139,13 @@ class Solution:
 
 solution = Solution()
 
-print(solution.longest_subarray_sum_equalorless_target([2,-1,2], 3))
-
-# print(solution.shortest_subarray_equal_k([1], 1))
-# print(solution.shortest_subarray_equal_k([1,2], 4))
-# print(solution.shortest_subarray_equal_k([2,-1,2], 3))
-
-# print(solution.jump_game_2([2,3,1,1,4]))
-
-# print(solution.task_schedule_max_profit([(2, 100), (1, 19), (2, 27), (1, 25), (3, 15)]))
-
-# trie = Trie()
-# trie.insert_word("appls")
-# print(trie.search_word("apple"))
-# print(trie.search_prefix("app"))
-
-print(solution.max_in_each_window([1,3,-1,-3,5,3,6,7], 3))
-
-print(solution.shortestSubarray([2, -1, 2], 3))
+print(solution.num_islands([
+  ["1","1","0","0","0"],
+  ["1","1","0","0","0"],
+  ["0","0","1","0","0"],
+  ["0","0","0","1","1"]
+]
+))
 
 # head = Node(1)
 # node_1 = Node(2)
