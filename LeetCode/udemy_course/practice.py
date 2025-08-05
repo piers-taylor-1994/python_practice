@@ -132,18 +132,16 @@ class Solution:
         
         return num_islands
     
-    def largest_island(self, matrix):
+    def largest_island_bfs(self, matrix):
         largest_island = 0
 
         def bfs(row, col):
             queue = deque([(row, col)])
-            island_total = 0
+            island_total = 1
+            matrix[row][col] = 0  
 
             while queue:
                 r, c = queue.popleft()
-
-                matrix[r][c] = 0
-                island_total += 1
 
                 for dr, dc in self.DIRECTIONS:
                     new_row = dr + r
@@ -151,16 +149,27 @@ class Solution:
 
                     if 0 <= new_row < len(matrix) and 0 <= new_col < len(matrix[0]) and matrix[new_row][new_col] == 1:
                         queue.append((new_row, new_col))
+                        matrix[new_row][new_col] = 0
+                        island_total += 1
             
             return island_total
-                
+
+        for i in range(len(matrix)):
+            for j in range(len(matrix[0])):
+                if matrix[i][j] == 1:
+                    largest_island = max(largest_island, bfs(i, j))
+        
+        return largest_island
+    
+    def largest_island_dfs(self, matrix):
+        largest_island = 0         
 
         def dfs(row, col):
-            nonlocal total
+            nonlocal total_island
             if row < 0 or row >= len(matrix) or col < 0 or col >= len(matrix[0]) or matrix[row][col] == 0:
                 return
             
-            total += 1
+            total_island += 1
             matrix[row][col] = 0
 
             [dfs(dr + row, dc + col) for dr, dc in self.DIRECTIONS]
@@ -168,10 +177,9 @@ class Solution:
         for i in range(len(matrix)):
             for j in range(len(matrix[0])):
                 if matrix[i][j] == 1:
-                    largest_island = max(largest_island, bfs(i, j))
-                    total = 0
-                    # dfs(i, j)
-                    # largest_island = max(largest_island, total)
+                    total_island = 0
+                    dfs(i, j)
+                    largest_island = max(largest_island, total_island)
         
         return largest_island
 
@@ -225,14 +233,14 @@ class Solution:
             for _ in range(len(queue)):
                 row, col = queue.popleft()
 
+                if (row, col) == target:
+                    return shortest_path + 1
+
                 for dr, dc in self.DIRECTIONS_2:
                     new_row = dr + row
                     new_col = dc + col
 
                     if 0 <= new_row < len(matrix) and 0 <= new_col < len(matrix[0]) and (new_row, new_col) not in seen and matrix[new_row][new_col] == 0:
-                        if (new_row, new_col) == target:
-                            return shortest_path + 1
-                        
                         seen.add((new_row, new_col))
                         queue.append((new_row, new_col))
 
@@ -276,7 +284,18 @@ print(solution.num_islands([
 ]
 ))
 
-print(solution.largest_island([
+print(solution.largest_island_bfs([
+  [0,0,1,0,0,0,0,1,0,0,0,0,0],
+  [0,0,0,0,0,0,0,1,1,1,0,0,0],
+  [0,1,1,0,1,0,0,0,0,0,0,0,0],
+  [0,1,0,0,1,1,0,0,1,0,1,0,0],
+  [0,1,0,0,1,1,0,0,1,1,1,0,0],
+  [0,0,0,0,0,0,0,0,0,0,1,0,0],
+  [0,0,0,0,0,0,0,1,1,1,0,0,0],
+  [0,0,0,0,0,0,0,1,1,0,0,0,0]
+]
+)) #-> 6
+print(solution.largest_island_dfs([
   [0,0,1,0,0,0,0,1,0,0,0,0,0],
   [0,0,0,0,0,0,0,1,1,1,0,0,0],
   [0,1,1,0,1,0,0,0,0,0,0,0,0],
