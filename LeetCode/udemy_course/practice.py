@@ -122,7 +122,7 @@ class Solution:
         return longest_arr
     
     def max_in_each_window(self, nums, k):
-        q = deque([])
+        q = deque()
         results = []
 
         for i in range(len(nums)):
@@ -145,8 +145,10 @@ class Solution:
         :type k: int
         :rtype: int
         """
-        prefix = [0] * (len(nums) + 1)
-        for i in range(len(nums)):
+        nums_len = len(nums)
+        
+        prefix = [0] * (nums_len + 1)
+        for i in range(nums_len):
             prefix[i + 1] = prefix[i] + nums[i]
 
         shortest_subarray = float('inf')
@@ -155,12 +157,12 @@ class Solution:
         for i in range(len(prefix)):
             while q and prefix[i] - prefix[q[0]] >= k:
                 shortest_subarray = min(shortest_subarray, i - q.popleft())
-            
+
             while q and prefix[i] <= prefix[q[-1]]:
                 q.pop()
-            
+
             q.append(i)
-        
+
         return shortest_subarray if shortest_subarray != float('inf') else -1
 
     
