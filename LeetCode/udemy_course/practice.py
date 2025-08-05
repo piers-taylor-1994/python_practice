@@ -98,22 +98,29 @@ class Solution:
     13. Prefix sum ✓ (22/07)
     14. Sliding window ✓ (22/07)
     """
-
-    def num_islands(self, matrix):
-        DIRECTIONS = [
+    def __init__(self):
+        self.DIRECTIONS = [
             (-1, 0),
             (0, 1),
             (1, 0),
             (0, -1)
         ]
 
+        self.DIRECTIONS_2 = self.DIRECTIONS + [
+            (-1, 1),
+            (1, 1),
+            (1, -1),
+            (-1, -1)
+        ]
+
+    def num_islands(self, matrix):
         def dfs(row, col):
             if row < 0 or row >= len(matrix) or col < 0 or col >= len(matrix[0]) or matrix[row][col] == "0":
                 return
             
             matrix[row][col] = "0"
 
-            for dr, dc in DIRECTIONS:
+            for dr, dc in self.DIRECTIONS:
                 dfs(dr + row, dc + col)
 
         num_islands = 0
@@ -127,15 +134,111 @@ class Solution:
         return num_islands
     
     def largest_island(self, matrix):
-        ...
+        largest_island = 0
+
+        def bfs(row, col):
+            queue = deque([(row, col)])
+            island_total = 0
+
+            while queue:
+                r, c = queue.popleft()
+
+                matrix[r][c] = 0
+                island_total += 1
+
+                for dr, dc in self.DIRECTIONS:
+                    new_row = dr + r
+                    new_col = dc + c
+
+                    if 0 <= new_row < len(matrix) and 0 <= new_col < len(matrix[0]) and matrix[new_row][new_col] == 1:
+                        queue.append((new_row, new_col))
+            
+            return island_total
+                
+
+        def dfs(row, col):
+            nonlocal total
+            if row < 0 or row >= len(matrix) or col < 0 or col >= len(matrix[0]) or matrix[row][col] == 0:
+                return
+            
+            total += 1
+            matrix[row][col] = 0
+
+            [dfs(dr + row, dc + col) for dr, dc in self.DIRECTIONS]
+
+        for i in range(len(matrix)):
+            for j in range(len(matrix[0])):
+                if matrix[i][j] == 1:
+                    largest_island = max(largest_island, bfs(i, j))
+                    total = 0
+                    # dfs(i, j)
+                    # largest_island = max(largest_island, total)
+        
+        return largest_island
 
     #0 - empty 1 - orange 2 - rotten
     def rotten_oranges(self, matrix):
-        ...
+        rotten_oranges = []
+        oranges = 0
+
+        for i in range(len(matrix)):
+            for j in range(len(matrix)):
+                item = matrix[i][j]
+
+                if item == 2:
+                    rotten_oranges.append((i, j))
+                elif item == 1:
+                    oranges += 1
+        
+        if not rotten_oranges:
+            return 0
+
+        queue = deque(rotten_oranges)
+        minutes = -1
+
+        while queue:
+            for _ in range(len(queue)):
+                row, col = queue.popleft()
+                
+                for dr, dc in self.DIRECTIONS:
+                    new_row = dr + row
+                    new_col = dc + col
+
+                    if 0 <= new_row < len(matrix) and 0 <= new_col < len(matrix[0]) and matrix[new_row][new_col] == 1:
+                        oranges -= 1
+                        matrix[new_row][new_col] = 2
+                        queue.append((new_row, new_col))
+            
+            minutes += 1
+        
+        return minutes if oranges == 0 else -1
+
 
     #0 - open 1 - blocked (can use diagonal!)
     def shortest_path(self, matrix):
-        ...
+        target = (len(matrix) - 1, len(matrix[0]) - 1)
+        shortest_path = 0
+
+        queue = deque([(0, 0)])
+        seen = set([(0, 0)])
+
+        while queue:
+            for _ in range(len(queue)):
+                row, col = queue.popleft()
+
+                for dr, dc in self.DIRECTIONS_2:
+                    new_row = dr + row
+                    new_col = dc + col
+
+                    if 0 <= new_row < len(matrix) and 0 <= new_col < len(matrix[0]) and (new_row, new_col) not in seen and matrix[new_row][new_col] == 0:
+                        if (new_row, new_col) == target:
+                            return shortest_path + 1
+                        
+                        seen.add((new_row, new_col))
+                        queue.append((new_row, new_col))
+
+            shortest_path += 1
+
     
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
@@ -158,7 +261,7 @@ print(solution.num_islands([
 ]
 ))
 
-print(solution.largest_island(grid = [
+print(solution.largest_island([
   [0,0,1,0,0,0,0,1,0,0,0,0,0],
   [0,0,0,0,0,0,0,1,1,1,0,0,0],
   [0,1,1,0,1,0,0,0,0,0,0,0,0],
