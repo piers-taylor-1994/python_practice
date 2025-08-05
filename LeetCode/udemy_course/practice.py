@@ -110,11 +110,6 @@ class Solution:
             (1, 1), #down-right
             (0, 1), #right
             (1, 0), #down
-            (-1, 0), #up
-            (-1, 1), #up-right
-            (1, -1), #down-left
-            (0, -1), #left
-            (-1, -1) #up-left
         ]
 
     def num_islands(self, matrix):
@@ -219,29 +214,33 @@ class Solution:
 
 
     #0 - open 1 - blocked (can use diagonal!)
-    def shortest_path(self, matrix):
+    def shortest_path_bfs(self, matrix):
         target = (len(matrix) - 1, len(matrix[0]) - 1)
         shortest_path = 0
 
-        # queue = deque([(0, 0)])
-        # seen = set([(0, 0)])        
+        queue = deque([(0, 0)])
+        seen = set([(0, 0)])        
 
-        # while queue:
-        #     for _ in range(len(queue)):
-        #         row, col = queue.popleft()
+        while queue:
+            for _ in range(len(queue)):
+                row, col = queue.popleft()
 
-        #         for dr, dc in self.DIRECTIONS_2:
-        #             new_row = dr + row
-        #             new_col = dc + col
+                for dr, dc in self.DIRECTIONS_2:
+                    new_row = dr + row
+                    new_col = dc + col
 
-        #             if 0 <= new_row < len(matrix) and 0 <= new_col < len(matrix[0]) and (new_row, new_col) not in seen and matrix[new_row][new_col] == 0:
-        #                 if (new_row, new_col) == target:
-        #                     return shortest_path + 1
+                    if 0 <= new_row < len(matrix) and 0 <= new_col < len(matrix[0]) and (new_row, new_col) not in seen and matrix[new_row][new_col] == 0:
+                        if (new_row, new_col) == target:
+                            return shortest_path + 1
                         
-        #                 seen.add((new_row, new_col))
-        #                 queue.append((new_row, new_col))
+                        seen.add((new_row, new_col))
+                        queue.append((new_row, new_col))
 
-        #     shortest_path += 1
+            shortest_path += 1
+
+    #0 - open 1 - blocked (can use diagonal!)
+    def shortest_path_dfs(self, matrix):
+        target = (len(matrix) - 1, len(matrix[0]) - 1)
 
         def dfs(row, col):
             if row < 0 or row >= len(matrix) or col < 0 or col >= len(matrix[0]) or matrix[row][col] == 1:
@@ -296,19 +295,20 @@ print(solution.rotten_oranges([
 ]
 )) #-> 4
 
-print(solution.shortest_path(
-    [
-  [0,1],
-  [1,0]
-]
-)) #->1
-print(solution.shortest_path(
-    [
+print(solution.shortest_path_bfs([
+    [0,1],
+    [1,0]])) #->1
+print(solution.shortest_path_bfs([
   [0,0,0],
   [1,1,0],
-  [1,1,0]
-]
-)) #-> 4
+  [1,1,0]])) #-> 4
+print(solution.shortest_path_dfs([
+    [0,1],
+    [1,0]])) #->1
+print(solution.shortest_path_dfs([
+  [0,0,0],
+  [1,1,0],
+  [1,1,0]])) #-> 4
 
 # head = Node(1)
 # node_1 = Node(2)
