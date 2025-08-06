@@ -124,8 +124,20 @@ class Solution:
         
         return dp[n]
     
-    def rob(self, nums):
-        ...
+    def rob_memo(self, nums):
+        memo = {}
+        def rec(n):
+            if n == 0:
+                return nums[0]
+            elif n == 1:
+                return max(nums[0], nums[1])
+            elif n in memo:
+                return memo[n]
+            
+            memo[n] = max(rec(n - 1), rec(n - 2) + nums[n])
+            return memo[n]
+            
+        return rec(len(nums) - 1)
     
     def fib(self, n):
         ...
@@ -149,6 +161,8 @@ solution = Solution()
 
 print(solution.climbStairs_memo(2))
 print(solution.climbStairs_tabular(2))
+
+print(solution.rob_memo([2,7,9,3,1]))
 
 # head = Node(1)
 # node_1 = Node(2)
