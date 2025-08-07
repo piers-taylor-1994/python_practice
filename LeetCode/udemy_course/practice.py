@@ -151,8 +151,29 @@ class Solution:
             
         return dp[len(nums) - 1]
     
-    def fib(self, n):
-        ...
+    def fib_memo(self, n):
+        memo = {}
+
+        def rec(num):
+            if num <= 1:
+                return num
+            if num in memo:
+                return memo[num]
+
+            memo[num] = rec(num - 1) + rec(num - 2)
+            return memo[num]
+
+        return rec(n)
+    def fib_tabular(self, n):
+        if n == 0:
+            return 0
+        dp = [0] * (n + 1)
+        dp[1] = 1
+
+        for i in range(2, n + 1):
+            dp[i] = dp[i - 1] + dp[i - 2]
+
+        return dp[n]
     
     def minCostClimbingStairs(self, cost):
         ...
@@ -176,6 +197,9 @@ print(solution.climbStairs_tabular(2))
 
 print(solution.rob_memo([2,7,9,3,1]))
 print(solution.rob_tabular([2,7,9,3,1]))
+
+print(solution.fib_memo(4))
+print(solution.fib_tabular(4))
 
 # head = Node(1)
 # node_1 = Node(2)
