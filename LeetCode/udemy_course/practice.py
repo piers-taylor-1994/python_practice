@@ -125,7 +125,20 @@ class Solution:
         
         return deleted
 
-    
+    def jump(self, nums):
+        furthest = 0
+        current_furthest = 0
+        jumps = 0
+
+        for i in range(len(nums) - 1):
+            furthest = max(furthest, i + nums[i])
+
+            if i == current_furthest:
+                jumps += 1
+                current_furthest = furthest
+        
+        return jumps
+
     def minCostClimbingStairs_memo(self, cost):
         """
         :type cost: List[int]
@@ -171,6 +184,8 @@ print(solution.eraseOverlapIntervals(intervals = [[1, 5], [2, 3], [4, 6], [7, 9]
     [10, 12], [13, 14], [12, 13], [11, 12], [15, 17],
     [16, 18], [17, 19], [18, 20], [21, 22]
 ]))
+
+print(solution.jump(nums = [1, 2, 1, 1, 1, 4, 1, 1, 1, 1, 9]))
 
 # head = Node(1)
 # node_1 = Node(2)
