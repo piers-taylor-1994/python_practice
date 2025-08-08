@@ -98,82 +98,21 @@ class Solution:
     13. Prefix sum ✓ (22/07)
     14. Sliding window ✓ (22/07)
     """
-
-    def climbStairs_memo(self, n):
-        memo = {}
-        def rec(steps):
-            if steps <= 2:
-                return steps
-            elif steps in memo:
-                return memo[steps]
+    def findContentChildren(self, g, s):
+        g.sort(key=lambda item:-item)
+        s.sort(key=lambda item:-item)
+        content_children = 0
+        cookie = 0
+        
+        for child in g:
+            if cookie >= len(s):
+                break
             
-            memo[steps] = rec(steps - 1) + rec(steps - 2)
-            return memo[steps]
+            if s[cookie] >= child:
+                cookie += 1
+                content_children += 1
         
-        return rec(n)
-    def climbStairs_tabular(self, n):
-        if n == 1:
-            return 1
-        
-        dp = [0] * (n + 1)
-        dp[1] = 1
-        dp[2] = 2
-
-        for i in range(3, n + 1):
-            dp[i] = dp[i - 1] + dp[i - 2]
-        
-        return dp[n]
-    
-    def rob_memo(self, nums):
-        memo = {}
-        def rec(n):
-            if n == 0:
-                return nums[0]
-            elif n == 1:
-                return max(nums[0], nums[1])
-            elif n in memo:
-                return memo[n]
-            
-            memo[n] = max(rec(n - 1), rec(n - 2) + nums[n])
-            return memo[n]
-            
-        return rec(len(nums) - 1)
-    def rob_tabular(self, nums):
-        if len(nums) == 1:
-            return nums[0]
-        
-        dp = [0] * len(nums)
-        dp[0] = nums[0]
-        dp[1] = max(nums[0], nums[1])
-        
-        for i in range(2, len(nums)):
-            dp[i] = max(dp[i - 1], dp[i - 2] + nums[i])
-            
-        return dp[len(nums) - 1]
-    
-    def fib_memo(self, n):
-        memo = {}
-
-        def rec(num):
-            if num <= 1:
-                return num
-            if num in memo:
-                return memo[num]
-
-            memo[num] = rec(num - 1) + rec(num - 2)
-            return memo[num]
-
-        return rec(n)
-    def fib_tabular(self, n):
-        if n == 0:
-            return 0
-        dp = [0] * (n + 1)
-        dp[1] = 1
-
-        for i in range(2, n + 1):
-            dp[i] = dp[i - 1] + dp[i - 2]
-
-        return dp[n]
+        return content_children
     
     def minCostClimbingStairs(self, cost):
         ...
@@ -192,14 +131,8 @@ class Solution:
 
 solution = Solution()
 
-print(solution.climbStairs_memo(2))
-print(solution.climbStairs_tabular(2))
-
-print(solution.rob_memo([2,7,9,3,1]))
-print(solution.rob_tabular([2,7,9,3,1]))
-
-print(solution.fib_memo(4))
-print(solution.fib_tabular(4))
+print(solution.findContentChildren([1,2,3], [1,1]))
+print(solution.findContentChildren([1,2], [1,2,3]))
 
 # head = Node(1)
 # node_1 = Node(2)
