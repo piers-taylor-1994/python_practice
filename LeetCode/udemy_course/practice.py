@@ -112,9 +112,26 @@ class Solution:
         
         return i
     
-    def minCostClimbingStairs(self, cost):
-        ...
+    def minCostClimbingStairs_memo(self, cost):
+        """
+        :type cost: List[int]
+        :rtype: int
+        """
+        memo = {}
+        cost_length = len(cost)
 
+        def rec(step):
+            if step == 0 or step == 1:
+                return cost[step]
+            elif step in memo:
+                return memo[step]
+            
+            current_step = cost[step] if step < cost_length else 0
+            memo[step] = current_step + min(rec(step - 1), rec(step - 2))
+            return memo[step]
+
+
+        return rec(cost_length)
     
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
@@ -131,6 +148,9 @@ solution = Solution()
 
 print(solution.findContentChildren([1,2,3], [1,1]))
 print(solution.findContentChildren([1,2], [1,2,3]))
+
+print(solution.minCostClimbingStairs([1,100,1,1,1,100,1,1,100,1]))
+print(solution.minCostClimbingStairs([0,1,1,1]))
 
 # head = Node(1)
 # node_1 = Node(2)
