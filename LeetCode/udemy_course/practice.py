@@ -99,20 +99,18 @@ class Solution:
     14. Sliding window ✓ (22/07)
     """
     def findContentChildren(self, g, s):
-        g.sort(key=lambda item:-item)
-        s.sort(key=lambda item:-item)
-        content_children = 0
-        cookie = 0
+        g.sort()
+        s.sort()
+
+        i = 0 #child count
+        j = 0 #cookie count
+
+        while i < len(g) and j < len(s):
+            if s[j] >= g[i]:
+                i += 1
+            j += 1
         
-        for child in g:
-            if cookie >= len(s):
-                break
-            
-            if s[cookie] >= child:
-                cookie += 1
-                content_children += 1
-        
-        return content_children
+        return i
     
     def minCostClimbingStairs(self, cost):
         ...
