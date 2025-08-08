@@ -112,6 +112,20 @@ class Solution:
         
         return i
     
+    def eraseOverlapIntervals(self, intervals):
+        intervals.sort(key=lambda item:item[1])
+        current_end = None
+        deleted = 0
+
+        for start, end in intervals:
+            if current_end and start < current_end:
+                deleted += 1
+            else:
+                current_end = end
+        
+        return deleted
+
+    
     def minCostClimbingStairs_memo(self, cost):
         """
         :type cost: List[int]
@@ -149,8 +163,14 @@ solution = Solution()
 print(solution.findContentChildren([1,2,3], [1,1]))
 print(solution.findContentChildren([1,2], [1,2,3]))
 
-print(solution.minCostClimbingStairs([1,100,1,1,1,100,1,1,100,1]))
-print(solution.minCostClimbingStairs([0,1,1,1]))
+print(solution.minCostClimbingStairs_memo([1,100,1,1,1,100,1,1,100,1]))
+print(solution.minCostClimbingStairs_memo([0,1,1,1]))
+
+print(solution.eraseOverlapIntervals(intervals = [[1,2],[2,3],[3,4],[1,3]]))
+print(solution.eraseOverlapIntervals(intervals = [[1, 5], [2, 3], [4, 6], [7, 9], [8, 10], [9, 11],
+    [10, 12], [13, 14], [12, 13], [11, 12], [15, 17],
+    [16, 18], [17, 19], [18, 20], [21, 22]
+]))
 
 # head = Node(1)
 # node_1 = Node(2)
