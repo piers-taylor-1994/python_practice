@@ -98,107 +98,44 @@ class Solution:
     14. Sliding window ✓ (22/07)
     """
 
-    #Wednesday
-    #2787. Ways to Express an Integer as Sum of Powers (Medium)
-    #70. Climbing Stairs (Easy)
-    #46. Permutations (Medium)
-    
-    def integer_sum_powers(self, n, x):        
-        memo = {}
+    def shortest_path_matrix(self, grid):
+        if not grid or not grid[0] or grid[0][0] == 1:
+            return -1
+        
+        DIRECTIONS = [
+            (-1, 0),
+            (-1, 1),
+            (0, 1),
+            (1, 1),
+            (1, 0),
+            (1, -1),
+            (0, -1),
+            (-1, -1)
+        ]
+        TARGET = (len(grid) - 1, len(grid[0]) - 1)
 
-        def rec(last_number, total):
-            if total == 0:
-                return 1
-            elif total < 0:
-                return 0
-            elif (last_number, total) in memo:
-                return memo[(last_number, total)]
+        queue = deque([(0,0)])
+        seen = set([(0,0)])
+        steps = 1
+
+        while queue:
+            for _ in range(len(queue)):
+                row, col = queue.popleft()
+
+                if (row, col) == TARGET:
+                    return steps
+
+                for dr, dc in DIRECTIONS:
+                    new_row = dr + row
+                    new_col = dc + col
+
+                    if 0 <= new_row < len(grid) and 0 <= new_col < len(grid[0]) and grid[new_row][new_col] == 0 and (new_row, new_col) not in seen:
+                        queue.append((new_row, new_col))
+                        seen.add((new_row, new_col))
             
-            memo[(last_number, total)] = sum([rec(i + 1, (total - (i ** x))) for i in range(last_number, n + 1)])
-            return memo[(last_number, total)]
+            steps += 1
         
-        return rec(1, n) % ((10**9) + 7)
-
-    def climbing_stairs_memo(self, n):
-        memo = {}
-
-        def rec(steps):
-            if steps <= 2:
-                return steps
-            elif steps in memo:
-                return memo[steps]
-            
-            memo[steps] = rec(steps - 1) + rec(steps - 2)
-            return memo[steps]
-        
-        return rec(n)
-    def climbing_stairs_tab(self, n):
-        if n == 1:
-            return 1
-        
-        dp = [0] * (n + 1)
-        dp[1] = 1
-        dp[2] = 2
-
-        for i in range(3, n + 1):
-            dp[i] = dp[i - 1] + dp[i - 2]
-        
-        return dp[n]
-    
-    def permutations(self, nums):
-        results = []
-        used = set()
-
-        def rec(index, subarray):
-            if len(subarray) == len(nums):
-                results.append(subarray[:])
-                return
-
-            for num in nums:
-                if num not in used:
-                    subarray.append(num)
-                    used.add(num)
-
-                    rec(index + 1, subarray)
-
-                    subarray.pop()
-                    used.remove(num)
-        
-        rec(0, [])
-        return results
-
-    #Thursday
-    #869. Reordered Power of 2 (Medium)
-    #343. Integer Break (Medium)
-    #191. Number of 1 Bits (Easy)
-
-    def hamming_weight(self, n):
-        return bin(n).count("1")
-    
-    def reorderedPowerOf2(self, n):
-        def reorder(x):
-            return sorted(str(x))
-        
-        n_ordered = reorder(n)
-        
-        for i in range(30):
-            if reorder(2 ** i) == n_ordered:
-                return True
-        return False
-    
-    def int_break(self, n):
-        memo = {}
-
-        def rec(num):
-            if num <= 3:
-                return num
-            elif num in memo:
-                return memo[num]
-            
-            memo[num] = rec(num // 2) * rec(num - (num // 2))
-            return memo[num]
-        
-        return rec(n // 2) * rec(n - (n // 2))
+        return -1
     
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
@@ -213,19 +150,7 @@ class Solution:
 
 solution = Solution()
 
-print(solution.climbing_stairs_memo(5))
-print(solution.climbing_stairs_tab(5))
-
-print(solution.permutations([1,2,3]))
-
-print(solution.integer_sum_powers(4, 1))
-print(solution.integer_sum_powers(2, 1))
-
-print(solution.hamming_weight(11))
-
-print(solution.reorderedPowerOf2(16))
-
-print(solution.int_break(2))
+print(solution.shortest_path_matrix([[0,1],[1,0]]))
 
 # head = Node(1)
 # node_1 = Node(2)
