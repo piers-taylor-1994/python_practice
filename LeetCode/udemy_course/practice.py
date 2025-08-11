@@ -108,7 +108,7 @@ class Solution:
         return [heapq.heappop(max_heap)[1] for _ in range(k)]
     
     def longest_substring_without_repeating(self, s):
-        longest_sub = -float('inf')
+        result = ""
         char_count = {}
         left = 0
 
@@ -125,9 +125,10 @@ class Solution:
                 
                 left += 1
             
-            longest_sub = max(longest_sub, right - left + 1)
+            if right - left + 1 > len(result):
+                result = s[left:right + 1]
         
-        return longest_sub
+        return result
 
 
     
@@ -144,7 +145,7 @@ class Solution:
 
 solution = Solution()
 
-print(solution.top_k_frequent_elements([1, 1, 1, 2, 2, 3], 2))
+print(solution.top_k_frequent_elements(["apple", "banana", "apple", "orange", "banana", "apple"], 2))
 
 print(solution.longest_substring_without_repeating("abcabcbb"))
 
