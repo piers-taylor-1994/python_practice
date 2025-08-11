@@ -107,6 +107,30 @@ class Solution:
 
         return [heapq.heappop(max_heap)[1] for _ in range(k)]
     
+    def longest_substring_without_repeating(self, s):
+        longest_sub = -float('inf')
+        char_count = {}
+        left = 0
+
+        for right in range(len(s)):
+            new_char = s[right]
+            char_count[new_char] = char_count.get(new_char, 0) + 1
+
+            while char_count[new_char] > 1:
+                removed_char = s[left]
+                char_count[removed_char] -= 1
+
+                if char_count[removed_char] == 0:
+                    del char_count[removed_char]
+                
+                left += 1
+            
+            longest_sub = max(longest_sub, right - left + 1)
+        
+        return longest_sub
+
+
+    
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
 # print(random.choice(["quick_sort"]))
@@ -119,7 +143,10 @@ class Solution:
 # print(random.choice(["subset sum/partition", "string manipulation", "decision based", "probability and counting", "bitmask"]))
 
 solution = Solution()
+
 print(solution.top_k_frequent_elements([1, 1, 1, 2, 2, 3], 2))
+
+print(solution.longest_substring_without_repeating("abcabcbb"))
 
 # head = Node(1)
 # node_1 = Node(2)
