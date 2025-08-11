@@ -98,67 +98,14 @@ class Solution:
     13. Prefix sum ✓ (22/07)
     14. Sliding window ✓ (22/07)
     """
-    def findContentChildren(self, g, s):
-        g.sort()
-        s.sort()
-
-        i = 0 #child count
-        j = 0 #cookie count
-
-        while i < len(g) and j < len(s):
-            if s[j] >= g[i]:
-                i += 1
-            j += 1
-        
-        return i
     
-    def eraseOverlapIntervals(self, intervals):
-        intervals.sort(key=lambda item:item[1])
-        current_end = None
-        deleted = 0
+    def top_k_frequent_elements(self, nums, k):
+        elements_frequency = Counter(nums)
+        max_heap = []
+        for num, frequency in elements_frequency.items():
+            heapq.heappush(max_heap, (-frequency, num))
 
-        for start, end in intervals:
-            if current_end and start < current_end:
-                deleted += 1
-            else:
-                current_end = end
-        
-        return deleted
-
-    def jump(self, nums):
-        furthest = 0
-        current_furthest = 0
-        jumps = 0
-
-        for i in range(len(nums) - 1):
-            furthest = max(furthest, i + nums[i])
-
-            if i == current_furthest:
-                jumps += 1
-                current_furthest = furthest
-        
-        return jumps
-
-    def minCostClimbingStairs_memo(self, cost):
-        """
-        :type cost: List[int]
-        :rtype: int
-        """
-        memo = {}
-        cost_length = len(cost)
-
-        def rec(step):
-            if step == 0 or step == 1:
-                return cost[step]
-            elif step in memo:
-                return memo[step]
-            
-            current_step = cost[step] if step < cost_length else 0
-            memo[step] = current_step + min(rec(step - 1), rec(step - 2))
-            return memo[step]
-
-
-        return rec(cost_length)
+        return [heapq.heappop(max_heap)[1] for _ in range(k)]
     
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
@@ -172,20 +119,7 @@ class Solution:
 # print(random.choice(["subset sum/partition", "string manipulation", "decision based", "probability and counting", "bitmask"]))
 
 solution = Solution()
-
-print(solution.findContentChildren([1,2,3], [1,1]))
-print(solution.findContentChildren([1,2], [1,2,3]))
-
-print(solution.minCostClimbingStairs_memo([1,100,1,1,1,100,1,1,100,1]))
-print(solution.minCostClimbingStairs_memo([0,1,1,1]))
-
-print(solution.eraseOverlapIntervals(intervals = [[1,2],[2,3],[3,4],[1,3]]))
-print(solution.eraseOverlapIntervals(intervals = [[1, 5], [2, 3], [4, 6], [7, 9], [8, 10], [9, 11],
-    [10, 12], [13, 14], [12, 13], [11, 12], [15, 17],
-    [16, 18], [17, 19], [18, 20], [21, 22]
-]))
-
-print(solution.jump(nums = [1, 2, 1, 1, 1, 4, 1, 1, 1, 1, 9]))
+print(solution.top_k_frequent_elements([1, 1, 1, 2, 2, 3], 2))
 
 # head = Node(1)
 # node_1 = Node(2)
