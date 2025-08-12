@@ -98,39 +98,27 @@ class Solution:
     13. Prefix sum ✓ (22/07)
     14. Sliding window ✓ (22/07)
     """
-    
-    def top_k_frequent_elements(self, nums, k):
-        elements_frequency = Counter(nums)
-        max_heap = []
-        for num, frequency in elements_frequency.items():
-            heapq.heappush(max_heap, (-frequency, num))
-
-        return [heapq.heappop(max_heap)[1] for _ in range(k)]
-    
-    def longest_substring_without_repeating(self, s):
-        result = ""
-        char_count = {}
-        left = 0
-
-        for right in range(len(s)):
-            new_char = s[right]
-            char_count[new_char] = char_count.get(new_char, 0) + 1
-
-            while char_count[new_char] > 1:
-                removed_char = s[left]
-                char_count[removed_char] -= 1
-
-                if char_count[removed_char] == 0:
-                    del char_count[removed_char]
-                
-                left += 1
-            
-            if right - left + 1 > len(result):
-                result = s[left:right + 1]
+    def longest_subarray_lessorequal_k(self, nums, k):
+        prefix = [0] * (len(nums) + 1)
+        for i in range(len(nums)):
+            prefix[i + 1] = prefix[i] + nums[i]
         
-        return result
+        q = deque()
+        longest_subarray = 0
 
-
+        for j in range(len(prefix)):
+            while q and prefix[j] - prefix[q[0]] > k:
+                q.popleft()
+            
+            while q and prefix[j] <= prefix[q[-1]]:
+                q.pop()
+            
+            if q:
+                longest_subarray = max(longest_subarray, j - q[0])
+ 
+            q.append(j)
+        
+        return longest_subarray
     
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
@@ -145,9 +133,7 @@ class Solution:
 
 solution = Solution()
 
-print(solution.top_k_frequent_elements(["apple", "banana", "apple", "orange", "banana", "apple"], 2))
-
-print(solution.longest_substring_without_repeating("abcabcbb"))
+print(solution.longest_subarray_lessorequal_k([1,2,-1,4,5], 7))
 
 # head = Node(1)
 # node_1 = Node(2)
