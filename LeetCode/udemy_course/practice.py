@@ -98,86 +98,16 @@ class Solution:
     13. Prefix sum ✓ (22/07)
     14. Sliding window ✓ (22/07)
     """
-    def longest_subarray_lessorequal_k(self, nums, k):
-        prefix = [0] * (len(nums) + 1)
-        for i in range(len(nums)):
-            prefix[i + 1] = prefix[i] + nums[i]
-        
-        q = deque()
-        longest_subarray = 0
-
-        for j in range(len(prefix)):
-            while q and prefix[j] - prefix[q[0]] > k:
-                q.popleft()
-            
-            while q and prefix[j] <= prefix[q[-1]]:
-                q.pop()
-            
-            if q:
-                longest_subarray = max(longest_subarray, j - q[0])
-
-            q.append(j)
-        
-        return longest_subarray
     
-    def subarraySum(self, nums, k):
-        """
-        :type nums: List[int]
-        :type k: int
-        :rtype: int
-        """
-        prefix = 0
-        hash_map = {prefix: 1}
-        total_subarrays = 0
+    #Wednesday
+    #2787. Ways to Express an Integer as Sum of Powers (Medium)
+    #70. Climbing Stairs (Easy)
+    #343. Integer Break (Medium)
 
-        for num in nums:
-            prefix += num
-            total_subarrays += hash_map.get(prefix - k, 0)
-            hash_map[prefix] = (hash_map.get(prefix, 0)) + 1
-
-        return total_subarrays
-    
-    def rotten_oranges(self, grid):
-        if not grid or not grid[0]:
-            return 0
-        
-        DIRECTIONS = [
-            (-1, 0),
-            (0, 1),
-            (1, 0),
-            (0, -1),
-        ]
-        
-        queue = deque()
-        fresh_oranges = 0
-        
-        for i in range(len(grid)):
-            for j in range(len(grid[0])):
-                if grid[i][j] == 1:
-                    fresh_oranges += 1
-                elif grid[i][j] == 2:
-                    queue.append((i, j))
-        
-        if not fresh_oranges:
-            return 0
-        
-        minutes_taken = -1
-
-        while queue:
-            for _ in range(len(queue)):
-                row, col = queue.popleft()
-
-                for dr, dc in DIRECTIONS:
-                    new_row = dr + row
-                    new_col = dc + col
-
-                    if 0 <= new_row < len(grid) and 0 <= new_col < len(grid[0]) and grid[new_row][new_col] == 1:
-                        queue.append((new_row, new_col))
-                        grid[new_row][new_col] = 2
-                        fresh_oranges -= 1
-            minutes_taken += 1
-        
-        return minutes_taken if not fresh_oranges else -1
+    #Thursday
+    #869. Reordered Power of 2 (Medium)
+    #46. Permutations (Medium)
+    #191. Number of 1 Bits (Easy)
     
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
