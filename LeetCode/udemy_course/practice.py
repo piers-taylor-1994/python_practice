@@ -115,10 +115,69 @@ class Solution:
             
             if q:
                 longest_subarray = max(longest_subarray, j - q[0])
- 
+
             q.append(j)
         
         return longest_subarray
+    
+    def subarraySum(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: int
+        """
+        prefix = 0
+        hash_map = {prefix: 1}
+        total_subarrays = 0
+
+        for num in nums:
+            prefix += num
+            total_subarrays += hash_map.get(prefix - k, 0)
+            hash_map[prefix] = (hash_map.get(prefix, 0)) + 1
+
+        return total_subarrays
+    
+    def rotten_oranges(self, grid):
+        if not grid or not grid[0]:
+            return 0
+        
+        DIRECTIONS = [
+            (-1, 0),
+            (0, 1),
+            (1, 0),
+            (0, -1),
+        ]
+        
+        queue = deque()
+        fresh_oranges = 0
+        
+        for i in range(len(grid)):
+            for j in range(len(grid[0])):
+                if grid[i][j] == 1:
+                    fresh_oranges += 1
+                elif grid[i][j] == 2:
+                    queue.append((i, j))
+        
+        if not fresh_oranges:
+            return 0
+        
+        minutes_taken = -1
+
+        while queue:
+            for _ in range(len(queue)):
+                row, col = queue.popleft()
+
+                for dr, dc in DIRECTIONS:
+                    new_row = dr + row
+                    new_col = dc + col
+
+                    if 0 <= new_row < len(grid) and 0 <= new_col < len(grid[0]) and grid[new_row][new_col] == 1:
+                        queue.append((new_row, new_col))
+                        grid[new_row][new_col] = 2
+                        fresh_oranges -= 1
+            minutes_taken += 1
+        
+        return minutes_taken if not fresh_oranges else -1
     
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
@@ -134,6 +193,14 @@ class Solution:
 solution = Solution()
 
 print(solution.longest_subarray_lessorequal_k([1,2,-1,4,5], 7))
+
+print(solution.subarraySum([1,2,3], 3))
+
+print(solution.rotten_oranges([
+    [2,1,1],
+    [1,1,0],
+    [0,1,1]
+]))
 
 # head = Node(1)
 # node_1 = Node(2)
