@@ -80,7 +80,6 @@ class Trie:
         
         return True
 
-
 class Solution:
     """
     1. Arrays ✓ (22/07)
@@ -98,6 +97,25 @@ class Solution:
     13. Prefix sum ✓ (22/07)
     14. Sliding window ✓ (22/07)
     """
+    
+    def integer_sum_powers(self, n, x):
+        ...
+
+    def climbing_stairs_memo(self, n):
+        memo = {}
+
+        def rec(steps):
+            if steps <= 2:
+                return steps
+            elif steps in memo:
+                return memo[steps]
+            
+            memo[steps] = rec(steps - 1) + rec(steps - 2)
+            return memo[steps]
+        
+        return rec(n)
+    def climbing_stairs_tab(self, n):
+        ...
     
     #Wednesday
     #2787. Ways to Express an Integer as Sum of Powers (Medium)
@@ -122,15 +140,7 @@ class Solution:
 
 solution = Solution()
 
-print(solution.longest_subarray_lessorequal_k([1,2,-1,4,5], 7))
-
-print(solution.subarraySum([1,2,3], 3))
-
-print(solution.rotten_oranges([
-    [2,1,1],
-    [1,1,0],
-    [0,1,1]
-]))
+print(solution.climbing_stairs_memo(5))
 
 # head = Node(1)
 # node_1 = Node(2)
@@ -141,7 +151,6 @@ print(solution.rotten_oranges([
 # node_1.next = node_2
 # node_2.next = node_3
 # node_3.next = node_4
-
 
 # print("\nHeaps")
 # min_heap = MinHeap()
