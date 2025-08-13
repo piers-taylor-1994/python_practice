@@ -127,14 +127,36 @@ class Solution:
         
         return dp[n]
     
+    def permutations(self, nums):
+        results = []
+        used = set()
+
+        def rec(index, subarray):
+            if len(subarray) == len(nums):
+                results.append(subarray[:])
+                return
+
+            for num in nums:
+                if num not in used:
+                    subarray.append(num)
+                    used.add(num)
+
+                    rec(index + 1, subarray)
+
+                    subarray.pop()
+                    used.remove(num)
+        
+        rec(0, [])
+        return results
+    
     #Wednesday
     #2787. Ways to Express an Integer as Sum of Powers (Medium)
     #70. Climbing Stairs (Easy)
-    #343. Integer Break (Medium)
+    #46. Permutations (Medium)
 
     #Thursday
     #869. Reordered Power of 2 (Medium)
-    #46. Permutations (Medium)
+    #343. Integer Break (Medium)
     #191. Number of 1 Bits (Easy)
     
 # print(random.choice([]))
@@ -152,6 +174,8 @@ solution = Solution()
 
 print(solution.climbing_stairs_memo(5))
 print(solution.climbing_stairs_tab(5))
+
+print(solution.permutations([1,2,3]))
 
 # head = Node(1)
 # node_1 = Node(2)
