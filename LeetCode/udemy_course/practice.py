@@ -115,7 +115,17 @@ class Solution:
         
         return rec(n)
     def climbing_stairs_tab(self, n):
-        ...
+        if n == 1:
+            return 1
+        
+        dp = [0] * (n + 1)
+        dp[1] = 1
+        dp[2] = 2
+
+        for i in range(3, n + 1):
+            dp[i] = dp[i - 1] + dp[i - 2]
+        
+        return dp[n]
     
     #Wednesday
     #2787. Ways to Express an Integer as Sum of Powers (Medium)
@@ -141,6 +151,7 @@ class Solution:
 solution = Solution()
 
 print(solution.climbing_stairs_memo(5))
+print(solution.climbing_stairs_tab(5))
 
 # head = Node(1)
 # node_1 = Node(2)
