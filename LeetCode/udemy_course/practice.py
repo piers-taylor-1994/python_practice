@@ -98,7 +98,7 @@ class Solution:
     14. Sliding window ✓ (22/07)
     """
 
-    def shortest_path_matrix(self, grid):
+    def shortest_path_matrix_bfs(self, grid):
         if not grid or not grid[0] or grid[0][0] == 1:
             return -1
         
