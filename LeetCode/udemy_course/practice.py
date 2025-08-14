@@ -177,6 +177,36 @@ class Solution:
         binary_counter = Counter(binary_form)
         return binary_counter["1"]
     
+    def reorderedPowerOf2(self, n):
+        results = []
+        n_list = list(str(n))
+        used = set()
+
+        def rec(sub):
+            if len(sub) == len(n_list):
+                binary_num = bin(int("".join(sub[:])))[2:]
+
+                if binary_num not in results:
+                    results.append(binary_num)
+                return
+            
+            for i, num in enumerate(n_list):
+                if (i, num) not in used:
+                    sub.append(num)
+                    used.add((i, num))
+
+                    rec(sub)
+
+                    sub.pop()
+                    used.remove((i, num))
+        
+        rec([])
+        for binary_val in results:
+            binary_count = Counter(binary_val)
+            if binary_count["1"] > 1:
+                return False
+        return True
+    
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
 # print(random.choice(["quick_sort"]))
@@ -199,6 +229,8 @@ print(solution.integer_sum_powers(4, 1))
 print(solution.integer_sum_powers(2, 1))
 
 print(solution.hamming_weight(11))
+
+print(solution.reorderedPowerOf2(16))
 
 # head = Node(1)
 # node_1 = Node(2)
