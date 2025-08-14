@@ -171,6 +171,11 @@ class Solution:
     #869. Reordered Power of 2 (Medium)
     #343. Integer Break (Medium)
     #191. Number of 1 Bits (Easy)
+
+    def hamming_weight(self, n):
+        binary_form = bin(n)
+        binary_counter = Counter(binary_form)
+        return binary_counter["1"]
     
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
@@ -192,6 +197,8 @@ print(solution.permutations([1,2,3]))
 
 print(solution.integer_sum_powers(4, 1))
 print(solution.integer_sum_powers(2, 1))
+
+print(solution.hamming_weight(11))
 
 # head = Node(1)
 # node_1 = Node(2)
