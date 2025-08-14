@@ -137,6 +137,44 @@ class Solution:
         
         return -1
     
+    def shortest_path_matrix_dfs(self, grid):
+        if not grid or not grid[0] or grid[0][0] == 1:
+            return -1
+        
+        DIRECTIONS = [
+            (-1, 0),
+            (-1, 1),
+            (0, 1),
+            (1, 1),
+            (1, 0),
+            (1, -1),
+            (0, -1),
+            (-1, -1)
+        ]
+        TARGET = (len(grid) - 1, len(grid[0]) - 1)
+
+        def dfs(row, col, steps, seen):
+            if row < 0 or row >= len(grid) or col < 0 or col >= len(grid[0]) or grid[row][col] == 1 or (row, col) in seen:
+                return float('inf')
+            elif (row, col) == TARGET:
+                return steps
+            
+            seen += [(row, col)]
+
+            results = []
+            for dr, dc in DIRECTIONS:
+                result = dfs(dr + row, dc + col, steps + 1, seen[:])
+                results.append(result)
+
+                if result < float('inf'):
+                    break
+            
+            return min(results)
+
+        result = dfs(0, 0, 1, [])
+        
+        return result if result != float('inf') else -1
+    
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
 # print(random.choice(["quick_sort"]))
@@ -150,7 +188,8 @@ class Solution:
 
 solution = Solution()
 
-print(solution.shortest_path_matrix([[0,1],[1,0]]))
+print(solution.shortest_path_matrix_bfs([[0,1],[1,0]]))
+print(solution.shortest_path_matrix_dfs([[0,1],[1,0]]))
 
 # head = Node(1)
 # node_1 = Node(2)
