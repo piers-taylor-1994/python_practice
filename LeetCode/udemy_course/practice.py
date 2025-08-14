@@ -97,9 +97,27 @@ class Solution:
     13. Prefix sum ✓ (22/07)
     14. Sliding window ✓ (22/07)
     """
+
+    #Wednesday
+    #2787. Ways to Express an Integer as Sum of Powers (Medium)
+    #70. Climbing Stairs (Easy)
+    #46. Permutations (Medium)
     
-    def integer_sum_powers(self, n, x):
-        ...
+    def integer_sum_powers(self, n, x):        
+        memo = {}
+
+        def rec(last_number, total):
+            if total == 0:
+                return 1
+            elif total < 0:
+                return 0
+            elif (last_number, total) in memo:
+                return memo[(last_number, total)]
+            
+            memo[(last_number, total)] = sum([rec(i + 1, (total - (i ** x))) for i in range(last_number, n + 1)])
+            return memo[(last_number, total)]
+        
+        return rec(1, n) % ((10**9) + 7)
 
     def climbing_stairs_memo(self, n):
         memo = {}
@@ -148,11 +166,6 @@ class Solution:
         
         rec(0, [])
         return results
-    
-    #Wednesday
-    #2787. Ways to Express an Integer as Sum of Powers (Medium)
-    #70. Climbing Stairs (Easy)
-    #46. Permutations (Medium)
 
     #Thursday
     #869. Reordered Power of 2 (Medium)
@@ -176,6 +189,9 @@ print(solution.climbing_stairs_memo(5))
 print(solution.climbing_stairs_tab(5))
 
 print(solution.permutations([1,2,3]))
+
+print(solution.integer_sum_powers(4, 1))
+print(solution.integer_sum_powers(2, 1))
 
 # head = Node(1)
 # node_1 = Node(2)
