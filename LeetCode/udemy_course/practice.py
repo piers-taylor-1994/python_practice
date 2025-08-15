@@ -207,6 +207,20 @@ class Solution:
                 return False
         return True
     
+    def int_break(self, n):
+        memo = {}
+
+        def rec(num):
+            if num <= 3:
+                return num
+            elif num in memo:
+                return memo[num]
+            
+            memo[num] = rec(num // 2) * rec(num - (num // 2))
+            return memo[num]
+        
+        return rec(n // 2) * rec(n - (n // 2))
+    
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
 # print(random.choice(["quick_sort"]))
@@ -231,6 +245,8 @@ print(solution.integer_sum_powers(2, 1))
 print(solution.hamming_weight(11))
 
 print(solution.reorderedPowerOf2(16))
+
+print(solution.int_break(2))
 
 # head = Node(1)
 # node_1 = Node(2)
