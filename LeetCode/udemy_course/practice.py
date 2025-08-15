@@ -173,9 +173,7 @@ class Solution:
     #191. Number of 1 Bits (Easy)
 
     def hamming_weight(self, n):
-        binary_form = bin(n)
-        binary_counter = Counter(binary_form)
-        return binary_counter["1"]
+        return bin(n).count("1")
     
     def reorderedPowerOf2(self, n):
         def reorder(x):
