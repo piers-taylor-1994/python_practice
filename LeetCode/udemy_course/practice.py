@@ -98,82 +98,36 @@ class Solution:
     14. Sliding window ✓ (22/07)
     """
 
-    def shortest_path_matrix_bfs(self, grid):
-        if not grid or not grid[0] or grid[0][0] == 1:
-            return -1
-        
-        DIRECTIONS = [
-            (-1, 0),
-            (-1, 1),
-            (0, 1),
-            (1, 1),
-            (1, 0),
-            (1, -1),
-            (0, -1),
-            (-1, -1)
-        ]
-        TARGET = (len(grid) - 1, len(grid[0]) - 1)
+    def walls_gates(self, grid):
+        EMPTY = 2147483647
+        gates = []
 
-        queue = deque([(0,0)])
-        seen = set([(0,0)])
-        steps = 1
+        DIRECTIONS = [
+            [-1, 0],
+            [0, 1],
+            [1, 0],
+            [0, -1]
+        ]
+
+        for i in range(len(grid)):
+            for j in range(len(grid[0])):
+                if grid[i][j] == 0:
+                    gates.append((i, j, 0))
+        
+        queue = deque(gates)
 
         while queue:
-            for _ in range(len(queue)):
-                row, col = queue.popleft()
+            row, col, steps = queue.popleft()
 
-                if (row, col) == TARGET:
-                    return steps
-
-                for dr, dc in DIRECTIONS:
-                    new_row = dr + row
-                    new_col = dc + col
-
-                    if 0 <= new_row < len(grid) and 0 <= new_col < len(grid[0]) and grid[new_row][new_col] == 0 and (new_row, new_col) not in seen:
-                        queue.append((new_row, new_col))
-                        seen.add((new_row, new_col))
-            
-            steps += 1
-        
-        return -1
-    
-    def shortest_path_matrix_dfs(self, grid):
-        if not grid or not grid[0] or grid[0][0] == 1:
-            return -1
-        
-        DIRECTIONS = [
-            (-1, 0),
-            (-1, 1),
-            (0, 1),
-            (1, 1),
-            (1, 0),
-            (1, -1),
-            (0, -1),
-            (-1, -1)
-        ]
-        TARGET = (len(grid) - 1, len(grid[0]) - 1)
-
-        def dfs(row, col, steps, seen):
-            if row < 0 or row >= len(grid) or col < 0 or col >= len(grid[0]) or grid[row][col] == 1 or (row, col) in seen:
-                return float('inf')
-            elif (row, col) == TARGET:
-                return steps
-            
-            seen += [(row, col)]
-
-            results = []
             for dr, dc in DIRECTIONS:
-                result = dfs(dr + row, dc + col, steps + 1, seen[:])
-                results.append(result)
+                new_row = dr + row
+                new_col = dc + col
 
-                if result < float('inf'):
-                    break
-            
-            return min(results)
-
-        result = dfs(0, 0, 1, [])
+                if 0 <= new_row < len(grid) and 0 <= new_col < len(grid[0]) and grid[new_row][new_col] == EMPTY:
+                    grid[new_row][new_col] = steps + 1
+                    queue.append((new_row, new_col, steps + 1))
         
-        return result if result != float('inf') else -1
+        return grid
     
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
@@ -188,8 +142,13 @@ class Solution:
 
 solution = Solution()
 
-print(solution.shortest_path_matrix_bfs([[0,1],[1,0]]))
-print(solution.shortest_path_matrix_dfs([[0,1],[1,0]]))
+print(solution.walls_gates([
+  [2147483647, -1, 0, 2147483647],
+  [2147483647, 2147483647, 2147483647, -1],
+  [2147483647, -1, 2147483647, -1],
+  [0, -1, 2147483647, 2147483647]
+]
+))
 
 # head = Node(1)
 # node_1 = Node(2)
