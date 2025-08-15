@@ -178,34 +178,15 @@ class Solution:
         return binary_counter["1"]
     
     def reorderedPowerOf2(self, n):
-        results = []
-        n_list = list(str(n))
-        used = set()
-
-        def rec(sub):
-            if len(sub) == len(n_list):
-                binary_num = bin(int("".join(sub[:])))[2:]
-
-                if binary_num not in results:
-                    results.append(binary_num)
-                return
-            
-            for i, num in enumerate(n_list):
-                if (i, num) not in used:
-                    sub.append(num)
-                    used.add((i, num))
-
-                    rec(sub)
-
-                    sub.pop()
-                    used.remove((i, num))
+        def reorder(x):
+            return sorted(str(x))
         
-        rec([])
-        for binary_val in results:
-            binary_count = Counter(binary_val)
-            if binary_count["1"] > 1:
-                return False
-        return True
+        n_ordered = reorder(n)
+        
+        for i in range(30):
+            if reorder(2 ** i) == n_ordered:
+                return True
+        return False
     
     def int_break(self, n):
         memo = {}
