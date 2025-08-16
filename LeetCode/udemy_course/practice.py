@@ -98,7 +98,7 @@ class Solution:
     14. Sliding window ✓ (22/07)
     """
 
-    def walls_gates(self, grid):
+    def walls_gates_bfs(self, grid):
         EMPTY = 2147483647
         gates = []
 
@@ -129,6 +129,38 @@ class Solution:
         
         return grid
     
+    def walls_gates_dfs(self, grid):
+        gates = []
+
+        DIRECTIONS = [
+            [-1, 0],
+            [0, 1],
+            [1, 0],
+            [0, -1]
+        ]
+
+        for i in range(len(grid)):
+            for j in range(len(grid[0])):
+                if grid[i][j] == 0:
+                    gates.append((i, j))
+
+        def dfs(row, col, steps):
+            if row < 0 or row >= len(grid) or col < 0 or col >= len(grid[0]) or grid[row][col] == -1 or grid[row][col] == 0:
+                return
+            elif steps >= grid[row][col]:
+                return
+            
+            grid[row][col] = steps
+
+            for dr, dc in DIRECTIONS:
+                dfs(dr + row, dc + col, steps + 1)
+        
+        for r, c in gates:
+            for dr, dc in DIRECTIONS:
+                dfs(dr + r, dc + c, 1)
+        
+        return grid
+    
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
 # print(random.choice(["quick_sort"]))
@@ -142,7 +174,7 @@ class Solution:
 
 solution = Solution()
 
-print(solution.walls_gates([
+print(solution.walls_gates_dfs([
   [2147483647, -1, 0, 2147483647],
   [2147483647, 2147483647, 2147483647, -1],
   [2147483647, -1, 2147483647, -1],
