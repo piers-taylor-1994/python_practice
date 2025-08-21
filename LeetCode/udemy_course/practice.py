@@ -169,6 +169,23 @@ class Solution:
             q.append(j)
         
         return min_subarray if min_subarray != float('inf') else 0
+    
+    def merge_intervals(self, intervals:list):
+        if not intervals:
+            return []
+        
+        intervals.sort(key=lambda x:x[0])
+        merged = [intervals[0]]
+        
+        for start, end in intervals[1:]:
+            last_end = merged[-1][1]
+
+            if start <= last_end:
+                merged[-1][1] = max(last_end, end)
+            else:
+                merged.append([start, end])
+        
+        return merged
 
 
     
@@ -191,6 +208,8 @@ print(solution.pacificAtlantic([[1,1],[1,1],[1,1]]))
 print(solution.longest_substring("abcabcbb"))
 
 print(solution.min_size_subarray_greaterequal_target([2,3,1,2,4,3], 7))
+
+print(solution.merge_intervals([[1,3],[2,6],[8,10],[15,18]]))
 
 # head = Node(1)
 # node_1 = Node(2)
