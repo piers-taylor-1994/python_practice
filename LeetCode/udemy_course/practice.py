@@ -98,68 +98,38 @@ class Solution:
     14. Sliding window ✓ (22/07)
     """
 
-    def walls_gates_bfs(self, grid):
-        EMPTY = 2147483647
-        gates = []
-
+    def pacificAtlantic(self, heights):
         DIRECTIONS = [
-            [-1, 0],
-            [0, 1],
-            [1, 0],
-            [0, -1]
+            (-1, 0),
+            (0, 1),
+            (1, 0),
+            (0, -1)
         ]
 
-        for i in range(len(grid)):
-            for j in range(len(grid[0])):
-                if grid[i][j] == 0:
-                    gates.append((i, j, 0))
-        
-        queue = deque(gates)
+        row_max = len(heights)
+        col_max = len(heights[0])
+        pacific_access = set()
+        atlantic_access = set()
 
-        while queue:
-            row, col, steps = queue.popleft()
-
-            for dr, dc in DIRECTIONS:
-                new_row = dr + row
-                new_col = dc + col
-
-                if 0 <= new_row < len(grid) and 0 <= new_col < len(grid[0]) and grid[new_row][new_col] == EMPTY:
-                    grid[new_row][new_col] = steps + 1
-                    queue.append((new_row, new_col, steps + 1))
-        
-        return grid
-    
-    def walls_gates_dfs(self, grid):
-        gates = []
-
-        DIRECTIONS = [
-            [-1, 0],
-            [0, 1],
-            [1, 0],
-            [0, -1]
-        ]
-
-        for i in range(len(grid)):
-            for j in range(len(grid[0])):
-                if grid[i][j] == 0:
-                    gates.append((i, j))
-
-        def dfs(row, col, steps):
-            if row < 0 or row >= len(grid) or col < 0 or col >= len(grid[0]) or grid[row][col] == -1 or grid[row][col] == 0:
+        def dfs(row, col, ocean, height):
+            if row < 0 or row >= row_max or col < 0 or col >= col_max or heights[row][col] < height or (row, col) in ocean:
                 return
-            elif steps >= grid[row][col]:
-                return
-            
-            grid[row][col] = steps
+            ocean.add((row, col))
 
             for dr, dc in DIRECTIONS:
-                dfs(dr + row, dc + col, steps + 1)
+                dfs(dr + row, dc + col, ocean, heights[row][col])
+
+        for i in range(col_max):
+            dfs(0, i, pacific_access, heights[0][i]) #top
+            dfs(row_max - 1, i, atlantic_access, heights[row_max - 1][i]) #bottom
+
+        for j in range(row_max):
+            dfs(j, 0, pacific_access, heights[j][0]) #left
+            dfs(j, col_max - 1, atlantic_access, heights[j][col_max - 1]) #right
         
-        for r, c in gates:
-            for dr, dc in DIRECTIONS:
-                dfs(dr + r, dc + c, 1)
-        
-        return grid
+        return list(pacific_access & atlantic_access)
+
+
     
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
@@ -174,13 +144,8 @@ class Solution:
 
 solution = Solution()
 
-print(solution.walls_gates_dfs([
-  [2147483647, -1, 0, 2147483647],
-  [2147483647, 2147483647, 2147483647, -1],
-  [2147483647, -1, 2147483647, -1],
-  [0, -1, 2147483647, 2147483647]
-]
-))
+# print(solution.pacificAtlantic([[1,2,2,3,5],[3,2,3,4,4],[2,4,5,3,1],[6,7,1,4,5],[5,1,1,2,4]]))
+print(solution.pacificAtlantic([[1,1],[1,1],[1,1]]))
 
 # head = Node(1)
 # node_1 = Node(2)
