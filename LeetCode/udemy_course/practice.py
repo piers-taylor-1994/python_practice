@@ -128,6 +128,47 @@ class Solution:
             dfs(j, col_max - 1, atlantic_access, heights[j][col_max - 1]) #right
         
         return list(pacific_access & atlantic_access)
+    
+    def longest_substring(self, s):
+        letter_count = {}
+        longest_length = 0
+        left = 0
+
+        for right in range(len(s)):
+            right_letter = s[right]
+            letter_count[right_letter] = letter_count.get(right_letter, 0) + 1
+
+            while letter_count[right_letter] > 1:
+                left_letter = s[left]
+                letter_count[left_letter] -= 1
+
+                if letter_count[left_letter] == 0:
+                    del letter_count[left_letter]
+                left += 1
+            
+            longest_length = max(longest_length, right - left + 1)
+        
+        return longest_length
+    
+    def min_size_subarray_greaterequal_target(self, nums, target):
+        prefix = [0] * (len(nums) + 1)
+
+        for i in range(len(nums)):
+            prefix[i + 1] = nums[i] + prefix[i]
+        
+        q = deque()
+        min_subarray = float('inf')
+
+        for j in range(len(prefix)):
+            while q and prefix[j] - prefix[q[0]] >= target:
+                min_subarray = min(min_subarray, j - q.popleft())
+            
+            while q and prefix[j] <= prefix[q[-1]]:
+                q.pop()
+
+            q.append(j)
+        
+        return min_subarray if min_subarray != float('inf') else 0
 
 
     
@@ -146,6 +187,10 @@ solution = Solution()
 
 # print(solution.pacificAtlantic([[1,2,2,3,5],[3,2,3,4,4],[2,4,5,3,1],[6,7,1,4,5],[5,1,1,2,4]]))
 print(solution.pacificAtlantic([[1,1],[1,1],[1,1]]))
+
+print(solution.longest_substring("abcabcbb"))
+
+print(solution.min_size_subarray_greaterequal_target([2,3,1,2,4,3], 7))
 
 # head = Node(1)
 # node_1 = Node(2)
