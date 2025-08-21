@@ -1,4 +1,5 @@
 from collections import Counter, deque
+import math
 import random
 import heapq
 import bisect
@@ -186,6 +187,25 @@ class Solution:
                 merged.append([start, end])
         
         return merged
+    
+    def min_eating_speed(self, piles, h):
+        left = 1 
+        right = max(piles)
+        result = right
+
+        while left <= right:
+            mid = (left + right) // 2
+            hours = sum(math.ceil(p / mid) for p in piles)
+
+            if hours <= h:
+                result = mid
+                right = mid - 1
+            else:
+                left = mid + 1
+
+        return result
+
+
 
 
     
@@ -210,6 +230,8 @@ print(solution.longest_substring("abcabcbb"))
 print(solution.min_size_subarray_greaterequal_target([2,3,1,2,4,3], 7))
 
 print(solution.merge_intervals([[1,3],[2,6],[8,10],[15,18]]))
+
+print(solution.min_eating_speed([3,6,7,11], 8))
 
 # head = Node(1)
 # node_1 = Node(2)
