@@ -99,29 +99,31 @@ class Solution:
     14. Sliding window ✓ (22/07)
     """ 
 
-    def min_subarray_greaterequal_target(self, nums, target):
-        #Initialise left pointer, current sum of the window, and the min subarray length at inf so any new value is smaller
+    def longest_substring_atmost_k(self, s, k):
+        #Initialise character count hashmap
+        character_count = {}
         left = 0
-        window_sum = 0
-        min_subarray_length = float('inf')
+        longest_subarray = 0
 
-        #Start opening the sliding window
-        for right in range(len(nums)):
-            right_num = nums[right]
-            window_sum += right_num
+        for right in range(len(s)):
+            right_char = s[right]
+            #Initialise/increment character count
+            character_count[right_char] = character_count.get(right_char, 0) + 1
 
-            #While the window is greater or equal to the target
-            while window_sum >= target:
-                #Set new window length if it's smaller than current recorded
-                min_subarray_length = min(min_subarray_length, right - left + 1)
+            #While there are more than k characters in the hashmap, decrease window from the left
+            while len(character_count) > k:
+                left_char = s[left]
+                character_count[left_char] -= 1
+
+                if character_count[left_char] == 0:
+                    del character_count[left_char]
                 
-                #Shrink the window and see if we are still greater or equal to the target
-                left_num = nums[left]
-                window_sum -= left_num
                 left += 1
+            
+            #Work out if the new window is bigger than the currently recorded one
+            longest_subarray = max(longest_subarray, right - left + 1)
         
-        #Return subarray length if not inf, if inf, then we couldn't find a window so return 0
-        return min_subarray_length if min_subarray_length != float('inf') else 0
+        return longest_subarray
 
 
 # print(random.choice([]))
@@ -137,7 +139,7 @@ class Solution:
 
 solution = Solution()
 
-print(solution.min_subarray_greaterequal_target([2,3,1,2,4,3], 7))
+print(solution.longest_substring_atmost_k("eceba", 2))
 
 # head = Node(1)
 # node_1 = Node(2)
