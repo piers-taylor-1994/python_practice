@@ -97,115 +97,33 @@ class Solution:
     12. Backtracking
     13. Prefix sum ✓ (22/07)
     14. Sliding window ✓ (22/07)
-    """
+    """ 
 
-    def pacificAtlantic(self, heights):
-        DIRECTIONS = [
-            (-1, 0),
-            (0, 1),
-            (1, 0),
-            (0, -1)
-        ]
-
-        row_max = len(heights)
-        col_max = len(heights[0])
-        pacific_access = set()
-        atlantic_access = set()
-
-        def dfs(row, col, ocean, height):
-            if row < 0 or row >= row_max or col < 0 or col >= col_max or heights[row][col] < height or (row, col) in ocean:
-                return
-            ocean.add((row, col))
-
-            for dr, dc in DIRECTIONS:
-                dfs(dr + row, dc + col, ocean, heights[row][col])
-
-        for i in range(col_max):
-            dfs(0, i, pacific_access, heights[0][i]) #top
-            dfs(row_max - 1, i, atlantic_access, heights[row_max - 1][i]) #bottom
-
-        for j in range(row_max):
-            dfs(j, 0, pacific_access, heights[j][0]) #left
-            dfs(j, col_max - 1, atlantic_access, heights[j][col_max - 1]) #right
-        
-        return list(pacific_access & atlantic_access)
-    
-    def longest_substring(self, s):
-        letter_count = {}
-        longest_length = 0
-        left = 0
-
-        for right in range(len(s)):
-            right_letter = s[right]
-            letter_count[right_letter] = letter_count.get(right_letter, 0) + 1
-
-            while letter_count[right_letter] > 1:
-                left_letter = s[left]
-                letter_count[left_letter] -= 1
-
-                if letter_count[left_letter] == 0:
-                    del letter_count[left_letter]
-                left += 1
-            
-            longest_length = max(longest_length, right - left + 1)
-        
-        return longest_length
-    
-    def min_size_subarray_greaterequal_target(self, nums, target):
+    def min_subarray_greaterequal_target(self, nums, target):
+        #Initialise prefix array
         prefix = [0] * (len(nums) + 1)
 
+        #Fill prefix array
         for i in range(len(nums)):
-            prefix[i + 1] = nums[i] + prefix[i]
+            prefix[i + 1] = prefix[i] + nums[i]
         
+        #Initialise variable to inf so every new value is smaller
+        minimum_subarray_length = float('inf')
         q = deque()
-        min_subarray = float('inf')
+
 
         for j in range(len(prefix)):
+            #While there's a queue and the current subarray range is greater or equal to target, compare against stored min_length and prune the front
             while q and prefix[j] - prefix[q[0]] >= target:
-                min_subarray = min(min_subarray, j - q.popleft())
+                minimum_subarray_length = min(minimum_subarray_length, j - q.popleft())
             
+            #While there's a queue and the new value is smaller than the last value, prune the end to keep the the decreasing monotonic queue
             while q and prefix[j] <= prefix[q[-1]]:
                 q.pop()
-
+            
             q.append(j)
         
-        return min_subarray if min_subarray != float('inf') else 0
-    
-    def merge_intervals(self, intervals:list):
-        if not intervals:
-            return []
-        
-        intervals.sort(key=lambda x:x[0])
-        merged = [intervals[0]]
-
-        for s, e in intervals[1:]:
-            last_end = merged[-1][1]
-
-            if s <= last_end:
-                merged[-1][1] = max(last_end, e)
-            else:
-                merged.append([s, e])
-        
-        return merged
-    
-    def min_eating_speed(self, piles, h):
-        left = 0
-        right = max(piles)
-        minimum_speed = right
-
-        while left <= right:
-            mid = (left + right) // 2
-            total_hours = sum(math.ceil(p / mid) for p in piles)
-
-            if total_hours <= h:
-                minimum_speed = mid
-                right = mid - 1
-            else:
-                left = mid + 1
-        
-        return minimum_speed
-
-    
+        return minimum_subarray_length
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
 # print(random.choice(["quick_sort"]))
@@ -219,16 +137,7 @@ class Solution:
 
 solution = Solution()
 
-# print(solution.pacificAtlantic([[1,2,2,3,5],[3,2,3,4,4],[2,4,5,3,1],[6,7,1,4,5],[5,1,1,2,4]]))
-print(solution.pacificAtlantic([[1,1],[1,1],[1,1]]))
-
-print(solution.longest_substring("abcabcbb"))
-
-print(solution.min_size_subarray_greaterequal_target([2,3,1,2,4,3], 7))
-
-print(solution.merge_intervals([[1,3],[2,6],[8,10],[15,18]]))
-
-print(solution.min_eating_speed([3,6,7,11], 8))
+print(solution.min_subarray_greaterequal_target([2,3,1,2,4,3], 7))
 
 # head = Node(1)
 # node_1 = Node(2)
