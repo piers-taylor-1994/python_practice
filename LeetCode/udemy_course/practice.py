@@ -177,36 +177,19 @@ class Solution:
         
         intervals.sort(key=lambda x:x[0])
         merged = [intervals[0]]
-        
-        for start, end in intervals[1:]:
+
+        for s, e in intervals[1:]:
             last_end = merged[-1][1]
 
-            if start <= last_end:
-                merged[-1][1] = max(last_end, end)
+            if s <= last_end:
+                merged[-1][1] = max(last_end, e)
             else:
-                merged.append([start, end])
+                merged.append([s, e])
         
         return merged
     
     def min_eating_speed(self, piles, h):
-        left = 1 
-        right = max(piles)
-        result = right
-
-        while left <= right:
-            mid = (left + right) // 2
-            hours = sum(math.ceil(p / mid) for p in piles)
-
-            if hours <= h:
-                result = mid
-                right = mid - 1
-            else:
-                left = mid + 1
-
-        return result
-
-
-
+        ...
 
     
 # print(random.choice([]))
