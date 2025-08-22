@@ -99,32 +99,26 @@ class Solution:
     14. Sliding window ✓ (22/07)
     """ 
 
-    def longest_substring_atmost_k(self, s, k):
-        #Initialise character count hashmap
-        character_count = {}
-        left = 0
-        longest_subarray = 0
+    def merged_intervals(self, intervals):
+        #Sort intervals
+        intervals.sort(key=lambda x:x[0])
+        #Initialise merged array with first interval
+        merged = [intervals[0]]
 
-        for right in range(len(s)):
-            right_char = s[right]
-            #Initialise/increment character count
-            character_count[right_char] = character_count.get(right_char, 0) + 1
+        for s, e in intervals[1:]:
+            #Set variable on the last interval in merged's end
+            last_end = merged[-1][1]
 
-            #While there are more than k characters in the hashmap, decrease window from the left
-            while len(character_count) > k:
-                left_char = s[left]
-                character_count[left_char] -= 1
-
-                if character_count[left_char] == 0:
-                    del character_count[left_char]
-                
-                left += 1
+            #If the current interval's start is before or equal to the last interval's end, combine intervals
+            if s <= last_end:
+                merged[-1][1] = max(last_end, e)
             
-            #Work out if the new window is bigger than the currently recorded one
-            longest_subarray = max(longest_subarray, right - left + 1)
+            #Otherwise just add the interval like normal
+            else:
+                merged.append([s, e])
         
-        return longest_subarray
-
+        return merged
+ 
 
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
@@ -139,7 +133,7 @@ class Solution:
 
 solution = Solution()
 
-print(solution.longest_substring_atmost_k("eceba", 2))
+print(solution.merged_intervals([[1,3],[2,6],[8,10],[15,18]]))
 
 # head = Node(1)
 # node_1 = Node(2)
