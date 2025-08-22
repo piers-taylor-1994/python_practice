@@ -189,7 +189,21 @@ class Solution:
         return merged
     
     def min_eating_speed(self, piles, h):
-        ...
+        left = 0
+        right = max(piles)
+        minimum_speed = right
+
+        while left <= right:
+            mid = (left + right) // 2
+            total_hours = sum(math.ceil(p / mid) for p in piles)
+
+            if total_hours <= h:
+                minimum_speed = mid
+                right = mid - 1
+            else:
+                left = mid + 1
+        
+        return minimum_speed
 
     
 # print(random.choice([]))
