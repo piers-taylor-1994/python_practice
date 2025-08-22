@@ -99,25 +99,30 @@ class Solution:
     14. Sliding window ✓ (22/07)
     """ 
 
-    def merged_intervals(self, intervals):
-        #Sort intervals
-        intervals.sort(key=lambda x:x[0])
-        #Initialise merged array with first interval
-        merged = [intervals[0]]
-
-        for s, e in intervals[1:]:
-            #Set variable on the last interval in merged's end
-            last_end = merged[-1][1]
-
-            #If the current interval's start is before or equal to the last interval's end, combine intervals
-            if s <= last_end:
-                merged[-1][1] = max(last_end, e)
-            
-            #Otherwise just add the interval like normal
-            else:
-                merged.append([s, e])
+    def min_bananas_per_hour(self, piles, h):
+        #Edge case catch
+        if not piles or not h:
+            return 0
         
-        return merged
+        #Initialise left and right at both extremes. The default min_speed is the worst case scenario (max banana pile)
+        left = 1
+        right = max(piles)
+        min_speed = right
+
+        #Binary search for optimal speed
+        while left <= right:
+            mid_speed = (right + left) // 2
+            #Add total hours of each piles bananas per mid speed
+            total_hours = sum(math.ceil(p / mid_speed) for p in piles)
+
+            #If total hours are less than or equal to hour cap, then we've found a better speed
+            if total_hours <= h:
+                min_speed = mid_speed
+                right = mid_speed - 1
+            else:
+                left = mid_speed + 1
+        
+        return min_speed
  
 
 # print(random.choice([]))
@@ -133,7 +138,7 @@ class Solution:
 
 solution = Solution()
 
-print(solution.merged_intervals([[1,3],[2,6],[8,10],[15,18]]))
+print(solution.min_bananas_per_hour([3,6,7,11], 8))
 
 # head = Node(1)
 # node_1 = Node(2)
