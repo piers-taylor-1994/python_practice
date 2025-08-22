@@ -100,30 +100,30 @@ class Solution:
     """ 
 
     def min_subarray_greaterequal_target(self, nums, target):
-        #Initialise prefix array
-        prefix = [0] * (len(nums) + 1)
+        #Initialise left pointer, current sum of the window, and the min subarray length at inf so any new value is smaller
+        left = 0
+        window_sum = 0
+        min_subarray_length = float('inf')
 
-        #Fill prefix array
-        for i in range(len(nums)):
-            prefix[i + 1] = prefix[i] + nums[i]
+        #Start opening the sliding window
+        for right in range(len(nums)):
+            right_num = nums[right]
+            window_sum += right_num
+
+            #While the window is greater or equal to the target
+            while window_sum >= target:
+                #Set new window length if it's smaller than current recorded
+                min_subarray_length = min(min_subarray_length, right - left + 1)
+                
+                #Shrink the window and see if we are still greater or equal to the target
+                left_num = nums[left]
+                window_sum -= left_num
+                left += 1
         
-        #Initialise variable to inf so every new value is smaller
-        minimum_subarray_length = float('inf')
-        q = deque()
+        #Return subarray length if not inf, if inf, then we couldn't find a window so return 0
+        return min_subarray_length if min_subarray_length != float('inf') else 0
 
 
-        for j in range(len(prefix)):
-            #While there's a queue and the current subarray range is greater or equal to target, compare against stored min_length and prune the front
-            while q and prefix[j] - prefix[q[0]] >= target:
-                minimum_subarray_length = min(minimum_subarray_length, j - q.popleft())
-            
-            #While there's a queue and the new value is smaller than the last value, prune the end to keep the the decreasing monotonic queue
-            while q and prefix[j] <= prefix[q[-1]]:
-                q.pop()
-            
-            q.append(j)
-        
-        return minimum_subarray_length
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
 # print(random.choice(["quick_sort"]))
