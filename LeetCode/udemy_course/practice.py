@@ -82,40 +82,25 @@ class Trie:
         return True
     
 class Solution:
-   def lengthOfLongestSubstring(self, s):
+    def subarraySum(self, nums, k):
         """
-        Grow until any count of letters > 1, then shrink until it's <= 1
-        Time complexity: O(n) Space Complexity: O(n)
+        Add each value to the prefix, and record everytime the current prefix - k is in the hash_map
+        Time complexity: O(n) Space complexity; O(n)
         """
-        len_s = len(s)
-        if len_s < 2:
-            return len(s)
+        prefix_sum = 0
+        prefix_count = {prefix_sum: 1}
+        k_count = 0
+
+        for num in nums:
+            prefix_sum += num
+            k_count += prefix_count.get(prefix_sum - k, 0)
+            prefix_count[prefix_sum] = prefix_count.get(prefix_sum, 0) + 1
         
-        left = 0
-        letter_count = Counter()
-        longest_substring_length = 0
-
-        for right in range(len_s):
-            letter_right = s[right]
-            letter_count[letter_right] = letter_count.get(letter_right, 0) + 1
-
-            while letter_count[letter_right] > 1:
-                letter_left = s[left]
-                letter_count[letter_left] -= 1
-
-                if letter_count[letter_left] == 0:
-                    del letter_count[letter_left]
-
-                left += 1
-            
-            longest_substring_length = max(longest_substring_length, right - left + 1)
-        
-        return longest_substring_length
-       
+        return k_count
 
 solution = Solution()
 
-print(solution.lengthOfLongestSubstring("abcabcbb"))
+print(solution.subarraySum([1,1,1], 2))
 
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
