@@ -80,50 +80,30 @@ class Trie:
             node = node.children[char]
         
         return True
-
-class Solution:
+    
+def min_window_greaterequal_target(target, nums):
     """
-    1. Arrays ✓ (22/07)
-    2. Strings ✓ (22/07)
-    3. Linked lists ✓ (24/07)
-    4. Binary trees ✓ (23/07)
-    5. Tries ✓ (23/07)
-    6. Greedy ✓ (24/07)
-    7. Matrices ✓ (24/07)
-    8. Graphs ✓ (25/07)
-    9. Heaps ✓ (25/07)
-    10. Bitmask ✓ (25/07)
-    11. DP
-    12. Backtracking
-    13. Prefix sum ✓ (22/07)
-    14. Sliding window ✓ (22/07)
-    """ 
+    Grow until window >= target, and shrink while we still maintain window >= target
+    """
+    left = 0
+    window_min_length = float('inf')
+    window_sum = 0
 
-    def min_bananas_per_hour(self, piles, h):
-        #Edge case catch
-        if not piles or not h:
-            return 0
+    for right in range(len(nums)):
+        num_right = nums[right]
+        window_sum += num_right
+
+        while window_sum >= target:
+            window_min_length = min(window_min_length, right - left + 1)
+
+            left_num = nums[left]
+            window_sum -= left_num
+            left += 1
         
-        #Initialise left and right at both extremes. The default min_speed is the worst case scenario (max banana pile)
-        left = 1
-        right = max(piles)
-        min_speed = right
-
-        #Binary search for optimal speed
-        while left <= right:
-            mid_speed = (right + left) // 2
-            #Add total hours of each piles bananas per mid speed
-            total_hours = sum(math.ceil(p / mid_speed) for p in piles)
-
-            #If total hours are less than or equal to hour cap, then we've found a better speed
-            if total_hours <= h:
-                min_speed = mid_speed
-                right = mid_speed - 1
-            else:
-                left = mid_speed + 1
-        
-        return min_speed
- 
+    return window_min_length if window_min_length != float('inf') else 0
+    
+print(min_window_greaterequal_target(7, [2,3,1,2,4,3]))
+print(min_window_greaterequal_target(9, [1]))
 
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
@@ -135,10 +115,6 @@ class Solution:
 
 #"subset sum/partition", "grid/pathfinding", "string manipulation", "decision based", "probability and counting", "bitmask"
 # print(random.choice(["subset sum/partition", "string manipulation", "decision based", "probability and counting", "bitmask"]))
-
-solution = Solution()
-
-print(solution.min_bananas_per_hour([3,6,7,11], 8))
 
 # head = Node(1)
 # node_1 = Node(2)
