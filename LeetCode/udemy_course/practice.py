@@ -81,29 +81,41 @@ class Trie:
         
         return True
     
-def min_window_greaterequal_target(target, nums):
-    """
-    Grow until window >= target, and shrink while we still maintain window >= target
-    """
-    left = 0
-    window_min_length = float('inf')
-    window_sum = 0
-
-    for right in range(len(nums)):
-        num_right = nums[right]
-        window_sum += num_right
-
-        while window_sum >= target:
-            window_min_length = min(window_min_length, right - left + 1)
-
-            left_num = nums[left]
-            window_sum -= left_num
-            left += 1
+class Solution:
+   def lengthOfLongestSubstring(self, s):
+        """
+        Grow until any count of letters > 1, then shrink until it's <= 1
+        Time complexity: O(n) Space Complexity: O(n)
+        """
+        len_s = len(s)
+        if len_s < 2:
+            return len(s)
         
-    return window_min_length if window_min_length != float('inf') else 0
-    
-print(min_window_greaterequal_target(7, [2,3,1,2,4,3]))
-print(min_window_greaterequal_target(9, [1]))
+        left = 0
+        letter_count = Counter()
+        longest_substring_length = 0
+
+        for right in range(len_s):
+            letter_right = s[right]
+            letter_count[letter_right] = letter_count.get(letter_right, 0) + 1
+
+            while letter_count[letter_right] > 1:
+                letter_left = s[left]
+                letter_count[letter_left] -= 1
+
+                if letter_count[letter_left] == 0:
+                    del letter_count[letter_left]
+
+                left += 1
+            
+            longest_substring_length = max(longest_substring_length, right - left + 1)
+        
+        return longest_substring_length
+       
+
+solution = Solution()
+
+print(solution.lengthOfLongestSubstring("abcabcbb"))
 
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
