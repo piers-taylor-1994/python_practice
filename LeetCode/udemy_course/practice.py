@@ -82,25 +82,31 @@ class Trie:
         return True
     
 class Solution:
-    def subarraySum(self, nums, k):
+    def minEatingSpeed(self, piles, h):
         """
-        Add each value to the prefix, and record everytime the current prefix - k is in the hash_map
-        Time complexity: O(n) Space complexity; O(n)
+        Binary search between the very min and max speeds koko can eat bananas
+        Time complexity: O(log n) Space complexity: O(1)
         """
-        prefix_sum = 0
-        prefix_count = {prefix_sum: 1}
-        k_count = 0
+        left = 1
+        right = max(piles)
+        k = right
 
-        for num in nums:
-            prefix_sum += num
-            k_count += prefix_count.get(prefix_sum - k, 0)
-            prefix_count[prefix_sum] = prefix_count.get(prefix_sum, 0) + 1
+        while left <= right:
+            mid = (left + right) // 2
+            total_hours = sum(math.ceil(p / mid) for p in piles)
+
+            if total_hours <= h:
+                k = mid
+                right = mid - 1
+            else:
+                left = mid + 1
         
-        return k_count
+        return k
 
 solution = Solution()
 
-print(solution.subarraySum([1,1,1], 2))
+print(solution.minEatingSpeed([3,6,7,11], 8))
+print(solution.minEatingSpeed([30,11,23,4,20], 5))
 
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
