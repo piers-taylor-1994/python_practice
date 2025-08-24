@@ -82,43 +82,29 @@ class Trie:
         return True
     
 class Solution:
-    def shipWithinDays(self, weights, days):
+    def eraseOverlapIntervals(self, intervals):
         """
-        Use binary search to find a capacity, then use greedy to compare that against weights for each day.
-        Time complexity: O(n) Space complexity: O(1)
+        Sort intervals by end date, then process each interval, if the interval's start is before the current end, skip it
+        Time complexity: O(n) Space complexity: O(log n)
         """
-        def calculate_days(capacity):
-            days = 1
-            current_load = 0
-
-            for weight in weights:
-                if (current_load + weight) > capacity:
-                    days += 1
-                    current_load = weight
-                else:
-                    current_load += weight
-            
-            return days
+        if not intervals:
+            return 0
         
-        left = max(weights)
-        right = sum(weights)
-        min_capacity = right
+        intervals.sort(key=lambda x:x[1])
+        current_end = -float('inf')
+        skipped_intervals = 0
 
-        while left <= right:
-            mid = (left + right) // 2
-            days_required = calculate_days(mid)
-
-            if days_required <= days:
-                min_capacity = mid
-                right = mid - 1
-            else:
-                left = mid + 1
+        for start, end in intervals:
+            if start < current_end:
+                skipped_intervals += 1
+                continue
+            current_end = end
         
-        return min_capacity
+        return skipped_intervals
 
 solution = Solution()
 
-print(solution.shipWithinDays([1,2,3,4,5,6,7,8,9,10], 5))
+print(solution.eraseOverlapIntervals([[1,2],[2,3],[3,4],[1,3]]))
 
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
