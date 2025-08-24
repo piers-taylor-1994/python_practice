@@ -3,16 +3,21 @@ import threading
 import time
 
 connection_pool = threading.Semaphore(3)
+lock = threading.Lock()
+counter = 0
 
-def db_process(task_id):
+def counter_increment(task_id):
+    global counter
     print(f"Task {task_id} waiting for connection\n")
-
+    
     with connection_pool:
-        print(f"Task {task_id} acquired connection\n")
+        print(f"Task {task_id} ready to work\n")
         time.sleep(random.uniform(0.5, 1.5))
-        print(f"Task {task_id} releasing connection\n")
+        with lock:
+            print(f"Task {task_id} doing critical work\n")
+            counter += 1
 
-threads = [threading.Thread(target=db_process, args=(i,)) for i in range(8)]
+threads = [threading.Thread(target=counter_increment, args=(i,)) for i in range(9)]
 
 for t in threads:
     t.start()
@@ -20,4 +25,4 @@ for t in threads:
 for t in threads:
     t.join()
 
-print(f"All tasks complete")
+print(f"All tasks complete, counter: {counter}")
