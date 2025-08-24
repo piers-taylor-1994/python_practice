@@ -82,31 +82,43 @@ class Trie:
         return True
     
 class Solution:
-    def minEatingSpeed(self, piles, h):
+    def shipWithinDays(self, weights, days):
         """
-        Binary search between the very min and max speeds koko can eat bananas
-        Time complexity: O(log n) Space complexity: O(1)
+        Use binary search to find a capacity, then use greedy to compare that against weights for each day.
+        Time complexity: O(n) Space complexity: O(1)
         """
-        left = 1
-        right = max(piles)
-        k = right
+        def calculate_days(capacity):
+            days = 1
+            current_load = 0
+
+            for weight in weights:
+                if (current_load + weight) > capacity:
+                    days += 1
+                    current_load = weight
+                else:
+                    current_load += weight
+            
+            return days
+        
+        left = max(weights)
+        right = sum(weights)
+        min_capacity = right
 
         while left <= right:
             mid = (left + right) // 2
-            total_hours = sum(math.ceil(p / mid) for p in piles)
+            days_required = calculate_days(mid)
 
-            if total_hours <= h:
-                k = mid
+            if days_required <= days:
+                min_capacity = mid
                 right = mid - 1
             else:
                 left = mid + 1
         
-        return k
+        return min_capacity
 
 solution = Solution()
 
-print(solution.minEatingSpeed([3,6,7,11], 8))
-print(solution.minEatingSpeed([30,11,23,4,20], 5))
+print(solution.shipWithinDays([1,2,3,4,5,6,7,8,9,10], 5))
 
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
