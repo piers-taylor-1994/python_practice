@@ -88,12 +88,8 @@ class Solution:
         Time complexity: O(n log k) Space complexity: O(n)
         """
         num_count = Counter(nums)
-        max_heap = []
-
-        for num, freq in num_count.items():
-            heapq.heappush(max_heap, (-freq, num))
-        
-        return [heapq.heappop(max_heap)[1] for _ in range(k)]
+        num_count_sorted = sorted(num_count, key=lambda x: num_count[x], reverse=True)
+        return num_count_sorted[:k]
 
 solution = Solution()
 
