@@ -82,29 +82,26 @@ class Trie:
         return True
     
 class Solution:
-    def eraseOverlapIntervals(self, intervals):
+    def meetingRooms(self, intervals):
         """
-        Sort intervals by end date, then process each interval, if the interval's start is before the current end, skip it
-        Time complexity: O(n) Space complexity: O(log n)
+        Sort intervals by start, and create a heap track currently earliest ending meeting. If the next start is >= the top of the heap, pop it. Added the new meeting's end to the heap
+        Time complexity: O(n log n) Space complexity: O(n)
         """
-        if not intervals:
-            return 0
-        
-        intervals.sort(key=lambda x:x[1])
-        current_end = -float('inf')
-        skipped_intervals = 0
+        intervals.sort(key=lambda interval:interval[0])
+        rooms_endings = []
+        heapq.heappush(rooms_endings, intervals[0][1])
 
-        for start, end in intervals:
-            if start < current_end:
-                skipped_intervals += 1
-                continue
-            current_end = end
+        for start, end in intervals[1:]:
+            if start >= rooms_endings[0]:
+                heapq.heappop(rooms_endings)
+
+            heapq.heappush(rooms_endings, end)
         
-        return skipped_intervals
+        return len(rooms_endings)
 
 solution = Solution()
 
-print(solution.eraseOverlapIntervals([[1,2],[2,3],[3,4],[1,3]]))
+print(solution.meetingRooms([[0, 30],[5, 10],[15, 20]]))
 
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
