@@ -82,26 +82,22 @@ class Trie:
         return True
     
 class Solution:
-    def meetingRooms(self, intervals):
+    def topKFrequent(self, nums, k):
         """
-        Sort intervals by start, and create a heap track currently earliest ending meeting. If the next start is >= the top of the heap, pop it. Added the new meeting's end to the heap
-        Time complexity: O(n log n) Space complexity: O(n)
+        Create a counter for num frequency then used a heap to find the top k numbers
+        Time complexity: O(n log k) Space complexity: O(n)
         """
-        intervals.sort(key=lambda interval:interval[0])
-        rooms_endings = []
-        heapq.heappush(rooms_endings, intervals[0][1])
+        num_count = Counter(nums)
+        max_heap = []
 
-        for start, end in intervals[1:]:
-            if start >= rooms_endings[0]:
-                heapq.heappop(rooms_endings)
-
-            heapq.heappush(rooms_endings, end)
+        for num, freq in num_count.items():
+            heapq.heappush(max_heap, (-freq, num))
         
-        return len(rooms_endings)
+        return [heapq.heappop(max_heap)[1] for _ in range(k)]
 
 solution = Solution()
 
-print(solution.meetingRooms([[0, 30],[5, 10],[15, 20]]))
+print(solution.topKFrequent([1,1,1,2,2,3], 2))
 
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
