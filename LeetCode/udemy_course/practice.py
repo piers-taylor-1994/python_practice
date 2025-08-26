@@ -82,48 +82,53 @@ class Trie:
         return True
     
 class Solution:
-    def ladderLength(self, beginWord, endWord, wordList):
-        """
-        :type beginWord: str
-        :type endWord: str
-        :type wordList: List[str]
-        :rtype: int
-        """
-        if endWord not in wordList:
-            return 0
+    def has_access(self, check_access):
+        folders = [
+            ('A', None),
+            ('B', 'A'),
+            ('C', 'B'),
+            ('D', 'B'),
+            ('E', 'A'),
+            ('F', 'E'),
+            ]
         
-        word_match_dict = {}
-        word_length = len(beginWord)
+        access_folders = {'C', 'E', 'F'}
+        
+        graph = {}
+        for child, parent in folders:
+            graph[parent] = graph.get(parent, []) + [child]
 
-        for word in [beginWord] + wordList:
-            for i in range(word_length):
-                pattern = word[:i] + "*" + word[i+1:]
-                word_match_dict[pattern] = word_match_dict.get(pattern, []) + [word]
-        
-        queue = deque([beginWord])
-        visited = set([beginWord])
-        level = 1
+        queue = deque([("A", False)])
 
         while queue:
-            for _ in range(len(queue)):
-                word = queue.popleft()
+            folder, access = queue.popleft()
 
-                for i in range(word_length):
-                    pattern = word[:i] + "*" + word[i+1:]
+            if folder == check_access and access:
+                return True
 
-                    for related_word in word_match_dict[pattern]:
-                        if related_word == endWord:
-                            return level + 1
-                        elif related_word not in visited:
-                            queue.append(related_word)
-                            visited.add(related_word)
-            level += 1
+            if folder in graph:
+                for child_folder in graph[folder]:
+                    if child_folder in access_folders:
+                        if access:
+                            access_folders.remove(child_folder)
+
+                        queue.append((child_folder, True))
+                    else:
+                        queue.append((child_folder, False))     
         
-        return 0
+        return False
+                
+                
+
 
 solution = Solution()
 
-print(solution.ladderLength("hit", "cog", ["hot","dot","dog","lot","log","cog"]))
+print(solution.has_access('A') == False)
+print(solution.has_access('B') == False)
+print(solution.has_access('C') == True)
+print(solution.has_access('D') == False)
+print(solution.has_access('E') == True)
+print(solution.has_access('F') == True)
 
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
