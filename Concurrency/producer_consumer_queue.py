@@ -3,6 +3,12 @@ import queue
 import time
 import random
 
+#Like a bakery:
+# Bakers (producers) bake bread and put it on shelves (queue).
+# Customers (consumers) take bread off the shelves.
+# If shelves are empty, customers wait. If shelves are full, bakers wait.
+
+
 # Shared queue, acts as a buffer that decouples production and consumption speeds
 # It's thread safe, the queue will lock off a task if a producer/consumer is working on it
 task_queue = queue.Queue()
