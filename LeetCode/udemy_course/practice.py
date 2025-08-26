@@ -82,28 +82,55 @@ class Trie:
         return True
     
 class Solution:
-    def meetingRooms2(self, intervals):
+    def numIslands(self, grid):
         """
-        Sort meetings by start, then create a min heap of meeting end times. If the next start time is >= the top of the heap, pop it off. Add the next end time to the heap.
-        Time complexity: O(n log n) Space complexity: O(n)
+        :type grid: List[List[str]]
+        :rtype: int
         """
-        if not intervals:
+        if not grid or not grid[0]:
             return 0
-        
-        intervals.sort(key=lambda x:x[0])
-        meeting_rooms = []
-        heapq.heappush(meeting_rooms, intervals[0][1])
 
-        for start, end in intervals[1:]:
-            if start >= meeting_rooms[0]:
-                heapq.heappop(meeting_rooms)
-            heapq.heappush(meeting_rooms, end)
+        DIRECTIONS = [
+            (-1, 0),
+            (0, 1),
+            (1, 0),
+            (0, -1)
+        ]
+
+        islands_count = 0
+        seen = set()
+
+        def bfs(row, col):
+            queue = deque([(row, col)])
+            seen.add((row, col))
+
+            while queue:
+                r, c = queue.popleft()
+
+                for dr, dc in DIRECTIONS:
+                    new_row = dr + r
+                    new_col = dc + c
+
+                    if 0 <= new_row < len(grid) and 0 <= new_col < len(grid[0]) and grid[new_row][new_col] == "1" and (new_row, new_col) not in seen:
+                        queue.append((new_row, new_col))
+                        seen.add((new_row, new_col))
+
+        for i in range(len(grid)):
+            for j in range(len(grid[i])):
+                if grid[i][j] == "1" and (i, j) not in seen:
+                    islands_count += 1
+                    bfs(i, j)
         
-        return len(meeting_rooms)
+        return islands_count
 
 solution = Solution()
 
-print(solution.meetingRooms2([[0, 30],[5, 10],[15, 20]]))
+print(solution.numIslands([
+  ["1","1","0","0","0"],
+  ["1","1","0","0","0"],
+  ["0","0","1","0","0"],
+  ["0","0","0","1","1"]
+]))
 
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
