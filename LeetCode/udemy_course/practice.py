@@ -1,4 +1,4 @@
-from collections import Counter, deque
+from collections import Counter, defaultdict, deque
 import math
 import random
 import heapq
@@ -82,40 +82,48 @@ class Trie:
         return True
     
 class Solution:
-    def canFinish(self, numCourses, prerequisites):
+    def ladderLength(self, beginWord, endWord, wordList):
         """
-        :type numCourses: int
-        :type prerequisites: List[List[int]]
-        :rtype: bool
+        :type beginWord: str
+        :type endWord: str
+        :type wordList: List[str]
+        :rtype: int
         """
-        #prerequisites = [course, courseNeeded]
-        courseGraph = {i:[] for i in range(numCourses)}
-        for course, courseNeeded in prerequisites:
-            courseGraph[courseNeeded] = courseGraph.get(courseNeeded, []) + [course]
+        if endWord not in wordList:
+            return 0
         
-        for courseRequired, courses in courseGraph.items():
-            queue = deque(courses)
-            visited = set(courses)
+        word_match_dict = {}
+        word_length = len(beginWord)
 
-            while queue:
-                node = queue.popleft()
+        for word in [beginWord] + wordList:
+            for i in range(word_length):
+                pattern = word[:i] + "*" + word[i+1:]
+                word_match_dict[pattern] = word_match_dict.get(pattern, []) + [word]
+        
+        queue = deque([beginWord])
+        visited = set([beginWord])
+        level = 1
 
-                for course in courseGraph[node]:
-                    if course == courseRequired:
-                        return False
-                    elif course not in visited:
-                        queue.append(course)
-                        visited.add(course)
+        while queue:
+            for _ in range(len(queue)):
+                word = queue.popleft()
 
-        return True
+                for i in range(word_length):
+                    pattern = word[:i] + "*" + word[i+1:]
+
+                    for related_word in word_match_dict[pattern]:
+                        if related_word == endWord:
+                            return level + 1
+                        elif related_word not in visited:
+                            queue.append(related_word)
+                            visited.add(related_word)
+            level += 1
+        
+        return 0
 
 solution = Solution()
 
-# print(solution.canFinish(2, [[1, 0]]))
-print(solution.canFinish(2, [[1,0],[0,1]]))
-# print(solution.canFinish(2, [[0, 1]]))
-# print(solution.canFinish(4, [[2,0],[1,0],[3,1],[3,2],[1,3]]))
-# print(solution.canFinish(3, [[0,1],[0,2],[1,2],[2,1]]))
+print(solution.ladderLength("hit", "cog", ["hot","dot","dog","lot","log","cog"]))
 
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
