@@ -100,26 +100,20 @@ class Solution:
         islands_count = 0
         seen = set()
 
-        def bfs(row, col):
-            queue = deque([(row, col)])
+        def dfs(row, col):
+            if row < 0 or row >= len(grid) or col < 0 or col >= len(grid[0]) or grid[row][col] != "1" or (row, col) in seen:
+                return
+            
             seen.add((row, col))
 
-            while queue:
-                r, c = queue.popleft()
-
-                for dr, dc in DIRECTIONS:
-                    new_row = dr + r
-                    new_col = dc + c
-
-                    if 0 <= new_row < len(grid) and 0 <= new_col < len(grid[0]) and grid[new_row][new_col] == "1" and (new_row, new_col) not in seen:
-                        queue.append((new_row, new_col))
-                        seen.add((new_row, new_col))
+            for dr, dc in DIRECTIONS:
+                dfs(dr + row, dc + col)
 
         for i in range(len(grid)):
             for j in range(len(grid[i])):
                 if grid[i][j] == "1" and (i, j) not in seen:
                     islands_count += 1
-                    bfs(i, j)
+                    dfs(i, j)
         
         return islands_count
 
