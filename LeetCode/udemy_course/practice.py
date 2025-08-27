@@ -82,53 +82,53 @@ class Trie:
         return True
     
 class Solution:
-    def has_access(self, check_access):
-        folders = [
-            ('A', None),
-            ('B', 'A'),
-            ('C', 'B'),
-            ('D', 'B'),
-            ('E', 'A'),
-            ('F', 'E'),
-            ]
+    def mergeKLists(self, lists:list):
+        """
+        :type lists: List[Optional[ListNode]]
+        :rtype: Optional[ListNode]
+        """
+        if not lists or all(node is None for node in lists):
+            return None
+
+        min_heap = []
+        counter = 1
+
+        for node in lists:
+            current_node = node
+
+            while current_node:
+                heapq.heappush(min_heap, (current_node.val, counter, current_node))
+                current_node = current_node.next
+                counter += 1
+
+        _, _, head = heapq.heappop(min_heap)
+        current_node = head
+        while min_heap:
+            _, _, next_node = heapq.heappop(min_heap)
+            current_node.next = next_node
+            current_node = next_node
         
-        access_folders = {'C', 'E', 'F'}
-        
-        graph = {}
-        for child, parent in folders:
-            if not parent:
-                parent = "root"
-            graph[parent] = graph.get(parent, []) + [child]
-
-        queue = deque([(graph["root"][0], False)])
-
-        while queue:
-            folder, access = queue.popleft()
-
-            if folder == check_access and access:
-                return True
-
-            if folder in graph:
-                for child_folder in graph[folder]:
-                    if child_folder in access_folders:
-                        if access:
-                            access_folders.remove(child_folder)
-
-                        queue.append((child_folder, True))
-                    else:
-                        queue.append((child_folder, False))     
-        
-        return False
+        return head
 
 solution = Solution()
 
-print(solution.has_access('A') == False)
-print(solution.has_access('B') == False)
-print(solution.has_access('C') == True)
-print(solution.has_access('D') == False)
-print(solution.has_access('E') == True)
-print(solution.has_access('F') == True)
+node1 = Node(1)
+node1_1 = Node(1)
+node2 = Node(2)
+node3 = Node(3)
+node4 = Node(4)
+node4_1 = Node(4)
+node5 = Node(5)
+node6 = Node(6)
+node1.next = node4
+node4.next = node5
 
+node1_1.next = node3
+node3.next = node4_1
+
+node2.next = node6
+
+print(solution.mergeKLists([node1, node1_1, node2]))
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
 # print(random.choice(["quick_sort"]))
