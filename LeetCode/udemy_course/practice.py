@@ -96,9 +96,11 @@ class Solution:
         
         graph = {}
         for child, parent in folders:
+            if not parent:
+                parent = "root"
             graph[parent] = graph.get(parent, []) + [child]
 
-        queue = deque([("A", False)])
+        queue = deque([(graph["root"][0], False)])
 
         while queue:
             folder, access = queue.popleft()
@@ -117,9 +119,6 @@ class Solution:
                         queue.append((child_folder, False))     
         
         return False
-                
-                
-
 
 solution = Solution()
 
