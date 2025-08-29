@@ -109,26 +109,66 @@ class Solution:
             current_node = next_node
         
         return head
+    
+class MedianFinder(object):
+    def __init__(self):
+        self.heap = []
+
+    def addNum(self, num):
+        """
+        :type num: int
+        :rtype: None
+        """
+        heapq.heappush(self.heap, num)
+
+    def findMedian(self):
+        """
+        :rtype: float
+        """
+        heap_length = len(self.heap)
+        heap_copy = self.heap[:]
+        
+        #even
+        if heap_length % 2 == 0:
+            idx_1 = int((heap_length / 2) - 1)
+            idx_2 = int(idx_1 + 1)
+
+            num_1 = 0
+            num_2 = 0
+
+            for i in range(idx_2 + 1):
+                if i == idx_1:
+                    num_1 = heapq.heappop(heap_copy)
+                elif i == idx_2:
+                    num_2 = heapq.heappop(heap_copy)
+                else:
+                    heapq.heappop(heap_copy)
+            
+            return (num_1 + num_2) / 2.0 
+        #odd
+        else:
+            middle_value = 0
+            target_position = heap_length // 2
+            
+            for _ in range(target_position + 1):
+                middle_value = heapq.heappop(heap_copy)
+            
+            return middle_value
 
 solution = Solution()
 
-node1 = Node(1)
-node1_1 = Node(1)
-node2 = Node(2)
-node3 = Node(3)
-node4 = Node(4)
-node4_1 = Node(4)
-node5 = Node(5)
-node6 = Node(6)
-node1.next = node4
-node4.next = node5
+medianFinder = MedianFinder()
+medianFinder.addNum(-1)
+print(medianFinder.findMedian())
+medianFinder.addNum(-2)
+print(medianFinder.findMedian())
+medianFinder.addNum(-3)
+print(medianFinder.findMedian())
+medianFinder.addNum(-4)
+print(medianFinder.findMedian())
+medianFinder.addNum(-5)
+print(medianFinder.findMedian())
 
-node1_1.next = node3
-node3.next = node4_1
-
-node2.next = node6
-
-print(solution.mergeKLists([node1, node1_1, node2]))
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
 # print(random.choice(["quick_sort"]))
