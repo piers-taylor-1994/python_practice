@@ -84,23 +84,25 @@ class Trie:
 class Solution:
     def checkInclusion(self, s1, s2):
         """
-        Use a sliding window to update letter counter. If the letter counters of s1 and s2_window match, return True.
-        Time complexity: O(n) Space complexity: O(n)
+        :type s1: str
+        :type s2: str
+        :rtype: bool
         """
         s1_length = len(s1)
         s2_length = len(s2)
 
         s1_counter = Counter(s1)
-        s2_counter = Counter()
+        s2_counter = Counter(s2[:s1_length])
 
-        for i in range(s2_length):
-            s2_counter[s2[i]] += 1
+        if s1_counter == s2_counter:
+            return True
 
-            if i >= s1_length:
-                s2_counter[s2[i - s1_length]] -= 1
-                
-                if s2_counter[s2[i - s1_length]] == 0:
-                    del s2_counter[s2[i - s1_length]]
+        for i in range(s2_length - s1_length):
+            s2_counter[s2[i]] -= 1
+            if s2_counter[s2[i]] == 0:
+                del s2_counter[s2[i]]
+
+            s2_counter[s2[i + s1_length]] += 1
 
             if s1_counter == s2_counter:
                 return True
