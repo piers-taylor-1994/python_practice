@@ -83,30 +83,52 @@ class Trie:
         return True
     
 class Solution:
-    def eraseOverlapIntervals(self, intervals):
+    def numIslands(self, grid):
         """
-        :type intervals: List[List[int]]
+        :type grid: List[List[str]]
         :rtype: int
         """
-        intervals.sort(key=lambda x:x[1])
+        if not grid or not grid[0]:
+            return 0
         
-        current_end = intervals[0][1]
-        skipped = 0
+        DIRECTIONS = [
+            (-1, 0),
+            (0, 1),
+            (1, 0),
+            (0, -1)
+        ]
 
-        for start, end in intervals[1:]:
-            if start < current_end:
-                skipped += 1
-            else:
-                current_end = end
+        seen = set()
 
-        return skipped
+        def dfs(row, col):
+            if row < 0 or row >= len(grid) or col < 0 or col >= len(grid[0]) or grid[row][col] == "0" or (row, col) in seen:
+                return
+            
+            seen.add((row, col))
+
+            for dr, dc in DIRECTIONS:
+                dfs(dr + row, dc + col)
+
+        islands_count = 0
+
+        for i in range(len(grid)):
+            for j in range(len(grid[i])):
+                if grid[i][j] == "1" and (i, j) not in seen:
+                    islands_count += 1
+                    dfs(i, j)
+        
+        return islands_count
 
 
 
 solution = Solution()
 
-print(solution.eraseOverlapIntervals([[1,2],[2,3],[3,4],[1,3]]))
-print(solution.eraseOverlapIntervals([[1,2],[1,2],[1,2]]))
+print(solution.numIslands([
+  ["1","1","0","0","0"],
+  ["1","1","0","0","0"],
+  ["0","0","1","0","0"],
+  ["0","0","0","1","1"]
+]))
 
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
