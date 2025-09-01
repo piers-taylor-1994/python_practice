@@ -83,8 +83,12 @@ class Trie:
     
 class Solution:
     def maxProfit(self, prices):
-        min_price = float('inf')
+        """
+        Greedily go through each price. If price <= min_price, set min_price to this value. Else, compare against currently recorded profit, and set profit to max.
+        Time complexity: O(n) Space complexity: O(1)
+        """
         profit = 0
+        min_price = float('inf')
 
         for price in prices:
             if price <= min_price:
