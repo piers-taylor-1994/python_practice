@@ -82,70 +82,35 @@ class Trie:
         return True
     
 class Solution:
-    def maxProfit(self, prices):
+    def checkInclusion(self, s1, s2):
         """
-        Greedily go through each price. If price <= min_price, set min_price to this value. Else, compare against currently recorded profit, and set profit to max.
-        Time complexity: O(n) Space complexity: O(1)
+        Use a sliding window to update letter counter. If the letter counters of s1 and s2_window match, return True.
+        Time complexity: O(n) Space complexity: O(n)
         """
-        profit = 0
-        min_price = float('inf')
+        s1_length = len(s1)
+        s2_length = len(s2)
 
-        for price in prices:
-            if price <= min_price:
-                min_price = price
-            else:
-                profit = max(profit, price - min_price)
-            
-        return profit
-    
-class MedianFinder(object):
-    def __init__(self):
-        self.heap = []
+        s1_counter = Counter(s1)
+        s2_counter = Counter()
 
-    def addNum(self, num):
-        """
-        :type num: int
-        :rtype: None
-        """
-        heapq.heappush(self.heap, num)
+        for i in range(s2_length):
+            s2_counter[s2[i]] += 1
 
-    def findMedian(self):
-        """
-        :rtype: float
-        """
-        heap_length = len(self.heap)
-        heap_copy = self.heap[:]
+            if i >= s1_length:
+                s2_counter[s2[i - s1_length]] -= 1
+                
+                if s2_counter[s2[i - s1_length]] == 0:
+                    del s2_counter[s2[i - s1_length]]
+
+            if s1_counter == s2_counter:
+                return True
         
-        #even
-        if heap_length % 2 == 0:
-            idx_1 = int((heap_length / 2) - 1)
-            idx_2 = int(idx_1 + 1)
-
-            num_1 = 0
-            num_2 = 0
-
-            for i in range(idx_2 + 1):
-                if i == idx_1:
-                    num_1 = heapq.heappop(heap_copy)
-                elif i == idx_2:
-                    num_2 = heapq.heappop(heap_copy)
-                else:
-                    heapq.heappop(heap_copy)
-            
-            return (num_1 + num_2) / 2.0 
-        #odd
-        else:
-            middle_value = 0
-            target_position = heap_length // 2
-            
-            for _ in range(target_position + 1):
-                middle_value = heapq.heappop(heap_copy)
-            
-            return middle_value
+        return False
 
 solution = Solution()
 
-print(solution.maxProfit([7,1,5,3,6,4]))
+print(solution.checkInclusion("ab", "eidbaooo"))
+print(solution.checkInclusion("adc", "dcda"))
 
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
