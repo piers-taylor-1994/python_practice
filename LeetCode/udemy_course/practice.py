@@ -82,33 +82,17 @@ class Trie:
         return True
     
 class Solution:
-    def mergeKLists(self, lists:list):
-        """
-        :type lists: List[Optional[ListNode]]
-        :rtype: Optional[ListNode]
-        """
-        if not lists or all(node is None for node in lists):
-            return None
+    def maxProfit(self, prices):
+        min_price = float('inf')
+        profit = 0
 
-        min_heap = []
-        counter = 1
-
-        for node in lists:
-            current_node = node
-
-            while current_node:
-                heapq.heappush(min_heap, (current_node.val, counter, current_node))
-                current_node = current_node.next
-                counter += 1
-
-        _, _, head = heapq.heappop(min_heap)
-        current_node = head
-        while min_heap:
-            _, _, next_node = heapq.heappop(min_heap)
-            current_node.next = next_node
-            current_node = next_node
-        
-        return head
+        for price in prices:
+            if price <= min_price:
+                min_price = price
+            else:
+                profit = max(profit, price - min_price)
+            
+        return profit
     
 class MedianFinder(object):
     def __init__(self):
@@ -157,17 +141,7 @@ class MedianFinder(object):
 
 solution = Solution()
 
-medianFinder = MedianFinder()
-medianFinder.addNum(-1)
-print(medianFinder.findMedian())
-medianFinder.addNum(-2)
-print(medianFinder.findMedian())
-medianFinder.addNum(-3)
-print(medianFinder.findMedian())
-medianFinder.addNum(-4)
-print(medianFinder.findMedian())
-medianFinder.addNum(-5)
-print(medianFinder.findMedian())
+print(solution.maxProfit([7,1,5,3,6,4]))
 
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
