@@ -82,23 +82,27 @@ class Trie:
         return True
     
 class Solution:
-    def twoSum(self, nums, target):
+    def lengthOfLongestSubstring(self, s):
         """
-        :type nums: List[int]
-        :type target: int
-        :rtype: List[int]
+        :type s: str
+        :rtype: int
         """
-        past_numbers = {nums[0]: 0}
+        letter_counter = {}
+        longest_substring_length = 0
+        left = 0
 
-        for i in range(1, len(nums)):
-            num_to_find = target - nums[i]
+        for right in range(len(s)):
+            letter_right = s[right]
+            letter_counter[letter_right] = letter_counter.get(letter_right, 0) + 1
 
-            if num_to_find in past_numbers:
-                
-                index_num_to_find = past_numbers[num_to_find]
-                return [i, index_num_to_find]
+            while letter_counter[letter_right] > 1:
+                letter_left = s[left]
+                letter_counter[letter_left] -= 1
+                left += 1
             
-            past_numbers[nums[i]] = i
+            longest_substring_length = max(longest_substring_length, (right - left + 1))
+        
+        return longest_substring_length
 
 solution = Solution()
 
