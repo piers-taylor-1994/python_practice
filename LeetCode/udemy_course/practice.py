@@ -83,52 +83,42 @@ class Trie:
         return True
     
 class Solution:
-    def numIslands(self, grid):
+    def canFinish(self, numCourses, prerequisites):
         """
-        :type grid: List[List[str]]
-        :rtype: int
+        :type numCourses: int
+        :type prerequisites: List[List[int]]
+        :rtype: bool
         """
-        if not grid or not grid[0]:
-            return 0
+        if numCourses == 1:
+            return True
         
-        DIRECTIONS = [
-            (-1, 0),
-            (0, 1),
-            (1, 0),
-            (0, -1)
-        ]
-
-        seen = set()
-
-        def dfs(row, col):
-            if row < 0 or row >= len(grid) or col < 0 or col >= len(grid[0]) or grid[row][col] == "0" or (row, col) in seen:
-                return
-            
-            seen.add((row, col))
-
-            for dr, dc in DIRECTIONS:
-                dfs(dr + row, dc + col)
-
-        islands_count = 0
-
-        for i in range(len(grid)):
-            for j in range(len(grid[i])):
-                if grid[i][j] == "1" and (i, j) not in seen:
-                    islands_count += 1
-                    dfs(i, j)
+        course_graph = {i:[] for i in range(numCourses)}
+        for course_end, course_start in prerequisites:
+            course_graph[course_start].append(course_end)
         
-        return islands_count
+        for start, end in course_graph.items():
+            if end:
+                seen = set()
+                queue = deque(end)
+                
+                while queue:
+                    node = queue.popleft()
+                    if node == start:
+                        return False
+                    
+                    for edge in course_graph[node]:
+                        if edge not in seen:
+                            seen.add(edge)
+                            queue.append(edge)
+        
+        return True
 
 
 
 solution = Solution()
 
-print(solution.numIslands([
-  ["1","1","0","0","0"],
-  ["1","1","0","0","0"],
-  ["0","0","1","0","0"],
-  ["0","0","0","1","1"]
-]))
+print(solution.canFinish(2, [[1,0]]))
+print(solution.canFinish(2, [[1,0],[0,1]]))
 
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
