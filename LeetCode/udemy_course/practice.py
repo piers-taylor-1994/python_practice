@@ -82,32 +82,23 @@ class Trie:
         return True
     
 class Solution:
-    def checkInclusion(self, s1, s2):
+    def twoSum(self, nums, target):
         """
-        :type s1: str
-        :type s2: str
-        :rtype: bool
+        :type nums: List[int]
+        :type target: int
+        :rtype: List[int]
         """
-        s1_length = len(s1)
-        s2_length = len(s2)
+        past_numbers = {nums[0]: 0}
 
-        s1_counter = Counter(s1)
-        s2_counter = Counter(s2[:s1_length])
+        for i in range(1, len(nums)):
+            num_to_find = target - nums[i]
 
-        if s1_counter == s2_counter:
-            return True
-
-        for i in range(s2_length - s1_length):
-            s2_counter[s2[i]] -= 1
-            if s2_counter[s2[i]] == 0:
-                del s2_counter[s2[i]]
-
-            s2_counter[s2[i + s1_length]] += 1
-
-            if s1_counter == s2_counter:
-                return True
-        
-        return False
+            if num_to_find in past_numbers:
+                
+                index_num_to_find = past_numbers[num_to_find]
+                return [i, index_num_to_find]
+            
+            past_numbers[nums[i]] = i
 
 solution = Solution()
 
