@@ -82,38 +82,23 @@ class Trie:
         return True
     
 class Solution:
-    def mergeKLists(self, lists):
+    def topKFrequent(self, nums, k):
         """
-        :type lists: List[Optional[ListNode]]
-        :rtype: Optional[ListNode]
+        :type nums: List[int]
+        :type k: int
+        :rtype: List[int]
         """
-        if not lists or all(node == None for node in lists):
-            return None
+        int_count = Counter(nums)
         
-        min_heap = []
-        count = 1
-
-        for node in lists:
-            current_node = node
-
-            while current_node:
-                heapq.heappush(min_heap, (current_node.val, count, current_node))
-                count += 1
-
-                current_node = current_node.next
-
-         
-        head = heapq.heappop(min_heap)[2]
-        current_node = head
-
-        while min_heap:
-            node = heapq.heappop(min_heap)[2]
-            current_node.next = node
-            current_node = current_node.next
-            
-        return head
+        max_heap = []
+        for num, count in int_count.items():
+            heapq.heappush(max_heap, (-count, num))
+        
+        return [heapq.heappop(max_heap)[1] for _ in range(k)]
 
 solution = Solution()
+
+print(solution.topKFrequent([4,1,-1,2,-1,2,3], 2))
 
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
