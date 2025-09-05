@@ -82,39 +82,38 @@ class Trie:
         return True
     
 class Solution:
-    def canCompleteCircuit(self, gas, cost):
+    def mergeKLists(self, lists):
         """
-        :type gas: List[int]
-        :type cost: List[int]
-        :rtype: int
-        """    
-        total_tank = 0
-        current_tank = 0
-        start = 0
+        :type lists: List[Optional[ListNode]]
+        :rtype: Optional[ListNode]
+        """
+        if not lists or all(node == None for node in lists):
+            return None
+        
+        min_heap = []
+        count = 1
 
-        for i in range(len(gas)):
-            gain = gas[i] - cost[i]
-            total_tank += gain
-            current_tank += gain
+        for node in lists:
+            current_node = node
 
-            if current_tank < 0:
-                start = i + 1
-                current_tank = 0
+            while current_node:
+                heapq.heappush(min_heap, (current_node.val, count, current_node))
+                count += 1
 
-        return start if total_tank >= 0 else -1
+                current_node = current_node.next
 
+         
+        head = heapq.heappop(min_heap)[2]
+        current_node = head
 
-
-
-                
-                
-
+        while min_heap:
+            node = heapq.heappop(min_heap)[2]
+            current_node.next = node
+            current_node = current_node.next
+            
+        return head
 
 solution = Solution()
-
-# print(solution.canCompleteCircuit([1,2,3,4,5], [3,4,5,1,2]))
-# print(solution.canCompleteCircuit([2,3,4], [3,4,3]))
-print(solution.canCompleteCircuit([5,8,2,8], [6,5,6,6]))
 
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
