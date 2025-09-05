@@ -82,29 +82,39 @@ class Trie:
         return True
     
 class Solution:
-    def eraseOverlapIntervals(self, intervals):
+    def canCompleteCircuit(self, gas, cost):
         """
-        :type intervals: List[List[int]]
+        :type gas: List[int]
+        :type cost: List[int]
         :rtype: int
-        """
-        intervals.sort(key=lambda x:(x[1], x[0]))
+        """    
+        total_tank = 0
+        current_tank = 0
+        start = 0
 
-        current_end = intervals[0][1]
-        removed = 0
+        for i in range(len(gas)):
+            gain = gas[i] - cost[i]
+            total_tank += gain
+            current_tank += gain
 
-        for start, end in intervals[1:]:
-            if start < current_end:
-                removed += 1
-                continue
-            current_end = end
-        
-        return removed
+            if current_tank < 0:
+                start = i + 1
+                current_tank = 0
+
+        return start if total_tank >= 0 else -1
+
+
+
+
+                
+                
+
 
 solution = Solution()
 
-print(solution.eraseOverlapIntervals([[1,2],[2,3],[3,4],[1,3]]))
-print(solution.eraseOverlapIntervals([[1,2],[1,2],[1,2]]))
-print(solution.eraseOverlapIntervals([[1,2],[2,3]]))
+# print(solution.canCompleteCircuit([1,2,3,4,5], [3,4,5,1,2]))
+# print(solution.canCompleteCircuit([2,3,4], [3,4,3]))
+print(solution.canCompleteCircuit([5,8,2,8], [6,5,6,6]))
 
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
