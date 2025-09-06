@@ -1,5 +1,6 @@
 from collections import Counter, defaultdict, deque
 import math
+from operator import indexOf
 import random
 import heapq
 import bisect
@@ -82,23 +83,36 @@ class Trie:
         return True
     
 class Solution:
-    def topKFrequent(self, nums, k):
+    def search(self, nums, target):
         """
         :type nums: List[int]
-        :type k: int
-        :rtype: List[int]
+        :type target: int
+        :rtype: int
         """
-        int_count = Counter(nums)
+        left = 0
+        right = len(nums) - 1
+
+        while left <= right:
+            mid = (left + right) // 2
+
+            if nums[mid] == target:
+                return mid
+            elif nums[left] <= nums[mid]:
+                if nums[left] <= target <= nums[mid]:
+                    right = mid - 1
+                else:
+                    left = mid + 1
+            else:
+                if nums[mid] <= target <= nums[right]:
+                    left = mid + 1
+                else:
+                    right = mid - 1
         
-        max_heap = []
-        for num, count in int_count.items():
-            heapq.heappush(max_heap, (-count, num))
-        
-        return [heapq.heappop(max_heap)[1] for _ in range(k)]
+        return -1
 
 solution = Solution()
 
-print(solution.topKFrequent([4,1,-1,2,-1,2,3], 2))
+print(solution.search([4,5,6,7,0,1,2], 0))
 
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
