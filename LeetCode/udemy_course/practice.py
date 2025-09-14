@@ -83,31 +83,30 @@ class Trie:
         return True
     
 class Solution:
-    def meetingRooms(self, rooms):
-        if not rooms:
-            return 0
+    def eraseOverlapIntervals(self, intervals):
+        """
+        :type intervals: List[List[int]]
+        :rtype: int
+        """
+        intervals.sort(key=lambda x:x[1])
         
-        rooms.sort(key=lambda x:x[0])
+        current_end = intervals[0][1]
+        skipped = 0
 
-        current_rooms = [rooms[0][1]]
-        heapq.heapify(current_rooms)
-        max_rooms = len(current_rooms)
+        for start, end in intervals[1:]:
+            if start < current_end:
+                skipped += 1
+            else:
+                current_end = end
 
-        for start, end in rooms[1:]:
-            if start >= current_rooms[0]:
-                heapq.heappop(current_rooms)
-            
-            heapq.heappush(current_rooms, end)
-
-            max_rooms = max(max_rooms, len(current_rooms))
-        
-        return max_rooms
+        return skipped
 
 
 
 solution = Solution()
 
-print(solution.meetingRooms([[0, 30],[5, 10],[15, 20]]))
+print(solution.eraseOverlapIntervals([[1,2],[2,3],[3,4],[1,3]]))
+print(solution.eraseOverlapIntervals([[1,2],[1,2],[1,2]]))
 
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
