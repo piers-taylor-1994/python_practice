@@ -83,42 +83,34 @@ class Trie:
         return True
     
 class Solution:
-    def canFinish(self, numCourses, prerequisites):
+    def canCompleteCircuit(self, gas, cost):
         """
-        :type numCourses: int
-        :type prerequisites: List[List[int]]
-        :rtype: bool
+        :type gas: List[int]
+        :type cost: List[int]
+        :rtype: int
         """
-        if numCourses == 1:
-            return True
+        gas_station = 0
+        current_cost = 0
+        total_cost = 0
+
+        for i in range(len(gas)):
+            cost_difference = gas[i] - cost[i]
+            total_cost += cost_difference
+            current_cost += cost_difference
+
+            if current_cost < 0:
+                gas_station = i + 1
+                current_cost = 0
         
-        course_graph = {i:[] for i in range(numCourses)}
-        for course_end, course_start in prerequisites:
-            course_graph[course_start].append(course_end)
-        
-        for start, end in course_graph.items():
-            if end:
-                seen = set()
-                queue = deque(end)
-                
-                while queue:
-                    node = queue.popleft()
-                    if node == start:
-                        return False
-                    
-                    for edge in course_graph[node]:
-                        if edge not in seen:
-                            seen.add(edge)
-                            queue.append(edge)
-        
-        return True
+        return gas_station if total_cost >= 0 else -1
 
 
 
 solution = Solution()
 
-print(solution.canFinish(2, [[1,0]]))
-print(solution.canFinish(2, [[1,0],[0,1]]))
+# print(solution.canCompleteCircuit([1,2,3,4,5], [3,4,5,1,2]))
+# print(solution.canCompleteCircuit([2,3,4], [3,4,3]))
+print(solution.canCompleteCircuit([5,1,2,3,4], [4,4,1,5,1]))
 
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
