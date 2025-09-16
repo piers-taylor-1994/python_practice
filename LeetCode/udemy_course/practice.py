@@ -82,29 +82,25 @@ class Trie:
         return True
     
 class Solution:
-    def eraseOverlapIntervals(self, intervals):
+    def maxProfit(self, prices):
         """
-        :type intervals: List[List[int]]
+        :type prices: List[int]
         :rtype: int
         """
-        intervals.sort(key=lambda x:(x[1], x[0]))
+        min_price = prices[0]
+        max_profit = 0
 
-        current_end = intervals[0][1]
-        removed = 0
+        for price in prices[1:]:
+            if price < min_price:
+                min_price = price
+            elif price > min_price:
+                max_profit = max(max_profit, price - min_price)
 
-        for start, end in intervals[1:]:
-            if start < current_end:
-                removed += 1
-                continue
-            current_end = end
-        
-        return removed
+        return max_profit
 
 solution = Solution()
 
-print(solution.eraseOverlapIntervals([[1,2],[2,3],[3,4],[1,3]]))
-print(solution.eraseOverlapIntervals([[1,2],[1,2],[1,2]]))
-print(solution.eraseOverlapIntervals([[1,2],[2,3]]))
+print(solution.maxProfit([7,1,5,3,6,4,0,9]))
 
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
