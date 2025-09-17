@@ -83,36 +83,28 @@ class Trie:
         return True
     
 class Solution:
-    def lengthOfLongestSubstring(self, s):
+    def jump(self, nums):
         """
-        :type s: str
+        :type nums: List[int]
         :rtype: int
         """
-        length_s = len(s)
-        if length_s <= 1:
-            return length_s
+        jumps = 0
+        current_jump = 0
+        max_jump = 0
+
+        for i in range(len(nums) - 1):
+            max_jump = max(max_jump, i + nums[i])
+            
+            if i == current_jump:
+                jumps += 1
+                current_jump = max_jump
         
-        left = 0
-        char_count = {}
-        longest_substring_length = -float('inf')
-
-        for right in range(length_s):
-            letter_right = s[right]
-            char_count[letter_right] = char_count.get(letter_right, 0) + 1
-
-            while char_count[letter_right] > 1:
-                letter_left = s[left]
-                char_count[letter_left] -= 1
-                left += 1
-            
-            longest_substring_length = max(longest_substring_length, right - left + 1)
-            
-        return longest_substring_length
+        return jumps
 
 
 solution = Solution()
 
-print(solution.lengthOfLongestSubstring("abcabcbb"))
+print(solution.jump([2,3,1,1,4]))
 
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
