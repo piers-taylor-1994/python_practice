@@ -83,39 +83,30 @@ class Trie:
         return True
     
 class Solution:
-    def checkInclusion(self, s1, s2):
+    def twoSum(self, nums, target):
         """
-        :type s1: str
-        :type s2: str
-        :rtype: bool
+        :type nums: List[int]
+        :type target: int
+        :rtype: List[int]
         """
-        s1_counter = Counter(s1)
-        s2_counter = Counter()
-        left = 0
+        hash_map = {}
 
-        for right in range(len(s2)):
-            right_letter = s2[right]
-            s2_counter[right_letter] += 1
+        for i in range(len(nums)):
+            num = nums[i]
+            hash_map[num] = hash_map.get(num, []) + [i]
 
-            if set(s1_counter.keys()).issubset(s2_counter.keys()):
-                while right - left + 1 > len(s1):
-                    left_letter = s2[left]
-                    s2_counter[left_letter] -= 1
-                    if s2_counter[left_letter] == 0:
-                        del s2_counter[left_letter]
-                    left += 1
-                
-                if s1_counter == s2_counter:
-                    return True
-        
-        return False
+        for i in range(len(nums)):
+            num = nums[i]
+            num_to_find = target - num
+
+            if num_to_find in hash_map:
+                if hash_map[num_to_find][-1] != i:
+                    return [i, hash_map[num_to_find][-1]]
 
 solution = Solution()
 
-# print(solution.checkInclusion("ab", "eidboooo"))
-print(solution.checkInclusion("adc", "dcda"))
-
-print(set(["a"]).issubset(set(["a", "b"])))
+print(solution.twoSum([2,7,11,15], 9))
+print(solution.twoSum([3,3], 6))
 
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
