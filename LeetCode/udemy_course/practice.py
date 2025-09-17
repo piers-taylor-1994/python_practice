@@ -83,30 +83,36 @@ class Trie:
         return True
     
 class Solution:
-    def twoSum(self, nums, target):
+    def lengthOfLongestSubstring(self, s):
         """
-        :type nums: List[int]
-        :type target: int
-        :rtype: List[int]
+        :type s: str
+        :rtype: int
         """
-        hash_map = {}
+        length_s = len(s)
+        if length_s <= 1:
+            return length_s
+        
+        left = 0
+        char_count = {}
+        longest_substring_length = -float('inf')
 
-        for i in range(len(nums)):
-            num = nums[i]
-            hash_map[num] = hash_map.get(num, []) + [i]
+        for right in range(length_s):
+            letter_right = s[right]
+            char_count[letter_right] = char_count.get(letter_right, 0) + 1
 
-        for i in range(len(nums)):
-            num = nums[i]
-            num_to_find = target - num
+            while char_count[letter_right] > 1:
+                letter_left = s[left]
+                char_count[letter_left] -= 1
+                left += 1
+            
+            longest_substring_length = max(longest_substring_length, right - left + 1)
+            
+        return longest_substring_length
 
-            if num_to_find in hash_map:
-                if hash_map[num_to_find][-1] != i:
-                    return [i, hash_map[num_to_find][-1]]
 
 solution = Solution()
 
-print(solution.twoSum([2,7,11,15], 9))
-print(solution.twoSum([3,3], 6))
+print(solution.lengthOfLongestSubstring("abcabcbb"))
 
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
