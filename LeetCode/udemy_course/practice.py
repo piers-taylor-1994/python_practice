@@ -83,34 +83,38 @@ class Trie:
         return True
     
 class Solution:
-    def canCompleteCircuit(self, gas, cost):
+    def reverseList(self, head):
         """
-        :type gas: List[int]
-        :type cost: List[int]
-        :rtype: int
+        :type head: Optional[ListNode]
+        :rtype: Optional[ListNode]
         """
-        gas_station = 0
-        current_cost = 0
-        total_cost = 0
-
-        for i in range(len(gas)):
-            cost_difference = gas[i] - cost[i]
-            total_cost += cost_difference
-            current_cost += cost_difference
-
-            if current_cost < 0:
-                gas_station = i + 1
-                current_cost = 0
+        if not head:
+            return None
         
-        return gas_station if total_cost >= 0 else -1
+        current = head
+        prev = None
 
-
+        while current:
+            next = current.next
+            current.next = prev
+            prev = current
+            current = next
+        
+        return prev
 
 solution = Solution()
 
-# print(solution.canCompleteCircuit([1,2,3,4,5], [3,4,5,1,2]))
-# print(solution.canCompleteCircuit([2,3,4], [3,4,3]))
-print(solution.canCompleteCircuit([5,1,2,3,4], [4,4,1,5,1]))
+head = Node(1)
+node_1 = Node(2)
+node_2 = Node(3)
+node_3 = Node(4)
+node_4 = Node(5)
+head.next = node_1
+node_1.next = node_2
+node_2.next = node_3
+node_3.next = node_4
+
+print(solution.reverseList(head))
 
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
