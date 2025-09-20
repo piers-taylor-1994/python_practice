@@ -91,16 +91,16 @@ class Solution:
         if not head:
             return None
         
-        current = head
-        prev = None
-
-        while current:
+        def rec(current, prev):
+            if not current:
+                return prev
+            
             next = current.next
             current.next = prev
-            prev = current
-            current = next
+
+            return rec(next, current)
         
-        return prev
+        return rec(head, None)
 
 solution = Solution()
 
