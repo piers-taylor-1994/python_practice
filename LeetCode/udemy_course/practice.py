@@ -83,38 +83,29 @@ class Trie:
         return True
     
 class Solution:
-    def reverseList(self, head):
+    def topKFrequent(self, nums, k):
         """
-        :type head: Optional[ListNode]
-        :rtype: Optional[ListNode]
+        :type nums: List[int]
+        :type k: int
+        :rtype: List[int]
         """
-        if not head:
-            return None
-        
-        def rec(current, prev):
-            if not current:
-                return prev
-            
-            next = current.next
-            current.next = prev
+        num_count = Counter(nums)
+        max_heap = []
+        result = []
 
-            return rec(next, current)
+        for num, count in num_count.items():
+            heapq.heappush(max_heap, (-count, num))
         
-        return rec(head, None)
+        for _ in range(k):
+            _, num = heapq.heappop(max_heap)
+            result.append(num)
+        
+        return result
+
 
 solution = Solution()
 
-head = Node(1)
-node_1 = Node(2)
-node_2 = Node(3)
-node_3 = Node(4)
-node_4 = Node(5)
-head.next = node_1
-node_1.next = node_2
-node_2.next = node_3
-node_3.next = node_4
-
-print(solution.reverseList(head))
+print(solution.topKFrequent([1,1,1,2,2,3], 2))
 
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
