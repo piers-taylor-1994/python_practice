@@ -83,44 +83,35 @@ class Trie:
         return True
     
 class Solution:
-    def search(self, nums, target):
+    def permute(self, nums):
         """
         :type nums: List[int]
-        :type target: int
-        :rtype: int
+        :rtype: List[List[int]]
         """
-        left = 0
-        right = len(nums) - 1
+        results = []
+        subarray = []
 
-        while left <= right:
-            middle = (left + right) // 2
+        def rec():
+            if len(subarray) == len(nums):
+                results.append(subarray[:])
+                return
+            
+            for num in nums:
+                if num not in subarray:
+                    subarray.append(num)
 
-            left_num = nums[left]
-            middle_num = nums[middle]
-            right_num = nums[right]
+                    rec()
 
-            if middle_num == target:
-                return middle
-            #left sorted
-            elif left_num <= middle_num:
-                if left_num <= target <= middle_num:
-                    right = middle - 1
-                else:
-                    left = middle + 1
-            #right sorted
-            else:
-                if middle_num <= target <= right_num:
-                    left = middle + 1
-                else:
-                    right = middle - 1
+                    subarray.pop()
         
-        return -1
+        rec()
+        return results
         
 
 
 solution = Solution()
 
-print(solution.search([4,5,6,7,0,1,2], 0))
+print(solution.permute([1,2,3]))
 
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
