@@ -83,35 +83,29 @@ class Trie:
         return True
     
 class Solution:
-    def permute(self, nums):
+    def subsets(self, nums):
         """
         :type nums: List[int]
         :rtype: List[List[int]]
         """
         results = []
-        subarray = []
 
-        def rec():
-            if len(subarray) == len(nums):
-                results.append(subarray[:])
-                return
-            
-            for num in nums:
-                if num not in subarray:
-                    subarray.append(num)
+        def rec(idx, subset):
+            results.append(subset[:])
 
-                    rec()
+            for i in range(idx, len(nums)):
+                subset.append(nums[i])
+                
+                rec(i + 1, subset)
 
-                    subarray.pop()
+                subset.pop()
         
-        rec()
+        rec(0, [])
         return results
-        
-
 
 solution = Solution()
 
-print(solution.permute([1,2,3]))
+print(solution.subsets([1,2,3]))
 
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
