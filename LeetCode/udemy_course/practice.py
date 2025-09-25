@@ -83,21 +83,27 @@ class Trie:
         return True
     
 class Solution:
-    def maxDepth(self, root):
+    def rightSideView(self, root):
         """
         :type root: Optional[TreeNode]
-        :rtype: int
+        :rtype: List[int]
         """
         if not root:
-            return 0
+            return []
         
-        def dfs(node):
+        result = []
+        
+        def dfs(node, depth):
             if not node:
-                return 0
-            
-            return 1 + max(dfs(node.left), dfs(node.right))
+                return
+            if len(result) <= depth:
+                result.append(node.val)
+
+            dfs(node.right, depth + 1)
+            dfs(node.left, depth + 1)                
         
-        return dfs(root)
+        dfs(root, 0)
+        return result
 
 solution = Solution()
 
@@ -111,7 +117,7 @@ root.right = node_20
 node_20.left = node_15
 node_20.right = node_7
 
-print(solution.maxDepth(root))
+print(solution.rightSideView(root))
 
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
