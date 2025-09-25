@@ -92,18 +92,21 @@ class Solution:
             return []
         
         result = []
-        queue = deque([(root, 0)])
+        queue = deque([root])
 
         while queue:
-            node, depth = queue.popleft()
+            first_value_added = False
+            for _ in range(len(queue)):
+                node = queue.popleft()
 
-            if len(result) <= depth:
-                result.append(node.val)
-            
-            if node.right:
-                queue.append((node.right, depth + 1))
-            if node.left:
-                queue.append((node.left, depth + 1))
+                if not first_value_added:
+                    result.append(node.val)
+                    first_value_added = True
+                
+                if node.right:
+                    queue.append(node.right)
+                if node.left:
+                    queue.append(node.left)
         
         return result
 
