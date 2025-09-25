@@ -92,17 +92,19 @@ class Solution:
             return []
         
         result = []
-        
-        def dfs(node, depth):
-            if not node:
-                return
+        queue = deque([(root, 0)])
+
+        while queue:
+            node, depth = queue.popleft()
+
             if len(result) <= depth:
                 result.append(node.val)
-
-            dfs(node.right, depth + 1)
-            dfs(node.left, depth + 1)                
+            
+            if node.right:
+                queue.append((node.right, depth + 1))
+            if node.left:
+                queue.append((node.left, depth + 1))
         
-        dfs(root, 0)
         return result
 
 solution = Solution()
