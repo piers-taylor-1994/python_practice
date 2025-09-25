@@ -83,7 +83,7 @@ class Trie:
         return True
     
 class Solution:
-    def bfs(self, root, dfs_type):
+    def maxDepth(self, root):
         """
         :type root: Optional[TreeNode]
         :rtype: int
@@ -91,19 +91,13 @@ class Solution:
         if not root:
             return 0
         
-        result = []
-        queue = deque([root])
-
-        while queue:
-            node = queue.popleft()
-            result.append(node.val)
-
-            if node.left:
-                queue.append(node.left)
-            if node.right:
-                queue.append(node.right)
+        def dfs(node):
+            if not node:
+                return 0
+            
+            return 1 + max(dfs(node.left), dfs(node.right))
         
-        return result
+        return dfs(root)
 
 solution = Solution()
 
@@ -117,7 +111,8 @@ root.right = node_20
 node_20.left = node_15
 node_20.right = node_7
 
-print(solution.bfs(root, 0))
+print(solution.maxDepth(root))
+
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
 # print(random.choice(["quick_sort"]))
