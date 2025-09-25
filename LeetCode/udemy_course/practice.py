@@ -83,29 +83,47 @@ class Trie:
         return True
     
 class Solution:
-    def subsets(self, nums):
+    def dfs(self, root, dfs_type):
         """
-        :type nums: List[int]
-        :rtype: List[List[int]]
+        :type root: Optional[TreeNode]
+        :rtype: int
         """
-        results = []
-
-        def rec(idx, subset):
-            results.append(subset[:])
-
-            for i in range(idx, len(nums)):
-                subset.append(nums[i])
-                
-                rec(i + 1, subset)
-
-                subset.pop()
+        if not root:
+            return 0
         
-        rec(0, [])
-        return results
+        result = []
+
+        def dfs(node):
+            if not node:
+                return
+            
+            if dfs_type == 0:
+                result.append(node.val)
+            dfs(node.left)
+            if dfs_type == 1:
+                result.append(node.val)
+            dfs(node.right)
+            if dfs_type == 2:
+                result.append(node.val)
+        
+        dfs(root)
+        return result
 
 solution = Solution()
 
-print(solution.subsets([1,2,3]))
+root = TreeNode(3)
+node_9 = TreeNode(9)
+node_20 = TreeNode(20)
+node_15 = TreeNode(15)
+node_7 = TreeNode(7)
+root.left = node_9
+root.right = node_20
+node_20.left = node_15
+node_20.right = node_7
+
+print(solution.dfs(root, 0))
+print(solution.dfs(root, 1))
+print(solution.dfs(root, 2))
 
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
