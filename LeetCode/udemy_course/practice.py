@@ -83,23 +83,27 @@ class Trie:
         return True
     
 class Solution:
-    def minCostClimbingStairs(self, cost):
-        """
-        :type cost: List[int]
-        :rtype: int
-        """
-        dp = {}
-        dp[0] = cost[0]
-        dp[1] = cost[1]
+    def knapsack(self, w, profit, weight):
+        memo = {}
 
-        for i in range(2, len(cost)):
-            dp[i] = cost[i] + min(dp[i-1], dp[i-2])
-        
-        return min(dp[len(cost) - 1], dp[len(cost) - 2])
+        def rec(idx, current_weight):
+            if current_weight <= 0:
+                return 0
+            elif (idx, current_weight) in memo:
+                return memo[(idx, current_weight)]
+            
+            result = []
+            for i in range(idx, len(profit)):
+                if weight[i] <= current_weight:
+                    result.append(profit[i] + rec(i + 1, current_weight - weight[i]))
+            memo[(idx, current_weight)] = max(result) if result else 0
+            return memo[(idx, current_weight)]
+        return rec(0, w)
 
 solution = Solution()
 
-print(solution.minCostClimbingStairs([10,15,20]))
+print(solution.knapsack(4, [1,2,3], [4,5,1]))
+print(solution.knapsack(3, [1,2,3], [4,5,6]))
 
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
