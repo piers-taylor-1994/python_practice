@@ -86,18 +86,18 @@ class Solution:
     def knapsack(self, w, profit, weight):
         memo = {}
 
-        def rec(idx, current_weight):
-            if current_weight <= 0:
+        def rec(i, current_weight):
+            if i >= len(profit) or current_weight <= 0:
                 return 0
-            elif (idx, current_weight) in memo:
-                return memo[(idx, current_weight)]
+            elif (i, current_weight) in memo:
+                return memo[(i, current_weight)]
             
-            result = []
-            for i in range(idx, len(profit)):
-                if weight[i] <= current_weight:
-                    result.append(profit[i] + rec(i + 1, current_weight - weight[i]))
-            memo[(idx, current_weight)] = max(result) if result else 0
-            return memo[(idx, current_weight)]
+            skip = rec(i + 1, current_weight)
+            take = 0
+            if current_weight - weight[i] >= 0:
+                take = profit[i] + rec(i + 1, current_weight - weight[i])
+            memo[(i, current_weight)] = max(skip, take)
+            return memo[(i, current_weight)]
         return rec(0, w)
 
 solution = Solution()
