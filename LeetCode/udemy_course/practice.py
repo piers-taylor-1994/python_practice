@@ -88,18 +88,14 @@ class Solution:
         :type cost: List[int]
         :rtype: int
         """
-        memo = {}
+        dp = {}
+        dp[0] = cost[0]
+        dp[1] = cost[1]
 
-        def rec(i):
-            if i == 0 or i == 1:
-                return cost[i]
-            elif i in memo:
-                return memo[i]
-
-            memo[i] = cost[i] + min(rec(i - 1), rec(i - 2))
-            return memo[i]
-
-        return min(rec(len(cost) - 1), rec(len(cost) - 2))
+        for i in range(2, len(cost)):
+            dp[i] = cost[i] + min(dp[i-1], dp[i-2])
+        
+        return min(dp[len(cost) - 1], dp[len(cost) - 2])
 
 solution = Solution()
 
