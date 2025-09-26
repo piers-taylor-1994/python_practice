@@ -83,46 +83,27 @@ class Trie:
         return True
     
 class Solution:
-    def rightSideView(self, root):
+    def minCostClimbingStairs(self, cost):
         """
-        :type root: Optional[TreeNode]
-        :rtype: List[int]
+        :type cost: List[int]
+        :rtype: int
         """
-        if not root:
-            return []
-        
-        result = []
-        queue = deque([root])
+        memo = {}
 
-        while queue:
-            first_value_added = False
-            for _ in range(len(queue)):
-                node = queue.popleft()
+        def rec(i):
+            if i == 0 or i == 1:
+                return cost[i]
+            elif i in memo:
+                return memo[i]
 
-                if not first_value_added:
-                    result.append(node.val)
-                    first_value_added = True
-                
-                if node.right:
-                    queue.append(node.right)
-                if node.left:
-                    queue.append(node.left)
-        
-        return result
+            memo[i] = cost[i] + min(rec(i - 1), rec(i - 2))
+            return memo[i]
+
+        return min(rec(len(cost) - 1), rec(len(cost) - 2))
 
 solution = Solution()
 
-root = TreeNode(3)
-node_9 = TreeNode(9)
-node_20 = TreeNode(20)
-node_15 = TreeNode(15)
-node_7 = TreeNode(7)
-root.left = node_9
-root.right = node_20
-node_20.left = node_15
-node_20.right = node_7
-
-print(solution.rightSideView(root))
+print(solution.minCostClimbingStairs([10,15,20]))
 
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
