@@ -83,27 +83,25 @@ class Trie:
         return True
     
 class Solution:
-    def knapsack(self, w, profit, weight):
-        memo = {}
+    def maxProfit(self, prices):
+        """
+        :type prices: List[int]
+        :rtype: int
+        """
+        lowest_price = float('inf')
+        max_profit = 0
 
-        def rec(i, current_weight):
-            if i >= len(profit) or current_weight <= 0:
-                return 0
-            elif (i, current_weight) in memo:
-                return memo[(i, current_weight)]
-            
-            skip = rec(i + 1, current_weight)
-            take = 0
-            if current_weight - weight[i] >= 0:
-                take = profit[i] + rec(i + 1, current_weight - weight[i])
-            memo[(i, current_weight)] = max(skip, take)
-            return memo[(i, current_weight)]
-        return rec(0, w)
+        for price in prices:
+            if price < lowest_price:
+                lowest_price = price
+            max_profit = max(max_profit, price - lowest_price)
+        
+        return max_profit
 
 solution = Solution()
 
-print(solution.knapsack(4, [1,2,3], [4,5,1]))
-print(solution.knapsack(3, [1,2,3], [4,5,6]))
+print(solution.maxProfit([7,1,5,3,6,4]))
+print(solution.maxProfit([7,6,5,4,3,2,1]))
 
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
