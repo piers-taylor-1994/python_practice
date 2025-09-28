@@ -83,25 +83,39 @@ class Trie:
         return True
     
 class Solution:
-    def maxProfit(self, prices):
+    def checkInclusion(self, s1, s2):
         """
-        :type prices: List[int]
-        :rtype: int
+        :type s1: str
+        :type s2: str
+        :rtype: bool
         """
-        lowest_price = float('inf')
-        max_profit = 0
+        s1_counter = Counter(s1)
+        s2_counter = Counter()
+        left = 0
 
-        for price in prices:
-            if price < lowest_price:
-                lowest_price = price
-            max_profit = max(max_profit, price - lowest_price)
+        for right in range(len(s2)):
+            letter_right = s2[right]
+            s2_counter[letter_right] += 1
+
+            if set(s1_counter.keys()).issubset(s2_counter.keys()):
+                while right - left + 1 > len(s1):
+                    letter_left = s2[left]
+                    s2_counter[letter_left] -= 1
+
+                    if s2_counter[letter_left] == 0:
+                        del s2_counter[letter_left]
+                    
+                    left += 1
+
+                if s1_counter == s2_counter:
+                    return True
         
-        return max_profit
+        return False
+
 
 solution = Solution()
 
-print(solution.maxProfit([7,1,5,3,6,4]))
-print(solution.maxProfit([7,6,5,4,3,2,1]))
+print(solution.checkInclusion("ab", "eidbaooo"))
 
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
