@@ -83,27 +83,36 @@ class Trie:
         return True
     
 class Solution:
-    def knapsack(self, w, profit, weight):
-        memo = {}
-
-        def rec(i, current_weight):
-            if i >= len(profit) or current_weight <= 0:
-                return 0
-            elif (i, current_weight) in memo:
-                return memo[(i, current_weight)]
+    def isValidBST(self, root):
+        """
+        :type root: Optional[TreeNode]
+        :rtype: bool
+        """
+        def dfs(node, lower_boundary, upper_boundary):
+            if not node:
+                return True
+            elif not lower_boundary < node.val < upper_boundary:
+                return False
             
-            skip = rec(i + 1, current_weight)
-            take = 0
-            if current_weight - weight[i] >= 0:
-                take = profit[i] + rec(i + 1, current_weight - weight[i])
-            memo[(i, current_weight)] = max(skip, take)
-            return memo[(i, current_weight)]
-        return rec(0, w)
+            return dfs(node.left, lower_boundary, node.val) and dfs(node.right, node.val, upper_boundary)
+        
+        return dfs(root, -float('inf'), float('inf'))
 
 solution = Solution()
-
-print(solution.knapsack(4, [1,2,3], [4,5,1]))
-print(solution.knapsack(3, [1,2,3], [4,5,6]))
+root = TreeNode(7)
+node5 = TreeNode(5)
+node15 = TreeNode(15)
+node3 = TreeNode(3)
+node6 = TreeNode(6)
+node10 = TreeNode(10)
+node21 = TreeNode(21)
+root.left = node5
+root.right = node15
+node5.left = node3
+node5.right = node6
+node15.left = node10
+node15.right = node21
+print(solution.isValidBST(root))
 
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
