@@ -83,36 +83,51 @@ class Trie:
         return True
     
 class Solution:
-    def isValidBST(self, root):
+    def countNodes(self, root):
         """
         :type root: Optional[TreeNode]
         :rtype: bool
         """
-        def dfs(node, lower_boundary, upper_boundary):
+        def dfs(node):
             if not node:
-                return True
-            elif not lower_boundary < node.val < upper_boundary:
-                return False
+                return 0
             
-            return dfs(node.left, lower_boundary, node.val) and dfs(node.right, node.val, upper_boundary)
+            return 1 + dfs(node.left) + dfs(node.right)
         
-        return dfs(root, -float('inf'), float('inf'))
+        return dfs(root)
+    
+#                       1
+#           2                      3
+#    4            5           6         7
+#  8   9       10   11    12
 
 solution = Solution()
-root = TreeNode(7)
-node5 = TreeNode(5)
-node15 = TreeNode(15)
+
+root = TreeNode(1)
+node2 = TreeNode(2)
 node3 = TreeNode(3)
+node4 = TreeNode(4)
+node5 = TreeNode(5)
 node6 = TreeNode(6)
+node7 = TreeNode(7)
+node8 = TreeNode(8)
+node9 = TreeNode(9)
 node10 = TreeNode(10)
-node21 = TreeNode(21)
-root.left = node5
-root.right = node15
-node5.left = node3
-node5.right = node6
-node15.left = node10
-node15.right = node21
-print(solution.isValidBST(root))
+node11 = TreeNode(11)
+node12 = TreeNode(12)
+root.left = node2
+root.right = node3
+node2.left = node4
+node2.right = node5
+node3.left = node6
+node3.right = node7
+node4.left = node8
+node4.right = node9
+node5.left = node10
+node5.right = node11
+node6.left = node12
+
+print(solution.countNodes(root))
 
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
