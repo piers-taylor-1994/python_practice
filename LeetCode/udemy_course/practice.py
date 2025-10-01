@@ -83,26 +83,35 @@ class Trie:
         return True
     
 class Solution:
-    def twoSum(self, nums, target):
-        hash_map = {}
-        for i in range(len(nums)):
-            hash_map[nums[i]] = hash_map.get(nums[i], []) + [i]
+    def lengthOfLongestSubstring(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        if len(s) <= 1:
+            return len(s)
+        
+        letter_count = Counter()
+        longest_substring = 0
+        left = 0
 
-        for i in range(len(nums)):
-            target_num = target - nums[i]
+        for right in range(len(s)):
+            letter_right = s[right]
+            letter_count[letter_right] += 1
 
-            if target_num in hash_map:
-                target_num_index = hash_map[target_num][-1]
-                if target_num_index == i:
-                    continue
-                return [i, hash_map[target_num][-1]]
+            while letter_count[letter_right] > 1:
+                letter_left = s[left]
+                letter_count[letter_left] -= 1
+                left += 1
+            
+            longest_substring = max(longest_substring, right - left + 1)
+        
+        return longest_substring
 
 
 solution = Solution()
 
-# print(solution.twoSum([2,7,11,15], 9))
-print(solution.twoSum([3,2,4], 6))
-# print(solution.twoSum([3,3], 6))
+print(solution.lengthOfLongestSubstring("abcabcbb"))
 
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
