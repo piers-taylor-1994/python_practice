@@ -83,39 +83,26 @@ class Trie:
         return True
     
 class Solution:
-    def checkInclusion(self, s1, s2):
-        """
-        :type s1: str
-        :type s2: str
-        :rtype: bool
-        """
-        s1_counter = Counter(s1)
-        s2_counter = Counter()
-        left = 0
+    def twoSum(self, nums, target):
+        hash_map = {}
+        for i in range(len(nums)):
+            hash_map[nums[i]] = hash_map.get(nums[i], []) + [i]
 
-        for right in range(len(s2)):
-            letter_right = s2[right]
-            s2_counter[letter_right] += 1
+        for i in range(len(nums)):
+            target_num = target - nums[i]
 
-            if set(s1_counter.keys()).issubset(s2_counter.keys()):
-                while right - left + 1 > len(s1):
-                    letter_left = s2[left]
-                    s2_counter[letter_left] -= 1
-
-                    if s2_counter[letter_left] == 0:
-                        del s2_counter[letter_left]
-                    
-                    left += 1
-
-                if s1_counter == s2_counter:
-                    return True
-        
-        return False
+            if target_num in hash_map:
+                target_num_index = hash_map[target_num][-1]
+                if target_num_index == i:
+                    continue
+                return [i, hash_map[target_num][-1]]
 
 
 solution = Solution()
 
-print(solution.checkInclusion("ab", "eidbaooo"))
+# print(solution.twoSum([2,7,11,15], 9))
+print(solution.twoSum([3,2,4], 6))
+# print(solution.twoSum([3,3], 6))
 
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
