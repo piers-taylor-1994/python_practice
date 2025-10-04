@@ -83,33 +83,51 @@ class Trie:
         return True
     
 class Solution:
-    def canCompleteCircuit(self, gas, cost):
+    def mergeKLists(self, lists):
         """
-        :type gas: List[int]
-        :type cost: List[int]
-        :rtype: int
+        :type lists: List[Optional[ListNode]]
+        :rtype: Optional[ListNode]
         """
+        if not lists or all(node == None for node in lists):
+            return None
 
-        total_cost = 0
-        current_cost = 0
-        index = 0
+        min_heap = []
+        heapq.heapify(min_heap)
 
-        for i in range(len(gas)):
-            difference = gas[i] - cost[i]
-            current_cost += difference
-            total_cost += difference
+        i = 0
 
-            if current_cost < 0:
-                current_cost = 0
-                index = i + 1
+        for node in lists:
+            while node:
+                heapq.heappush(min_heap, (node.val, i, node))
+                i += 1
+                node = node.next
 
-        return index if total_cost >= 0 else -1
+        _, _, current_node = heapq.heappop(min_heap)
+        head = current_node
+        while current_node and min_heap:
+            _, _, next_node = heapq.heappop(min_heap)
+            current_node.next = next_node
+            current_node = current_node.next
 
-        
-
+        return head
+                
 solution = Solution()
+node_1 = Node(1)
+node_4 = Node(4)
+node_5 = Node(5)
+node_1.next = node_4
+node_4.next = node_5
 
-print(solution.canFinish(2, [[1,0],[0,1]]))
+node_1_2 = Node(1)
+node_3 = Node(3)
+node_4_2 = Node(4)
+node_1_2.next = node_3
+node_3.next = node_4_2
+
+node_2 = Node(2)
+node_6 = Node(6)
+node_2.next = node_6
+print(solution.mergeKLists([node_1, node_1_2, node_2]))
 
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
