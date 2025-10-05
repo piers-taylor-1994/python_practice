@@ -83,23 +83,38 @@ class Trie:
         return True
     
 class Solution:
-    def topKFrequent(self, nums, k):
+    def search(self, nums, target):
         """
         :type nums: List[int]
-        :type k: int
-        :rtype: List[int]
+        :type target: int
+        :rtype: int
         """
-        num_count = Counter(nums)
+        left = 0
+        right = len(nums) - 1
 
-        max_heap = []
-        for num, count in num_count.items():
-            heapq.heappush(max_heap, (-count, num))
-        
-        return [heapq.heappop(max_heap)[1] for _ in range(k)]
+        while left <= right:
+            middle = (right + left) // 2
+            middle_num = nums[middle]
+
+            if middle_num == target:
+                return middle
+            # left sorted
+            elif nums[left] <= nums[middle]:
+                if nums[left] <= target <= nums[middle]:
+                    right = middle - 1
+                else:
+                    left = middle + 1
+            #right sorted
+            else:
+                if nums[middle] <= target <= nums[right]:
+                    left = middle + 1
+                else:
+                    right = middle - 1
+        return -1
                 
 solution = Solution()
 
-print(solution.topKFrequent([1,1,1,2,2,3], 2))
+print(solution.search([4,5,6,7,0,1,2], 0))
 
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
