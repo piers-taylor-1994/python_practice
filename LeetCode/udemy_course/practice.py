@@ -83,45 +83,27 @@ class Trie:
         return True
     
 class Solution:
-    def threeSum(self, nums):
-        """
-        :type nums: List[int]
-        :rtype: List[List[int]]
-        """
-        nums.sort()
-        results = []
+    def meetingRooms(self, intervals):
+        intervals.sort(key=lambda x:x[1])
+        min_rooms = 0
 
-        for i in range(len(nums)):
-            if i > 0 and nums[i] == nums[i - 1]:
-                continue
+        booked_rooms = [intervals[0][1]]
+        heapq.heapify(booked_rooms)
 
-            left = i + 1
-            right = len(nums) - 1
-
-            while left < right:
-                total = nums[i] + nums[left] + nums[right]
-
-                if total < 0:
-                    left += 1
-                elif total > 0 :
-                    right -= 1
-                else:
-                    results.append([nums[i], nums[left], nums[right]])
-
-                    left += 1
-                    right -= 1
-
-                    while left < right and nums[left] == nums[left - 1]:
-                        left += 1
-                    while right > left and nums[right] == nums[right + 1]:
-                        right -= 1
+        for start, end in intervals[1:]:
+            if start >= booked_rooms[0]:
+                heapq.heappop(booked_rooms)
+            
+            heapq.heappush(booked_rooms, end)
+            min_rooms = max(min_rooms, len(booked_rooms))
         
-        return results
+        return min_rooms
         
 
 solution = Solution()
 
-print(solution.threeSum([-1,0,1,2,-1,-4]))
+print(solution.meetingRooms([[0, 30],[5, 10],[15, 20]]))
+print(solution.meetingRooms([[7,10],[2,4]]))
 
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
