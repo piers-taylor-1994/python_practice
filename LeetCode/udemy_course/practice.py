@@ -83,33 +83,27 @@ class Trie:
         return True
     
 class Solution:
-    def canFinish(self, numCourses, prerequisites):
+    def canCompleteCircuit(self, gas, cost):
         """
-        :type numCourses: int
-        :type prerequisites: List[List[int]]
-        :rtype: bool
+        :type gas: List[int]
+        :type cost: List[int]
+        :rtype: int
         """
-        course_graph = {i:[] for i in range(numCourses)}
 
-        for course_end, course_start in prerequisites:
-            course_graph[course_start].append(course_end)
-        
-        for start, end in course_graph.items():
-            seen = set()
-            queue = deque(end)
+        total_cost = 0
+        current_cost = 0
+        index = 0
 
-            while queue:
-                node = queue.popleft()
+        for i in range(len(gas)):
+            difference = gas[i] - cost[i]
+            current_cost += difference
+            total_cost += difference
 
-                if node == start:
-                    return False
-                
-                for edge in course_graph[node]:
-                    if edge not in seen:
-                        queue.append(edge)
-                        seen.add(edge)
-        
-        return True
+            if current_cost < 0:
+                current_cost = 0
+                index = i + 1
+
+        return index if total_cost >= 0 else -1
 
         
 
