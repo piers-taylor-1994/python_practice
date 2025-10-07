@@ -83,47 +83,39 @@ class Trie:
         return True
     
 class Solution:
-    def numIslands(self, grid):
+    def canFinish(self, numCourses, prerequisites):
         """
-        :type grid: List[List[str]]
-        :rtype: int
+        :type numCourses: int
+        :type prerequisites: List[List[int]]
+        :rtype: bool
         """
-        DIRECTIONS = [
-            (-1, 0),
-            (0, 1),
-            (1, 0),
-            (0, -1)
-        ]
+        course_graph = {i:[] for i in range(numCourses)}
 
-        def rec(row, col):
-            if row < 0 or row >= len(grid) or col < 0 or col >= len(grid[0]) or grid[row][col] == "0":
-                return
-            
-            grid[row][col] = "0"
-
-            for dr, dc in DIRECTIONS:
-                rec(dr + row, dc + col)
-
-        islands_count = 0
-
-        for i in range(len(grid)):
-            for j in range(len(grid[i])):
-                if grid[i][j] == "1":
-                    islands_count += 1
-                    rec(i, j)
+        for course_end, course_start in prerequisites:
+            course_graph[course_start].append(course_end)
         
-        return islands_count
+        for start, end in course_graph.items():
+            seen = set()
+            queue = deque(end)
+
+            while queue:
+                node = queue.popleft()
+
+                if node == start:
+                    return False
+                
+                for edge in course_graph[node]:
+                    if edge not in seen:
+                        queue.append(edge)
+                        seen.add(edge)
+        
+        return True
 
         
 
 solution = Solution()
 
-print(solution.numIslands([
-  ["1","1","1","1","0"],
-  ["1","1","0","1","0"],
-  ["1","1","0","0","0"],
-  ["0","0","0","0","0"]
-]))
+print(solution.canFinish(2, [[1,0],[0,1]]))
 
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
