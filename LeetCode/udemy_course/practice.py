@@ -83,38 +83,27 @@ class Trie:
         return True
     
 class Solution:
-    def search(self, nums, target):
+    def eraseOverlapIntervals(self, intervals):
         """
-        :type nums: List[int]
-        :type target: int
+        :type intervals: List[List[int]]
         :rtype: int
         """
-        left = 0
-        right = len(nums) - 1
+        intervals.sort(key=lambda x:(x[1], x[0]))
+        
+        intervals_removed = 0
+        current_end = intervals[0][1]
 
-        while left <= right:
-            middle = (right + left) // 2
-            middle_num = nums[middle]
-
-            if middle_num == target:
-                return middle
-            # left sorted
-            elif nums[left] <= nums[middle]:
-                if nums[left] <= target <= nums[middle]:
-                    right = middle - 1
-                else:
-                    left = middle + 1
-            #right sorted
+        for start, end in intervals[1:]:
+            if start < current_end:
+                intervals_removed += 1
             else:
-                if nums[middle] <= target <= nums[right]:
-                    left = middle + 1
-                else:
-                    right = middle - 1
-        return -1
+                current_end = end
+
+        return intervals_removed
                 
 solution = Solution()
 
-print(solution.search([4,5,6,7,0,1,2], 0))
+print(solution.eraseOverlapIntervals([[1,2],[2,3],[3,4],[1,3]]))
 
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
