@@ -83,27 +83,32 @@ class Trie:
         return True
     
 class Solution:
-    def eraseOverlapIntervals(self, intervals):
+    def permute(self, nums):
         """
-        :type intervals: List[List[int]]
-        :rtype: int
+        :type nums: List[int]
+        :rtype: List[List[int]]
         """
-        intervals.sort(key=lambda x:(x[1], x[0]))
-        
-        intervals_removed = 0
-        current_end = intervals[0][1]
+        results = []
 
-        for start, end in intervals[1:]:
-            if start < current_end:
-                intervals_removed += 1
-            else:
-                current_end = end
+        def rec(subarray):
+            if len(subarray) == len(nums):
+                results.append(subarray[:])
+                return
+            
+            for num in nums:
+                if num not in subarray:
+                    subarray.append(num)
 
-        return intervals_removed
+                    rec(subarray)
+
+                    subarray.pop()
+
+        rec([])
+        return results
                 
 solution = Solution()
 
-print(solution.eraseOverlapIntervals([[1,2],[2,3],[3,4],[1,3]]))
+print(solution.permute([1,2,3]))
 
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
