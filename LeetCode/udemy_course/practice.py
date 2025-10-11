@@ -1,4 +1,5 @@
 from collections import Counter, defaultdict, deque
+import decimal
 import math
 from operator import indexOf
 import random
@@ -83,43 +84,26 @@ class Trie:
         return True
     
 class Solution:
-    def countValidSelections(self, nums):
+    def findMaxAverage(self, nums, k):
         """
         :type nums: List[int]
-        :rtype: int
+        :type k: int
+        :rtype: float
         """
-        non_zero_count = sum([1 for num in nums if num != 0])
-        valid_selections = 0
+        current_window = sum(nums[:k]) 
+        max_average = current_window / float(k)
 
-        def simulation(index, direction):
-            nums_copy = nums[:]
-            non_zero_count_copy = non_zero_count
+        for i in range(len(nums) - k):
+            current_window -= nums[i]
+            current_window += nums[k + i]
+            max_average = max(max_average, current_window / float(k))
 
-            while 0 <= index < len(nums):
-                if nums_copy[index] == 0:
-                    index += direction
-                else:
-                    nums_copy[index] -= 1
-
-                    if nums_copy[index] == 0:
-                        non_zero_count_copy -= 1
-                    
-                    direction *= -1
-                    index += direction
-            
-            return non_zero_count_copy == 0
-        
-        for i in range(len(nums)):
-            if nums[i] == 0:
-                for dir in [-1, 1]:
-                    if simulation(i, dir):
-                        valid_selections += 1
-        
-        return valid_selections
+        return max_average
                     
 solution = Solution()
 
-print(solution.countValidSelections([1,0,2,0,3]))
+print(solution.findMaxAverage([1,12,-5,-6,50,3], 4))
+print(solution.findMaxAverage([-1], 1))
 
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
