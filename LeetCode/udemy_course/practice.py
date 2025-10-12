@@ -84,21 +84,24 @@ class Trie:
         return True
     
 class Solution:
-    def findMaxAverage(self, nums, k):
+    def isPalindrome(self, s):
         """
-        :type nums: List[int]
-        :type k: int
-        :rtype: float
+        :type s: str
+        :rtype: bool
         """
-        current_window = sum(nums[:k]) 
-        max_average = current_window / float(k)
+        s_array = [letter for letter in s if letter.isalnum()]
 
-        for i in range(len(nums) - k):
-            current_window -= nums[i]
-            current_window += nums[k + i]
-            max_average = max(max_average, current_window / float(k))
+        left = 0
+        right = len(s_array) - 1
 
-        return max_average
+        while left < right:
+            if s_array[left] != s_array[right]:
+                return False
+            
+            left += 1
+            right -= 1
+        
+        return True
                     
 solution = Solution()
 
