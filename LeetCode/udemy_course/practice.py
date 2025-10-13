@@ -83,29 +83,45 @@ class Trie:
         return True
     
 class Solution:
-    def subsets(self, nums):
+    def knightProbability(self, n, k, row, column):
         """
-        :type nums: List[int]
-        :rtype: List[List[int]]
+        :type n: int
+        :type k: int
+        :type row: int
+        :type column: int
+        :rtype: float
         """
-        results = []
+        MOVES = [
+            (-2, -1),
+            (-2, 1),
+            (-1, 2),
+            (1, 2),
+            (2, 1),
+            (2, -1),
+            (1, -2),
+            (-1, -2)
+        ]
+        memo = {}
+        max_pos = n - 1
 
-        def rec(index, subarray):
-            results.append(subarray[:])
+        def rec(r, c, move):
+            if r < 0 or r > max_pos or c < 0 or c > max_pos:
+                return 0
+            elif move == k:
+                return 1.0
+            elif (r, c, move) in memo:
+                return memo[(r, c, move)]
             
-            for i in range(index, len(nums)):
-                subarray.append(nums[i])
+            memo[(r, c, move)] = sum([rec(move_r + r, move_c + c, move + 1) for move_r, move_c in MOVES])
+            return memo[(r, c, move)]
+        
+        return rec(row, column, 0) / (8 ** k)
+        
 
-                rec(i + 1, subarray)
-
-                subarray.pop()
-
-        rec(0, [])
-        return results
                 
 solution = Solution()
 
-print(solution.subsets([1,2,3]))
+print(solution.knightProbability(3, 2, 0, 0))
 
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
