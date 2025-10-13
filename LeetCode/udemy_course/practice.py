@@ -83,45 +83,32 @@ class Trie:
         return True
     
 class Solution:
-    def knightProbability(self, n, k, row, column):
+    def coinChange(self, coins, amount):
         """
-        :type n: int
-        :type k: int
-        :type row: int
-        :type column: int
-        :rtype: float
+        :type coins: List[int]
+        :type amount: int
+        :rtype: int
         """
-        MOVES = [
-            (-2, -1),
-            (-2, 1),
-            (-1, 2),
-            (1, 2),
-            (2, 1),
-            (2, -1),
-            (1, -2),
-            (-1, -2)
-        ]
         memo = {}
-        max_pos = n - 1
-
-        def rec(r, c, move):
-            if r < 0 or r > max_pos or c < 0 or c > max_pos:
+        
+        def rec(current_amount):
+            if current_amount > amount:
+                return float('inf')
+            elif current_amount == amount:
                 return 0
-            elif move == k:
-                return 1.0
-            elif (r, c, move) in memo:
-                return memo[(r, c, move)]
-            
-            memo[(r, c, move)] = sum([rec(move_r + r, move_c + c, move + 1) for move_r, move_c in MOVES])
-            return memo[(r, c, move)]
-        
-        return rec(row, column, 0) / (8 ** k)
-        
+            elif current_amount in memo:
+                return memo[current_amount]
 
+            memo[current_amount] = min([1 + rec(current_amount + coin) for coin in coins])
+            return memo[current_amount]
+
+        result = rec(0)
+
+        return result if result != float('inf') else -1
                 
 solution = Solution()
 
-print(solution.knightProbability(3, 2, 0, 0))
+print(solution.coinChange([1,2,5], 11))
 
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
