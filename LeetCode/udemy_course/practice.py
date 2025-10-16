@@ -83,32 +83,44 @@ class Trie:
         return True
     
 class Solution:
-    def coinChange(self, coins, amount):
+    def maxIncreasingSubarrays(self, nums):
         """
-        :type coins: List[int]
-        :type amount: int
+        :type nums: List[int]
         :rtype: int
         """
-        memo = {}
+        reverse_increasing_subarray = [1] * len(nums)
+
+        for i in range(len(nums) - 2, -1, -1):
+            if nums[i] < nums[i + 1]:
+                reverse_increasing_subarray[i] = reverse_increasing_subarray[i + 1] + 1
+
+        def subarray_length_found(length_to_find):
+            for i in range(len(reverse_increasing_subarray) - length_to_find - 1, -1, -1):
+                if reverse_increasing_subarray[i] >= length_to_find:
+                    if reverse_increasing_subarray[i + length_to_find] >= length_to_find:
+                        return True
         
-        def rec(current_amount):
-            if current_amount > amount:
-                return float('inf')
-            elif current_amount == amount:
-                return 0
-            elif current_amount in memo:
-                return memo[current_amount]
+        left = 1
+        right = len(nums) // 2
+        result = 1
 
-            memo[current_amount] = min([1 + rec(current_amount + coin) for coin in coins])
-            return memo[current_amount]
+        while left <= right:
+            middle = (right + left) // 2
 
-        result = rec(0)
+            if subarray_length_found(middle):
+                result = max(result, middle)
+                left = middle + 1
+            else:
+                right = middle - 1
+        
+        return result
 
-        return result if result != float('inf') else -1
+
                 
 solution = Solution()
 
-print(solution.coinChange([1,2,5], 11))
+print(solution.maxIncreasingSubarrays([2,5,7,8,9,2,3,4,3,1]))
+print(solution.maxIncreasingSubarrays([1,2,3,4,4,4,4,5,6,7]))
 
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
