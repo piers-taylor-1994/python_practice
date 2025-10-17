@@ -83,44 +83,59 @@ class Trie:
         return True
     
 class Solution:
-    def maxIncreasingSubarrays(self, nums):
+    def maxPartitionsAfterOperations(self, s, k):
         """
-        :type nums: List[int]
+        :type s: str
+        :type k: int
         :rtype: int
         """
-        reverse_increasing_subarray = [1] * len(nums)
-
-        for i in range(len(nums) - 2, -1, -1):
-            if nums[i] < nums[i + 1]:
-                reverse_increasing_subarray[i] = reverse_increasing_subarray[i + 1] + 1
-
-        def subarray_length_found(length_to_find):
-            for i in range(len(reverse_increasing_subarray) - length_to_find - 1, -1, -1):
-                if reverse_increasing_subarray[i] >= length_to_find:
-                    if reverse_increasing_subarray[i + length_to_find] >= length_to_find:
-                        return True
+        if k == 1:
+            return 1
         
-        left = 1
-        right = len(nums) // 2
-        result = 1
-
-        while left <= right:
-            middle = (right + left) // 2
-
-            if subarray_length_found(middle):
-                result = max(result, middle)
-                left = middle + 1
-            else:
-                right = middle - 1
+        alphabet = set("abcdefghijklmnopqrstuvwxyz")
         
-        return result
+        def partioner(word):
+            letter_count = Counter()
+            partitions = 1
+
+            left = 0
+            for right in range(len(word)):
+                letter_right = word[right]
+                letter_count[letter_right] += 1
+
+                if len(letter_count) > k:
+                    partitions += 1
+
+                    while left < right:
+                        letter_left = word[left]
+                        letter_count[letter_left] -= 1
+
+                        if letter_count[letter_left] == 0:
+                            del letter_count[letter_left]
+                        left += 1
+            
+            return partitions
+        
+        max_partitions = partioner(s)
+
+        for i in range(len(s)):
+            letter_i = s[i]
+
+            for letter in alphabet:
+                if letter != letter_i:
+                    s_list = list(s)
+                    s_list[i] = letter
+                    max_partitions = max(max_partitions, partioner("".join(s_list)))
+        
+        return max_partitions
+                    
+
 
 
                 
 solution = Solution()
 
-print(solution.maxIncreasingSubarrays([2,5,7,8,9,2,3,4,3,1]))
-print(solution.maxIncreasingSubarrays([1,2,3,4,4,4,4,5,6,7]))
+print(solution.maxPartitionsAfterOperations("accca", 2))
 
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
