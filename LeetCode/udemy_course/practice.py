@@ -83,59 +83,24 @@ class Trie:
         return True
     
 class Solution:
-    def maxPartitionsAfterOperations(self, s, k):
+    def finalValueAfterOperations(self, operations):
         """
-        :type s: str
-        :type k: int
+        :type operations: List[str]
         :rtype: int
         """
-        if k == 1:
-            return 1
-        
-        alphabet = set("abcdefghijklmnopqrstuvwxyz")
-        
-        def partioner(word):
-            letter_count = Counter()
-            partitions = 1
+        value = 0
 
-            left = 0
-            for right in range(len(word)):
-                letter_right = word[right]
-                letter_count[letter_right] += 1
+        for op in operations:
+            if "+" in op:
+                value += 1
+            else:
+                value -= 1
 
-                if len(letter_count) > k:
-                    partitions += 1
-
-                    while left < right:
-                        letter_left = word[left]
-                        letter_count[letter_left] -= 1
-
-                        if letter_count[letter_left] == 0:
-                            del letter_count[letter_left]
-                        left += 1
-            
-            return partitions
-        
-        max_partitions = partioner(s)
-
-        for i in range(len(s)):
-            letter_i = s[i]
-
-            for letter in alphabet:
-                if letter != letter_i:
-                    s_list = list(s)
-                    s_list[i] = letter
-                    max_partitions = max(max_partitions, partioner("".join(s_list)))
-        
-        return max_partitions
+        return value
                     
-
-
-
-                
 solution = Solution()
 
-print(solution.maxPartitionsAfterOperations("accca", 2))
+print(solution.finalValueAfterOperations(["i++", "++i", "--i"]))
 
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
