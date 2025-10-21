@@ -83,24 +83,59 @@ class Trie:
         return True
     
 class Solution:
-    def finalValueAfterOperations(self, operations):
+    def sudokuChecker(self, array):
         """
         :type operations: List[str]
         :rtype: int
         """
-        value = 0
+        for row in range(len(array)):
+            used_numbers = set()
+            for col in range(len(array[row])):
+                number = array[row][col]
 
-        for op in operations:
-            if "+" in op:
-                value += 1
-            else:
-                value -= 1
+                if number in used_numbers:
+                    return f"ROW {row} INVALID"
+                used_numbers.add(number)
+        
+        for col in range(len(array[0])):
+            used_numbers = set()
+            for row in range(len(array)):
+                number = array[row][col]
 
-        return value
+                if number in used_numbers:
+                    return f"COL {col} INVALID"
+                used_numbers.add(number)
+
+        for i in range(3):
+            for j in range(3):
+                used_numbers = set()
+                for row in range(3):
+                    row += (i * 3)
+
+                    for col in range(3):
+                        col += (j * 3)
+                        
+                        print((row, col))
+                        number = array[row][col]
+                        if number in used_numbers:
+                            return f"SECTION {(i * 3) + j} INVALID"
+                        used_numbers.add(number)
+        
+        return f"VALID"
+
                     
 solution = Solution()
 
-print(solution.finalValueAfterOperations(["i++", "++i", "--i"]))
+print(solution.sudokuChecker([
+    [1,2,3,4,5,6,7,8,9],
+    [2,3,4,5,6,7,8,9,1],
+    [3,4,5,6,7,8,9,1,2],
+    [4,5,6,7,8,9,1,2,3],
+    [5,6,7,8,9,1,2,3,4],
+    [6,7,8,9,1,2,3,4,5],
+    [7,8,9,1,2,3,4,5,6],
+    [8,9,1,2,3,4,5,6,7],
+    [9,1,2,3,4,5,6,7,8]]))
 
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
