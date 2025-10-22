@@ -5,3 +5,5 @@ function stringsToNumbers(arr) {
 
 console.log(stringsToNumbers(["1","5"]))
 console.log(stringsToNumbers())
+console.log(stringsToNumbers([]))
+console.log(stringsToNumbers(["a", "1"]))
