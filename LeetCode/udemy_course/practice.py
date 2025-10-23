@@ -123,39 +123,36 @@ class Solution:
         
         return f"VALID"
     
-    def hasSameDigits(self, s):
+    def checkInclusion(self, s1, s2):
         """
-        :type s: str
+        :type s1: str
+        :type s2: str
         :rtype: bool
         """
-        while len(s) > 2:
-            s_copy = ""
+        s1_counter = Counter(s1)
+        s2_counter = Counter()
 
-            for i in range(len(s) - 1):
-                total = int(s[i]) + int(s[i + 1])
-                s_copy += f"{total % 10}"
-            
-            s = s_copy
-        
-        return s[0] == s[1]
-    
-    def isPalindrome(self, s):
-        """
-        :type s: str
-        :rtype: bool
-        """
-        s = "".join([letter.lower() for letter in s if letter.isalnum()])
-        
         left = 0
-        right = len(s) - 1
+        for right in range(len(s2)):
+            letter_right = s2[right]
+            s2_counter[letter_right] += 1
 
-        while left < right:
-            if s[left] != s[right]:
-                return False
-            left += 1
-            right -= 1
+            if set(s1_counter.keys()).issubset(s2_counter.keys()):
+                while right - left + 1 > len(s1):
+
+                    letter_left = s2[left]
+                    s2_counter[letter_left] -= 1
+
+                    if s2_counter[letter_left] == 0:
+                        del s2_counter[letter_left]
+                    left += 1
+                
+                if s1_counter == s2_counter:
+                    return True
         
-        return True
+        return False
+
+
         
 
                     
@@ -171,8 +168,8 @@ print(solution.sudokuChecker([
     [7,8,9,1,2,3,4,5,6],
     [8,9,1,2,3,4,5,6,7],
     [9,1,2,3,4,5,6,7,8]]))
-print(solution.hasSameDigits("3902"))
-print(solution.isPalindrome("r!aceca!r"))
+print(solution.checkInclusion("ab", "eidbaooo"))
+print(solution.checkInclusion("adc", "dcda"))
 
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
