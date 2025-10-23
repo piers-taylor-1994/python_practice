@@ -138,6 +138,25 @@ class Solution:
             s = s_copy
         
         return s[0] == s[1]
+    
+    def isPalindrome(self, s):
+        """
+        :type s: str
+        :rtype: bool
+        """
+        s = "".join([letter.lower() for letter in s if letter.isalnum()])
+        
+        left = 0
+        right = len(s) - 1
+
+        while left < right:
+            if s[left] != s[right]:
+                return False
+            left += 1
+            right -= 1
+        
+        return True
+        
 
                     
 solution = Solution()
@@ -153,6 +172,7 @@ print(solution.sudokuChecker([
     [8,9,1,2,3,4,5,6,7],
     [9,1,2,3,4,5,6,7,8]]))
 print(solution.hasSameDigits("3902"))
+print(solution.isPalindrome("r!aceca!r"))
 
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
