@@ -122,6 +122,22 @@ class Solution:
                         used_numbers.add(number)
         
         return f"VALID"
+    
+    def hasSameDigits(self, s):
+        """
+        :type s: str
+        :rtype: bool
+        """
+        while len(s) > 2:
+            s_copy = ""
+
+            for i in range(len(s) - 1):
+                total = int(s[i]) + int(s[i + 1])
+                s_copy += f"{total % 10}"
+            
+            s = s_copy
+        
+        return s[0] == s[1]
 
                     
 solution = Solution()
@@ -136,6 +152,7 @@ print(solution.sudokuChecker([
     [7,8,9,1,2,3,4,5,6],
     [8,9,1,2,3,4,5,6,7],
     [9,1,2,3,4,5,6,7,8]]))
+print(solution.hasSameDigits("3902"))
 
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
