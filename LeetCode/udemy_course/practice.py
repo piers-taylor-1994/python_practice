@@ -83,93 +83,43 @@ class Trie:
         return True
     
 class Solution:
-    def sudokuChecker(self, array):
+    def countValidSelections(self, nums):
         """
-        :type operations: List[str]
+        :type nums: List[int]
         :rtype: int
         """
-        for row in range(len(array)):
-            used_numbers = set()
-            for col in range(len(array[row])):
-                number = array[row][col]
+        non_zero_count = sum([1 for num in nums if num != 0])
+        valid_selections = 0
 
-                if number in used_numbers:
-                    return f"ROW {row} INVALID"
-                used_numbers.add(number)
+        def simulation(index, direction):
+            nums_copy = nums[:]
+            non_zero_count_copy = non_zero_count
+
+            while 0 <= index < len(nums):
+                if nums_copy[index] == 0:
+                    index += direction
+                else:
+                    nums_copy[index] -= 1
+
+                    if nums_copy[index] == 0:
+                        non_zero_count_copy -= 1
+                    
+                    direction *= -1
+                    index += direction
+            
+            return non_zero_count_copy == 0
         
-        for col in range(len(array[0])):
-            used_numbers = set()
-            for row in range(len(array)):
-                number = array[row][col]
-
-                if number in used_numbers:
-                    return f"COL {col} INVALID"
-                used_numbers.add(number)
-
-        for i in range(3):
-            for j in range(3):
-                used_numbers = set()
-                for row in range(3):
-                    row += (i * 3)
-
-                    for col in range(3):
-                        col += (j * 3)
-                        
-                        print((row, col))
-                        number = array[row][col]
-                        if number in used_numbers:
-                            return f"SECTION {(i * 3) + j} INVALID"
-                        used_numbers.add(number)
+        for i in range(len(nums)):
+            if nums[i] == 0:
+                for dir in [-1, 1]:
+                    if simulation(i, dir):
+                        valid_selections += 1
         
-        return f"VALID"
-    
-    def checkInclusion(self, s1, s2):
-        """
-        :type s1: str
-        :type s2: str
-        :rtype: bool
-        """
-        s1_counter = Counter(s1)
-        s2_counter = Counter()
-
-        left = 0
-        for right in range(len(s2)):
-            letter_right = s2[right]
-            s2_counter[letter_right] += 1
-
-            if set(s1_counter.keys()).issubset(s2_counter.keys()):
-                while right - left + 1 > len(s1):
-
-                    letter_left = s2[left]
-                    s2_counter[letter_left] -= 1
-
-                    if s2_counter[letter_left] == 0:
-                        del s2_counter[letter_left]
-                    left += 1
-                
-                if s1_counter == s2_counter:
-                    return True
-        
-        return False
-
-
-        
-
+        return valid_selections
                     
 solution = Solution()
 
-print(solution.sudokuChecker([
-    [1,2,3,4,5,6,7,8,9],
-    [2,3,4,5,6,7,8,9,1],
-    [3,4,5,6,7,8,9,1,2],
-    [4,5,6,7,8,9,1,2,3],
-    [5,6,7,8,9,1,2,3,4],
-    [6,7,8,9,1,2,3,4,5],
-    [7,8,9,1,2,3,4,5,6],
-    [8,9,1,2,3,4,5,6,7],
-    [9,1,2,3,4,5,6,7,8]]))
-print(solution.checkInclusion("ab", "eidbaooo"))
-print(solution.checkInclusion("adc", "dcda"))
+print(solution.countValidSelections([1,0,2,0,3]))
 
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
