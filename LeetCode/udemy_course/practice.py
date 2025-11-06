@@ -84,42 +84,28 @@ class Trie:
         return True
     
 class Solution:
-    def floodFill(self, image, sr, sc, color):
+    def findMinArrowShots(self, points):
         """
-        :type image: List[List[int]]
-        :type sr: int
-        :type sc: int
-        :type color: int
-        :rtype: List[List[int]]
+        :type points: List[List[int]]
+        :rtype: int
         """
-        DIRECTIONS = [
-            (-1, 0),
-            (0, 1),
-            (1, 0),
-            (0, -1)
-        ]
-        original_colour = image[sr][sc]
-        seen = set()
-        
-        def dfs(row, col):
-            if row < 0 or row >= len(image) or col < 0 or col >= len(image[0]) or image[row][col] != original_colour or (row, col) in seen:
-                return
-            
-            image[row][col] = color
-            seen.add((row, col))
+        arrow_pos = points[0][1]
+        arrows = 1
 
-            for dr, dc in DIRECTIONS:
-                dfs(dr + row, dc + col)
+        for start, end in points[1:]:
+            if start > arrow_pos:
+                arrows += 1
+                arrow_pos = end
         
-        dfs(sr, sc)
-        
-        return image
+        return arrows
+
+
 
 
                     
 solution = Solution()
 
-print(solution.floodFill([[1,1,1],[1,1,0],[1,0,1]], 1, 1, 2))
+print(solution.findMinArrowShots([[1,2],[2,3],[3,4],[4,5]]))
 
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
