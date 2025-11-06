@@ -84,29 +84,42 @@ class Trie:
         return True
     
 class Solution:
-    def isPalindrome(self, s):
+    def floodFill(self, image, sr, sc, color):
         """
-        :type s: str
-        :rtype: bool
+        :type image: List[List[int]]
+        :type sr: int
+        :type sc: int
+        :type color: int
+        :rtype: List[List[int]]
         """
-        s_array = [letter for letter in s if letter.isalnum()]
-
-        left = 0
-        right = len(s_array) - 1
-
-        while left < right:
-            if s_array[left] != s_array[right]:
-                return False
-            
-            left += 1
-            right -= 1
+        DIRECTIONS = [
+            (-1, 0),
+            (0, 1),
+            (1, 0),
+            (0, -1)
+        ]
+        original_colour = image[sr][sc]
+        seen = set()
         
-        return True
+        def dfs(row, col):
+            if row < 0 or row >= len(image) or col < 0 or col >= len(image[0]) or image[row][col] != original_colour or (row, col) in seen:
+                return
+            
+            image[row][col] = color
+            seen.add((row, col))
+
+            for dr, dc in DIRECTIONS:
+                dfs(dr + row, dc + col)
+        
+        dfs(sr, sc)
+        
+        return image
+
+
                     
 solution = Solution()
 
-print(solution.findMaxAverage([1,12,-5,-6,50,3], 4))
-print(solution.findMaxAverage([-1], 1))
+print(solution.floodFill([[1,1,1],[1,1,0],[1,0,1]], 1, 1, 2))
 
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
