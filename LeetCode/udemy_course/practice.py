@@ -84,28 +84,25 @@ class Trie:
         return True
     
 class Solution:
-    def findMinArrowShots(self, points):
-        """
-        :type points: List[List[int]]
-        :rtype: int
-        """
-        arrow_pos = points[0][1]
-        arrows = 1
+    def subsets(self, nums):
+        results = []
+        subset = []
 
-        for start, end in points[1:]:
-            if start > arrow_pos:
-                arrows += 1
-                arrow_pos = end
+        def rec(index):
+            results.append(subset[:])
+
+            for i in range(index, len(nums)):
+                subset.append(nums[i])
+                rec(i + 1)
+
+                subset.pop()
         
-        return arrows
-
-
-
-
+        rec(0)
+        return results
                     
 solution = Solution()
 
-print(solution.findMinArrowShots([[1,2],[2,3],[3,4],[4,5]]))
+print(solution.subsets([1,2,3]))
 
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
