@@ -84,25 +84,26 @@ class Trie:
         return True
     
 class Solution:
-    def subsets(self, nums):
-        results = []
-        subset = []
-
-        def rec(index):
-            results.append(subset[:])
-
-            for i in range(index, len(nums)):
-                subset.append(nums[i])
-                rec(i + 1)
-
-                subset.pop()
+    def climbStairs(self, n):
+        """
+        :type n: int
+        :rtype: int
+        """
+        if n == 1:
+            return 1
         
-        rec(0)
-        return results
+        dp = [0] * (n + 1)
+        dp[1] = 1
+        dp[2] = 2
+
+        for i in range(3, n + 1):
+            dp[i] = dp[i - 1] + dp[i - 2]
+        
+        return dp[n]
                     
 solution = Solution()
 
-print(solution.subsets([1,2,3]))
+print(solution.climbStairs(3))
 
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
