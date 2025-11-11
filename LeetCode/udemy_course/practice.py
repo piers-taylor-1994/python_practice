@@ -5,6 +5,8 @@ from operator import indexOf
 import random
 import heapq
 import bisect
+
+from numpy import kaiser
  
 class Node(object):
     def __init__(self, val, prev = None, next = None, child = None):
@@ -84,26 +86,108 @@ class Trie:
         return True
     
 class Solution:
-    def climbStairs(self, n):
-        """
-        :type n: int
-        :rtype: int
-        """
-        if n == 1:
-            return 1
-        
-        dp = [0] * (n + 1)
-        dp[1] = 1
-        dp[2] = 2
+    def reverse_string(self, s):
+        new_string = ""
 
-        for i in range(3, n + 1):
-            dp[i] = dp[i - 1] + dp[i - 2]
+        for letter in s[::-1]:
+            new_string += letter
         
-        return dp[n]
+        return new_string
+    
+    def check_balanced_brackets(self, s):
+        brackets = { "(":")", "{":"}", "[":"]" }
+        stack = []
+
+        for letter in s:
+            if letter in brackets or letter in brackets.values():
+                if letter in brackets:
+                    stack.append(letter)
+                elif not stack or brackets[stack.pop()] != letter:
+                    return False
+        
+        return len(stack) == 0
+    
+    def find_longest_word(self, s):
+        s_array = s.split(" ")
+        longest_word = s_array[0]
+
+        for word in s_array[1:]:
+            if len(word) > len(longest_word):
+                longest_word = word
+        
+        return longest_word
+    
+
+    def factiorial(self, n):
+        def rec(number):
+            if number == 1:
+                return 1
+            
+            return number * rec(number - 1)
+        
+        return rec(n)
+    
+    def sum_prime_numbers(self, n):
+        def is_prime(number):
+            if number < 2:
+                return False
+            
+            for i in range(2, number):
+                if number % i == 0:
+                    return False
+            return True 
+        
+        return sum([i for i in range(2, n) if is_prime(i)])
+    
+    def activity_selections(self, activities):
+        activities.sort(key=lambda x:x[1])
+
+        activities_taken = 0
+        current_end = -float('inf')
+
+        for start, end in activities:
+            if start >= current_end:
+                activities_taken += 1
+                current_end = end
+        
+        return activities_taken
+    
+    def coin_change(self, coins, amount):
+        memo = {}
+
+        def rec(current_amount):
+            if current_amount == amount:
+                return 0
+            elif current_amount > amount:
+                return float('inf')
+            elif current_amount in memo:
+                return memo[current_amount]
+            
+            memo[current_amount] = min([1 + rec(current_amount + coin) for coin in coins])
+            return memo[current_amount]
+        
+        result = rec(0)
+        return result if result != float('inf') else -1
+
+
+
                     
 solution = Solution()
 
-print(solution.climbStairs(3))
+print(solution.reverse_string("helllo"))
+
+print(solution.check_balanced_brackets("(a + b)*(c + d)"))
+print(solution.check_balanced_brackets("((a + b)"))
+
+print(solution.find_longest_word("The quick brown fox jumped over the lazy dog"))
+
+print(solution.sum_prime_numbers(10))
+
+print(solution.factiorial(5))
+
+print(solution.activity_selections([(1, 4), (3, 5), (0, 6), (5, 7), (8, 9), (5, 9)]))
+
+print(solution.coin_change([1,2,5], 11))
 
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
