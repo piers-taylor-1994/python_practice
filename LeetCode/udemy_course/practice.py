@@ -5,8 +5,6 @@ from operator import indexOf
 import random
 import heapq
 import bisect
-
-from numpy import kaiser
  
 class Node(object):
     def __init__(self, val, prev = None, next = None, child = None):
@@ -86,108 +84,89 @@ class Trie:
         return True
     
 class Solution:
-    def reverse_string(self, s):
-        new_string = ""
+    def twoSum(self, nums, target):
+        """
+        :type nums: List[int]
+        :type target: int
+        :rtype: List[int]
+        """
+        seen_nums = []
 
-        for letter in s[::-1]:
-            new_string += letter
-        
-        return new_string
-    
-    def check_balanced_brackets(self, s):
-        brackets = { "(":")", "{":"}", "[":"]" }
-        stack = []
+        for i in range(len(nums)):
+            target_num = target - nums[i]
 
-        for letter in s:
-            if letter in brackets or letter in brackets.values():
-                if letter in brackets:
-                    stack.append(letter)
-                elif not stack or brackets[stack.pop()] != letter:
-                    return False
-        
-        return len(stack) == 0
-    
-    def find_longest_word(self, s):
-        s_array = s.split(" ")
-        longest_word = s_array[0]
-
-        for word in s_array[1:]:
-            if len(word) > len(longest_word):
-                longest_word = word
-        
-        return longest_word
-    
-
-    def factiorial(self, n):
-        def rec(number):
-            if number == 1:
-                return 1
+            if target_num in seen_nums:
+                return [indexOf(seen_nums, target_num), i]
             
-            return number * rec(number - 1)
+            seen_nums.append(nums[i])
         
-        return rec(n)
+    def maxProfit(self, prices):
+        """
+        :type prices: List[int]
+        :rtype: int
+        """
+        max_profit = 0
+        lowest_value = float('inf')
+
+        for price in prices:
+            if price < lowest_value:
+                lowest_value = price
+            else:
+                max_profit = max(max_profit, price - lowest_value)
+        
+        return max_profit
     
-    def sum_prime_numbers(self, n):
-        def is_prime(number):
-            if number < 2:
-                return False
-            
-            for i in range(2, number):
-                if number % i == 0:
-                    return False
-            return True 
+    def lengthOfLongestSubstring(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        longest_sub = 0
+        char_counter = Counter()
+        left = 0
+
+        for right in range(len(s)):
+            char_right = s[right]
+            char_counter[char_right] += 1
+
+            while char_counter[char_right] > 1:
+                char_left = s[left]
+                char_counter[char_left] -= 1
+                left += 1
+            longest_sub = max(longest_sub, right - left + 1)
         
-        return sum([i for i in range(2, n) if is_prime(i)])
+        return longest_sub
     
-    def activity_selections(self, activities):
-        activities.sort(key=lambda x:x[1])
-
-        activities_taken = 0
-        current_end = -float('inf')
-
-        for start, end in activities:
-            if start >= current_end:
-                activities_taken += 1
-                current_end = end
+    def maxArea(self, height):
+        """
+        :type height: List[int]
+        :rtype: int
+        """
+        max_water = 0
         
-        return activities_taken
-    
-    def coin_change(self, coins, amount):
-        memo = {}
+        left = 0
+        right = len(height) - 1
 
-        def rec(current_amount):
-            if current_amount == amount:
-                return 0
-            elif current_amount > amount:
-                return float('inf')
-            elif current_amount in memo:
-                return memo[current_amount]
-            
-            memo[current_amount] = min([1 + rec(current_amount + coin) for coin in coins])
-            return memo[current_amount]
+        while left < right:
+            lower_edge = min(height[left], height[right])
+            max_water = max(max_water, (right - left) * lower_edge)
+
+            if height[left] <= height[right]:
+                left += 1
+            else:
+                right -= 1
         
-        result = rec(0)
-        return result if result != float('inf') else -1
-
-
-
+        return max_water
                     
 solution = Solution()
 
-print(solution.reverse_string("helllo"))
+print(solution.twoSum([2,7,11,15], 9))
 
-print(solution.check_balanced_brackets("(a + b)*(c + d)"))
-print(solution.check_balanced_brackets("((a + b)"))
+print(solution.maxProfit([7,1,5,3,6,4]))
 
-print(solution.find_longest_word("The quick brown fox jumped over the lazy dog"))
+print(solution.lengthOfLongestSubstring("pwwkew"))
 
-print(solution.sum_prime_numbers(10))
-
-print(solution.factiorial(5))
-
-print(solution.activity_selections([(1, 4), (3, 5), (0, 6), (5, 7), (8, 9), (5, 9)]))
-
-print(solution.coin_change([1,2,5], 11))
+print(solution.maxArea([1,8,6,2,5,4,8,3,7]))
 
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
