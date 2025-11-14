@@ -1,0 +1,5 @@
+- You can use a tuple() as a valid key a dictionary
+- I also sorted a string and then made it into a tuple() to use as a key in a dictionary
+- For Sudoku, (row // 3, col // 3) is a good way of identifying/matching grids
+- A set() removes all duplicates upon initialisation
+- You can't access items via index in a set, you have to use a loop

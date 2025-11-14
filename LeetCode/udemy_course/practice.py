@@ -157,6 +157,91 @@ class Solution:
                 right -= 1
         
         return max_water
+    
+    def groupAnagrams(self, strs):
+        """
+        :type strs: List[str]
+        :rtype: List[List[str]]
+        """
+        anagram_hash = {}
+
+        for word in strs:
+            sorted_word = tuple(sorted(word))
+            
+            anagram_hash[sorted_word] = anagram_hash.get(sorted_word, []) + [word]
+        
+        return [word_array for _, word_array in anagram_hash.items()]
+    
+    def isValidSudoku(self, board):
+        """
+        :type board: List[List[str]]
+        :rtype: bool
+        """
+        row_hash = {i:set() for i in range(9)}
+        col_hash = {i:set() for i in range(9)}
+        grid_hash = {}
+
+        for row in range(len(board)):
+            for col in range(len(board[row])):
+                grid_hash[(row // 3, col // 3)] = set()
+
+        for row in range(len(board)):
+            for col in range(len(board[row])):
+                value = board[row][col]
+
+                if value == ".":
+                    continue
+
+                grid_id = (row // 3, col // 3)
+
+                if value in row_hash[row] or value in col_hash[col] or value in grid_hash[grid_id]:
+                    return False
+                
+                row_hash[row].add(value)
+                col_hash[col].add(value)
+                grid_hash[grid_id].add(value)
+        
+        return True
+    
+    def subarraySum(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: int
+        """
+        prefix = 0
+        hash_map = { prefix: 1 }
+        result = 0
+
+        for num in nums:
+            prefix += num
+            result += hash_map.get(prefix - k, 0)
+            hash_map[prefix] = hash_map.get(prefix, 0) + 1
+        
+        return result
+    
+    def longestConsecutive(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        nums_set = set(nums)
+        nums = list(nums_set)
+        nums.sort()
+        current_num = 0
+        current_range = 0
+        longest_range = 0
+
+        for num in nums:
+            if num - current_num == 1:
+                current_range += 1
+            else:
+                current_range = 1
+
+            longest_range = max(longest_range, current_range)
+            current_num = num
+
+        return longest_range
                     
 solution = Solution()
 
@@ -167,6 +252,19 @@ print(solution.maxProfit([7,1,5,3,6,4]))
 print(solution.lengthOfLongestSubstring("pwwkew"))
 
 print(solution.maxArea([1,8,6,2,5,4,8,3,7]))
+
+print(solution.groupAnagrams(["eat", "tea", "tan", "ate", "nat", "bat"]))
+
+print(solution.isValidSudoku([["5","3",".",".","7",".",".",".","."],["6",".",".","1","9","5",".",".","."],[".","9","8",".",".",".",".","6","."],["8",".",".",".","6",".",".",".","3"],["4",".",".","8",".","3",".",".","1"],["7",".",".",".","2",".",".",".","6"],[".","6",".",".",".",".","2","8","."],[".",".",".","4","1","9",".",".","5"],[".",".",".",".","8",".",".","7","9"]]))
+
+print(solution.subarraySum([1,1,1], 2))
+
+print(solution.longestConsecutive([1,1,0,2]))
+print(solution.longestConsecutive([1]))
+print(solution.longestConsecutive([]))
+print(solution.longestConsecutive([0]))
+print(solution.longestConsecutive([-1, 0]))
+print(solution.longestConsecutive([100, 0, 200, 1, 2, 3]))
 
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
