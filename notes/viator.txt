@@ -1,5 +1,13 @@
 - You can use a tuple() as a valid key a dictionary
-- I also sorted a string and then made it into a tuple() to use as a key in a dictionary
+- I also sorted a string and then made it into a tuple() to use as a key in a dictionary -> sorted(tuple(word))
+
 - For Sudoku, (row // 3, col // 3) is a good way of identifying/matching grids
+
 - A set() removes all duplicates upon initialisation
 - You can't access items via index in a set, you have to use a loop
+
+- When using a heap, think about what you're doing (in the meeting rooms, we always have to push the current intervals end, but the pop is dependant on logic?)
+- Heaps are defaulty min-heaps, use negatives to inverse the logic
+
+- When binary searching over a range, you can split up 2 binary searchs and specify which is left centric or right centric
+- You can set a current result, and then let it keep binary searching even after it's found the target to see if there's any others further down

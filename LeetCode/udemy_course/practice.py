@@ -242,6 +242,95 @@ class Solution:
             current_num = num
 
         return longest_range
+    
+    def merge(self, intervals):
+        """
+        :type intervals: List[List[int]]
+        :rtype: List[List[int]]
+        """
+        intervals.sort(key=lambda x:x[0])
+
+        results = [intervals[0]]
+        current_end = intervals[0][1]
+
+        for start, end in intervals[1:]:
+            if start <= current_end:
+                current_end = max(current_end, end)
+                results[-1][1] = current_end
+            else:
+                results.append([start,end])
+                current_end = end
+        
+        return results
+    
+    def min_meeting_rooms(self, intervals):
+        intervals.sort(key=lambda x:(x[0], x[1]))
+
+        if not intervals:
+            return 0
+
+        rooms_booked_end = [intervals[0][1]]
+        heapq.heapify(rooms_booked_end)
+
+        for start, end in intervals[1:]:
+            if start >= rooms_booked_end[0]:
+                heapq.heappop(rooms_booked_end)
+            
+            heapq.heappush(rooms_booked_end, end)
+        
+        return len(rooms_booked_end)
+    
+    def search_rotated_array(self, nums, target):
+        left = 0
+        right = len(nums) - 1
+
+        while left <= right:
+            middle = (left + right) // 2
+
+            if nums[middle] == target:
+                return middle
+            elif nums[left] <= nums[middle]:
+                if nums[left] <= target <= nums[middle]:
+                    right = middle - 1
+                else:
+                    left = middle + 1
+            else:
+                if nums[middle] <= target <= nums[right]:
+                    left = middle + 1
+                else:
+                    right = middle - 1
+        
+        return -1
+    
+    def searchRange(self, nums, target):
+        """
+        :type nums: List[int]
+        :type target: int
+        :rtype: List[int]
+        """
+        def find_target(is_left):
+            left = 0
+            right = len(nums) - 1
+            result = -1
+
+            while left <= right:
+                middle = (left + right) // 2
+
+                if nums[middle] == target:
+                    result = middle
+
+                    if is_left:
+                        right = middle - 1
+                    else:
+                        left = middle + 1
+                elif nums[middle] < target:
+                    left = middle + 1
+                else:
+                    right = middle - 1
+            
+            return result
+        
+        return [find_target(True), find_target(False)]
                     
 solution = Solution()
 
@@ -260,11 +349,17 @@ print(solution.isValidSudoku([["5","3",".",".","7",".",".",".","."],["6",".","."
 print(solution.subarraySum([1,1,1], 2))
 
 print(solution.longestConsecutive([1,1,0,2]))
-print(solution.longestConsecutive([1]))
-print(solution.longestConsecutive([]))
-print(solution.longestConsecutive([0]))
-print(solution.longestConsecutive([-1, 0]))
 print(solution.longestConsecutive([100, 0, 200, 1, 2, 3]))
+
+print(solution.merge([[1,3], [2,6], [8,10], [15,18]]))
+
+print(solution.min_meeting_rooms([(0,40), (5,10), (15,20)]))
+print(solution.min_meeting_rooms([(4,9)]))
+print(solution.min_meeting_rooms([]))
+
+print(solution.search_rotated_array([4,5,6,7,0,1,2,3], 4))
+
+print(solution.searchRange([5,7,7,8,8,10], 8))
 
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
