@@ -11,3 +11,6 @@
 
 - When binary searching over a range, you can split up 2 binary searchs and specify which is left centric or right centric
 - You can set a current result, and then let it keep binary searching even after it's found the target to see if there's any others further down
+
+- When tackling linked lists, you can initialise a value (head = ListNode()) before you use another value (tail = head) to venture down lists, to eventually return the result at the beginning (return head/head.next)
+- Quite often the tricky part is working out what to return

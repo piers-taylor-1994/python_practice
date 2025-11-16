@@ -131,3 +131,25 @@ def two_pointers(height):
             right -= 1
         
     return max_water
+
+# Linked lists -> ListNode() that has .next, and sometimes .children and .prev
+class Node(object):
+    def __init__(self, val = 0, prev = None, next = None, child = None):
+        self.val = val
+        self.prev = prev
+        self.next = next
+        self.child = child
+def reverse_linked_list(head:Node):
+    if not head:
+        return None
+    
+    current = head
+    prev = None
+
+    while current:
+        next = current.next
+        current.next = prev
+        prev = current
+        current = next
+    
+    return prev
