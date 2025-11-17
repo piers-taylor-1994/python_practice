@@ -18,11 +18,11 @@
 - To clone a graph / matrix / binary tree, you utilise a dictionary in the form of {original_node: clone_node} -> {node: Node(node.val)} and then use a queue like normal. You then use the cloned values to populate the cloned_nodes.neighbors etc
 
 # Problems to redo (speak throughout so you're not just doing it from memory, and you're doing it from understanding)
-- groupAnagrams #49 (quick run through)
-- subarraySum #560 (quick run through)
-- minMeetingRooms #253 (quick run through)
-- searchRange #34 (quick run through)
-- pacificAtlantic #417 (quick run through)
-- mergeTwoLists #21
+- groupAnagrams #49 (quick run through) ✓
+- subarraySum #560 (quick run through) ✓
+- minMeetingRooms #253 (quick run through) ✓
+- mergeTwoLists #21 ✓
+- searchRange #34 (quick run through) ✓
 - addTwoNumbers #2
 - cloneGraph #133
+- pacificAtlantic #417 (quick run through)
