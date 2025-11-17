@@ -495,6 +495,375 @@ class Solution:
             return [self.clean_json_dict(v) for v in json if v not in ("", None, {})]
         else:
             return json
+        
+    def levelOrder_BFS(self, root):
+        """
+        :type root: Optional[TreeNode]
+        :rtype: List[List[int]]
+        """
+        if not root:
+            return []
+        
+        queue = deque([root])
+        result = []
+
+        while queue:
+            level_order = []
+            for _ in range(len(queue)):
+                node = queue.popleft()
+
+                if node.left:
+                    queue.append(node.left)
+                if node.right:
+                    queue.append(node.right)
+                
+                level_order.append(node.val)
+            
+            result.append(level_order)
+        
+        return result
+        
+    def levelOrder_DFS(self, root):
+        """
+        :type root: Optional[TreeNode]
+        :rtype: List[List[int]]
+        """
+        if not root:
+            return []
+        
+        result = []
+
+        def dfs(node, level):
+            if not node:
+                return
+
+            if len(result) >= level + 1:
+                result[level].append(node.val)
+            else:
+                result.append([node.val])
+            
+            dfs(node.left, level + 1)
+            dfs(node.right, level + 1)
+        
+        dfs(root, 0)
+        return result
+    
+    def isValidBST_BFS(self, root):
+        """
+        :type root: Optional[TreeNode]
+        :rtype: bool
+        """
+        queue = deque([(
+            -float('inf'),
+             root, 
+             float('inf')
+             )])
+
+        while queue:
+            min_val, node, max_val = queue.popleft()
+            
+            if not min_val < node.val < max_val:
+                return False
+            
+            if node.left:
+                queue.append((min_val, node.left, node.val))
+            if node.right:
+                queue.append((node.val, node.right, max_val))
+        
+        return True
+    
+    def isValidBST_DFS(self, root):
+        """
+        :type root: Optional[TreeNode]
+        :rtype: bool
+        """
+        result = True
+
+        def dfs(min_val, node, max_val):
+            nonlocal result
+            if not node:
+                return
+            elif not min_val < node.val < max_val:
+                result = False
+                return
+            
+            if node.left:
+                dfs(min_val, node.left, node.val)
+            if node.right:
+                dfs(node.val, node.right, max_val)
+        
+        dfs(-float('inf'), root, float('inf'))
+        return result
+    
+    def numIslands_BFS(self, grid):
+        """
+        :type grid: List[List[str]]
+        :rtype: int
+        """
+        DIRECTIONS = [
+            (-1, 0),
+            (0, 1),
+            (1, 0),
+            (0, -1),
+        ]
+
+        seen = set()
+        islands_count = 0
+
+        def bfs(r, c):
+            queue = deque([(r, c)])
+            seen.add((r, c))
+
+            while queue:
+                row, col = queue.popleft()
+
+                for dr, dc in DIRECTIONS:
+                    new_row = dr + row
+                    new_col = dc + col
+
+                    if 0 <= new_row < len(grid) and 0 <= new_col < len(grid[0]) and grid[new_row][new_col] == "1" and (new_row, new_col) not in seen:
+                        queue.append((new_row, new_col))
+                        seen.add((new_row, new_col))
+
+        for i in range(len(grid)):
+            for j in range(len(grid[i])):
+                if grid[i][j] == "1" and (i, j) not in seen:
+                    islands_count += 1
+                    bfs(i, j)
+        
+        return islands_count
+    
+    def numIslands_DFS(self, grid):
+        """
+        :type grid: List[List[str]]
+        :rtype: int
+        """
+        DIRECTIONS = [
+            (-1, 0),
+            (0, 1),
+            (1, 0),
+            (0, -1),
+        ]
+
+        seen = set()
+        islands_count = 0
+
+        def dfs(r, c):
+            if r < 0 or r >= len(grid) or c < 0 or c >= len(grid[0]) or grid[r][c] != "1" or (r, c) in seen:
+                return
+            
+            seen.add((r, c))
+
+            for dr, dc in DIRECTIONS:
+                dfs(dr + r, dc + c)
+
+        for i in range(len(grid)):
+            for j in range(len(grid[i])):
+                if grid[i][j] == "1" and (i, j) not in seen:
+                    islands_count += 1
+                    dfs(i, j)
+        
+        return islands_count
+    
+    def clone_graph_BFS(self, node):
+        if not node:
+            return None
+
+        node_to_clone = {node: Node(node.val)}
+        queue = deque([node])
+
+        while queue:
+            current_node = queue.popleft()
+
+            for neigh in current_node.neighbors:
+                if neigh not in node_to_clone:
+                    node_to_clone[neigh] = Node(neigh.val)
+                    queue.append(neigh)
+                
+                node_to_clone[current_node].neighbors.append(node_to_clone[neigh])
+        
+        return node_to_clone[node]
+
+    def clone_graph_DFS(self, node):
+        if not node:
+            return None
+
+        node_to_clone = {node: Node(node.val)}
+        
+        def dfs(current_node):
+            for neigh in current_node.neighbors:
+                if neigh not in node_to_clone:
+                    node_to_clone[neigh] = Node(neigh.val)
+                    dfs(neigh)
+                
+                node_to_clone[current_node].neighbors.append(node_to_clone[neigh])
+        
+        dfs(node)
+        
+        return node_to_clone[node]
+    
+    def canFinish(self, numCourses, prerequisites):
+        """
+        :type numCourses: int
+        :type prerequisites: List[List[int]]
+        :rtype: bool
+        """
+        graph = {i: [] for i in range(numCourses)}
+
+        for course, courseRequired in prerequisites:
+            graph[courseRequired].append(course)
+        
+        for i in range(numCourses):
+            seen = set([i])
+            queue = deque(graph[i])
+
+            while queue:
+                node = queue.popleft()
+                
+                for edge in graph[node]:
+                    if edge == i:
+                        return False
+                    elif edge not in seen:
+                        queue.append(edge)
+                        seen.add(edge)
+        
+        return True
+    
+    def shortestPathBinaryMatrix_BFS(self, grid):
+        DIRECTIONS = [
+            (-1, 0),
+            (-1, 1),
+            (0, 1),
+            (1, 1),
+            (1, 0),
+            (1, -1),
+            (0, -1),
+            (-1, -1),
+        ]
+
+        if not grid or not grid[0]:
+            return -1
+        
+        target = (len(grid) - 1, len(grid[0]) - 1)
+        seen = set()
+        queue = deque([(0,0)])
+        moves = 1
+
+        while queue:
+            for _ in range(len(queue)):
+                row, col = queue.popleft()
+
+                if (row, col) == target:
+                    return moves
+                
+                for dr, dc in DIRECTIONS:
+                    new_row = dr + row
+                    new_col = dc + col
+                    
+                    if 0 <= new_row < len(grid) and 0 <= new_col < len(grid[0]) and grid[new_row][new_col] == 0 and (new_row, new_col) not in seen:
+                        queue.append((new_row, new_col))
+            
+            moves += 1
+        
+        return -1
+    
+    def shortestPathBinaryMatrix_DFS(self, grid):
+        DIRECTIONS = [
+            (1, 1),
+            (0, 1),
+            (1, 0),
+            (-1, 0),
+            (-1, 1),
+            (1, -1),
+            (0, -1),
+            (-1, -1),
+        ]
+
+        if not grid or not grid[0] or grid[0][0] != 0:
+            return -1
+        
+        target = (len(grid) - 1, len(grid[0]) - 1)
+        seen = set()
+        
+        def dfs(row, col, moves):
+            if row < 0 or row >= len(grid) or col < 0 or col >= len(grid[0]) or grid[row][col] == 1 or (row, col) in seen:
+                return float('inf')
+            elif (row, col) == target:
+                return moves
+            
+            seen.add((row, col))
+            
+            return min([dfs(dr + row, dc + col, moves + 1) for dr, dc in DIRECTIONS])
+
+        result = dfs(0, 0, 1)
+        return result if result != float('inf') else -1
+    
+    def pacificAtlantic(self, heights):
+        """
+        :type heights: List[List[int]]
+        :rtype: List[List[int]]
+        """
+        DIRECTIONS = [
+            (-1, 0),
+            (0, 1),
+            (1, 0),
+            (0, -1)
+        ]
+        pacific_valid = set()
+        atlantic_valid = set()
+
+        def dfs(row, col, prev_height, group):
+            if row < 0 or row >= len(heights) or col < 0 or col >= len(heights[0]) or prev_height > heights[row][col] or (row, col) in group:
+                return
+            
+            group.add((row, col))
+            
+            for dr, dc in DIRECTIONS:
+                dfs(dr + row, dc + col, heights[row][col], group)
+
+        max_row = len(heights)
+        max_col = len(heights[0])
+        
+        for i in range(max_row):
+            dfs(i, 0, -float('inf'), pacific_valid)
+            dfs(i, max_col - 1, -float('inf'), atlantic_valid)
+        for j in range(max_col):
+            dfs(0, j, -float('inf'), pacific_valid)
+            dfs(max_row - 1, j, -float('inf'), atlantic_valid)
+                        
+        return list(pacific_valid & atlantic_valid)
+    
+    def pacificAtlantic(self, heights):
+        """
+        :type heights: List[List[int]]
+        :rtype: List[List[int]]
+        """
+        DIRECTIONS = [
+            (-1, 0),
+            (0, 1),
+            (1, 0),
+            (0, -1)
+        ]
+        pacific_valid = set()
+        atlantic_valid = set()
+
+        def dfs(row, col, prev_height, group):
+            if row < 0 or row >= len(heights) or col < 0 or col >= len(heights[0]) or prev_height > heights[row][col] or (row, col) in group:
+                return
+            
+            group.add((row, col))
+            
+            for dr, dc in DIRECTIONS:
+                dfs(dr + row, dc + col, heights[row][col], group)
+
+        for i in range(len(heights)):
+            for j in range(len(heights[i])):
+                if i == 0 or j == 0: #pacific
+                    dfs(i, j, -float('inf'), pacific_valid)
+                if i == len(heights) - 1 or j == len(heights[0]) - 1: #atlantic
+                    dfs(i, j, -float('inf'), atlantic_valid)
+
+        return list(pacific_valid & atlantic_valid)
                     
 solution = Solution()
 
@@ -525,40 +894,92 @@ solution = Solution()
 
 # print(solution.searchRange([5,7,7,8,8,10], 8))
 
-head = Node(1)
-node_1 = Node(2)
-node_2 = Node(3)
-node_3 = Node(4)
-node_4 = Node(5)
-head.next = node_1
-node_1.next = node_2
-node_2.next = node_3
-node_3.next = node_4
-solution.reverseList(head)
+# head = Node(1)
+# node_1 = Node(2)
+# node_2 = Node(3)
+# node_3 = Node(4)
+# node_4 = Node(5)
+# head.next = node_1
+# node_1.next = node_2
+# node_2.next = node_3
+# node_3.next = node_4
+# solution.reverseList(head)
 
-head2 = Node(1)
-node_5 = Node(3)
-node_6 = Node(4)
-head2.next = node_5
-node_5.next = node_6
-solution.mergeTwoLists(head, head2)
+# head2 = Node(1)
+# node_5 = Node(3)
+# node_6 = Node(4)
+# head2.next = node_5
+# node_5.next = node_6
+# solution.mergeTwoLists(head, head2)
 
-print(solution.clean_json_dict({
-    "user": {
-        "name": "Alice",
-        "age": None,
-        "emails": [None, "alice@example.com", ""],
-        "address": {
-            "city": "London",
-            "postcode": None
-        }
-    },
-    "active": True,
-    "metadata": {}
-}
-))
-print(solution.clean_json_list(["", "hello", 5, 10, {}, [1,2, ""]]
-))
+# print(solution.clean_json_dict({
+#     "user": {
+#         "name": "Alice",
+#         "age": None,
+#         "emails": [None, "alice@example.com", ""],
+#         "address": {
+#             "city": "London",
+#             "postcode": None
+#         }
+#     },
+#     "active": True,
+#     "metadata": {}
+# }))
+# print(solution.clean_json_list(["", "hello", 5, 10, {}, [1,2, ""]]))
+
+# root = TreeNode(1)
+# treeNode_1 = TreeNode(2)
+# treeNode_2 = TreeNode(3)
+# treeNode_3 = TreeNode(4)
+# treeNode_4 = TreeNode(5)
+# root.left = treeNode_1
+# root.right = treeNode_2
+# treeNode_1.left = treeNode_3
+# treeNode_1.right = treeNode_4
+# print(solution.levelOrder(root))
+
+# root = TreeNode(5)
+# treeNode_1 = TreeNode(1)
+# treeNode_4 = TreeNode(4)
+# treeNode_3 = TreeNode(3)
+# treeNode_6 = TreeNode(6)
+# root.left = treeNode_1
+# root.right = treeNode_4
+# treeNode_4.left = treeNode_3
+# treeNode_4.right = treeNode_6
+# print(solution.isValidBST_BFS(root))
+
+# class GraphNode(object):
+#     def __init__(self, val = 0, neighbors = None):
+#         self.val = val
+#         self.neighbors = neighbors if neighbors is not None else []
+
+# print(solution.clone_graph_BFS([[2,4], [1,3], [2,4], [1,3]]))
+
+# print(solution.canFinish(2, [[0, 1], [1, 0]]))
+
+# print(solution.shortestPathBinaryMatrix_DFS([[0,1],[1,0]]))
+
+print(solution.pacificAtlantic([[1,2,2,3,5],[3,2,3,4,4],[2,4,5,3,1],[6,7,1,4,5],[5,1,1,2,4]]))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
