@@ -864,6 +864,46 @@ class Solution:
                     dfs(i, j, -float('inf'), atlantic_valid)
 
         return list(pacific_valid & atlantic_valid)
+    
+    def climbingStairs(self, n):
+        memo = {}
+        def rec(step):
+            if step == 0:
+                return 1
+            elif step < 0:
+                return 0
+            elif step in memo:
+                return memo[step]
+
+            memo[step] = rec(step - 1) + rec(step - 2)
+            return memo[step]
+
+        return rec(n)
+    
+    def coinChange(self, coins, amount):
+        """
+        :type coins: List[int]
+        :type amount: int
+        :rtype: int
+        """
+        if amount == 0:
+            return 0
+
+        memo = {}
+        
+        def rec(current_amount):
+            if current_amount == 0:
+                return 0
+            elif current_amount < 0:
+                return float('inf')
+            elif current_amount in memo:
+                return memo[current_amount]
+            
+            memo[current_amount] = min([rec(current_amount - coin) for coin in coins]) + 1
+            return memo[current_amount]
+        
+        result = rec(amount)
+        return result if result != float('inf') else -1
                     
 solution = Solution()
 
