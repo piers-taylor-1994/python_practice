@@ -904,6 +904,36 @@ class Solution:
         
         result = rec(amount)
         return result if result != float('inf') else -1
+    
+    def rob(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        def rec(house_num):
+            if house_num < 0:
+                return 0
+            if house_num == 0:
+                return nums[house_num]
+            
+            return max(nums[house_num] + rec(house_num - 2), rec(house_num - 1))
+        
+        return rec(nums)
+    
+    def clone_graph(self, node):
+        cloned_nodes = {node: TreeNode(node.val)}
+        queue = deque([node])
+
+        while queue:
+            current_node = queue.popleft()
+
+            for neigh in current_node.neighbors:
+                if neigh not in cloned_nodes:
+                    cloned_nodes[neigh] = TreeNode(neigh.val)
+                    queue.append(neigh)
+                current_node.neighbors.append(cloned_nodes[neigh])
+        
+        return cloned_nodes[node]
                     
 solution = Solution()
 

@@ -38,7 +38,6 @@ set_list.add("Hello")
 # Dictionary (HashMap)
 # - O(1) lookup/insertion/deletion, key-value pairs (keys must be hashable), value can be anything
 # - Count frequencies, matching ids to objects, caching for memoization in DP
-# - Keys must be immutable
 dict = {}
 dict["test"] = "results"
 dict[("key1", "key2")] = ["value1", "value2"]
@@ -293,3 +292,27 @@ def graph_traversal_dfs(self, graph):
     seen = set()
     dfs(0, seen, result)
     return result
+
+#Dynamic programming -> useful when a problem has a ton of repeating subproblems
+def fibonacci_memo(n):
+    memo = {}
+
+    def dp(number):
+        if number <= 1:
+            return number
+        elif number in memo:
+            return memo[number]
+
+        memo[number] = dp(number - 1) + dp(number - 2)
+        return memo[number]
+    
+    return dp(n)
+
+def fibonacci_tab(n):
+    dp = [0] * (len(n) + 1)
+    dp[1] = 1
+
+    for i in range(2, n):
+        dp[i] = dp[i - 1] + dp[i - 2]
+    
+    return dp[n - 1]
