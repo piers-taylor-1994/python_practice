@@ -934,7 +934,42 @@ class Solution:
                 current_node.neighbors.append(cloned_nodes[neigh])
         
         return cloned_nodes[node]
-                    
+    
+    def num_of_islands(self, matrix):
+        if not matrix or not matrix[0]:
+            return 0
+        
+        DIRECTIONS = [
+            (-1,0),
+            (0,1),
+            (1,0),
+            (0,-1)
+        ]
+
+        def bfs(r, c):
+            queue = deque([(r, c)])
+
+            while queue:
+                row, col = queue.popleft()
+
+                for dr, dc in DIRECTIONS:
+                    new_row = dr + row
+                    new_col = dc + col
+
+                    if 0 <= new_row < len(matrix) and 0 <= new_col < len(matrix[0]) and matrix[new_col][new_col] == "1":
+                        queue.append((new_row, new_col))
+                        matrix[new_row][new_col] = "0"
+
+        islands_count = 0
+
+        for i in range(len(matrix)):
+            for j in range(len(matrix[i])):
+                if matrix[i][j] == "1":
+                    islands_count += 1
+                    bfs(i, j)
+        
+        return islands_count 
+
 solution = Solution()
 
 # print(solution.twoSum([2,7,11,15], 9))
