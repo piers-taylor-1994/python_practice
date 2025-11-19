@@ -66,16 +66,17 @@ print(-heapq.heappop(max_heap))
 
 # Binary search -> Find a number in a sorted array. If it isn't quite sorted, you need to make it so/tweak the algorithm to make it work
 def binary_search():
+    nums = [1,2,3,4,5,6]
     target = 2
     left = 0
-    right = len([1,2,3,4,5,6]) - 1
+    right = len(nums) - 1
 
     while left <= right:
         middle = (left + right) // 2
 
-        if min_heap[middle] == target:
+        if nums[middle] == target:
             return middle
-        elif min_heap[middle] < target:
+        elif nums[middle] < target:
             left = middle + 1
         else:
             right = middle - 1
