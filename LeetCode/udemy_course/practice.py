@@ -969,6 +969,8 @@ class Solution:
                     bfs(i, j)
         
         return islands_count 
+    
+    
 
 solution = Solution()
 
