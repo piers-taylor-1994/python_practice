@@ -968,10 +968,52 @@ class Solution:
                     islands_count += 1
                     bfs(i, j)
         
-        return islands_count 
+        return islands_count
     
-    
+    def longest_substring_without_repeating_characters(self, s):
+        if len(s) <= 1:
+            return len(s)
+        
+        char_counter = {}
+        longest_substring = 0
+        left = 0
 
+        for right in range(len(s)):
+            letter_right = s[right]
+            char_counter[letter_right] = char_counter.get(letter_right, 0) + 1
+
+            while char_counter[letter_right] > 1:
+                letter_left = s[left]
+                char_counter[letter_left] -= 1
+                left += 1
+            
+            longest_substring = max(longest_substring, right - left + 1)
+        
+        return longest_substring
+    
+    def group_anagrams_v2(self, strs):
+        hash_map = {}
+
+        for word in strs:
+            letter_count = Counter(word)
+            letter_count_tuple = tuple(sorted(letter_count.items()))
+            hash_map[letter_count_tuple] = hash_map.get(letter_count_tuple, []) + [word]
+        
+        return [v for v in hash_map.values()]
+    
+    def topKFrequent(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: List[int]
+        """
+        number_frequency = Counter(nums)
+
+        max_frequency = [(-count, number) for number, count in number_frequency.items()]
+        heapq.heapify(max_frequency)
+
+        return [heapq.heappop(max_frequency)[1] for _ in range(k)]
+    
 solution = Solution()
 
 # print(solution.twoSum([2,7,11,15], 9))
@@ -1067,7 +1109,13 @@ solution = Solution()
 
 # print(solution.shortestPathBinaryMatrix_DFS([[0,1],[1,0]]))
 
-print(solution.pacificAtlantic([[1,2,2,3,5],[3,2,3,4,4],[2,4,5,3,1],[6,7,1,4,5],[5,1,1,2,4]]))
+# print(solution.pacificAtlantic([[1,2,2,3,5],[3,2,3,4,4],[2,4,5,3,1],[6,7,1,4,5],[5,1,1,2,4]]))
+
+# print(solution.longest_substring_without_repeating_characters("abcabcbb"))
+
+print(solution.group_anagrams_v2(["eat", "tea", "tan", "ate", "nat", "bat"]))
+
+print(solution.topKFrequent([1,1,1,2,2,3], 2))
 
 
 
