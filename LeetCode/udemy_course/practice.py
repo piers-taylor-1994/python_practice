@@ -351,27 +351,6 @@ class Solution:
         
         return prev
     
-    def mergeTwoLists(self, list1, list2):
-        """
-        :type list1: Optional[ListNode]
-        :type list2: Optional[ListNode]
-        :rtype: Optional[ListNode]
-        """
-        head = Node()
-        tail = head
-
-        while list1 and list2:
-            if list1.val <= list2.val:
-                tail.next = list1
-                list1 = list1.next
-            else:
-                tail.next = list2
-                list2 = list2.next
-            tail = tail.next
-        
-        tail.next = list2 if not list1 else list1
-        return head.next
-    
     def hasCycle(self, head):
         """
         :type head: ListNode
@@ -412,70 +391,6 @@ class Solution:
             fast = fast.next.next
         
         return False
-    
-    def addTwoNumbers(self, l1, l2):
-        """
-        :type l1: Optional[ListNode]
-        :type l2: Optional[ListNode]
-        :rtype: Optional[ListNode]
-        """
-        current_node = l1
-        num1 = ""
-        while current_node:
-            num1 += str(current_node.val)
-            current_node = current_node.next
-        
-        num2 = ""
-        current_node = l2
-        while current_node:
-            num2 += str(current_node.val)
-            current_node = current_node.next
-        
-        result = (str(int(num1[::-1]) + int(num2[::-1])))[::-1]
-
-        head = Node(int(result[0]))
-        current_node = head
-
-        for num in result[1:]:
-            current_node.next = Node(int(num))
-            current_node = current_node.next
-        
-        return head
-    
-    def addTwoNumbers_v2(self, l1, l2):
-        """
-        :type l1: Optional[ListNode]
-        :type l2: Optional[ListNode]
-        :rtype: Optional[ListNode]
-        """
-        def reverse(node):
-            prev = None
-
-            while node:
-                node_next = node.next
-                node.next = prev
-                prev = node
-                node = node_next
-            
-            return prev
-        
-        head = Node()
-        tail = head
-        carry = 0
-
-        while l1 or l2 or carry:
-            value1 = l1.val if l1 else 0
-            value2 = l2.val if l2 else 0
-
-            total = value1 + value2 + carry
-            carry = total // 10
-            tail.next = Node(total % 10)
-            
-            tail = tail.next
-            l1 = l1.next if l1 else None
-            l2 = l2.next if l2 else None
-        
-        return head.next
     
     def clean_json_list(self, arr):
         result = []
@@ -1014,6 +929,57 @@ class Solution:
 
         return [heapq.heappop(max_frequency)[1] for _ in range(k)]
     
+    def mergeTwoLists(self, list1, list2):
+        """
+        :type list1: Optional[ListNode]
+        :type list2: Optional[ListNode]
+        :rtype: Optional[ListNode]
+        """
+        head = Node()
+        tail = head
+
+        while list1 and list2:
+            if list1.val <= list2.val:
+                tail.next = list1
+                list1 = list1.next
+            else:
+                tail.next = list2
+                list2 = list2.next
+            
+            tail = tail.next
+        
+        tail.next = list1 if list1 else list2
+        
+        return head.next
+    
+    def addTwoNumbers(self, l1, l2):
+        """
+        :type l1: Optional[ListNode]
+        :type l2: Optional[ListNode]
+        :rtype: Optional[ListNode]
+        """
+        
+        head = Node()
+        tail = head
+        carry = 0
+
+        while l1 or l2 or carry:
+            value1 = l1.val if l1 else 0
+            value2 = l2.val if l2 else 0
+
+            total = value1 + value2 + carry
+            carry = total // 10
+            tail.next = Node(total % 10)
+
+            if l1:
+                l1 = l1.next
+            if l2:
+                l2 = l2.next
+
+            tail = tail.next
+        
+        return head.next.val
+    
 solution = Solution()
 
 # print(solution.twoSum([2,7,11,15], 9))
@@ -1113,9 +1079,17 @@ solution = Solution()
 
 # print(solution.longest_substring_without_repeating_characters("abcabcbb"))
 
-print(solution.group_anagrams_v2(["eat", "tea", "tan", "ate", "nat", "bat"]))
+# print(solution.group_anagrams_v2(["eat", "tea", "tan", "ate", "nat", "bat"]))
 
-print(solution.topKFrequent([1,1,1,2,2,3], 2))
+# print(solution.topKFrequent([1,1,1,2,2,3], 2))
+
+l1 = Node(2)
+l1.next = Node(4)
+l1.next.next = Node(3)
+l2 = Node(5)
+l2.next = Node(6)
+l2.next.next = Node(4)
+print(solution.addTwoNumbers(l1, l2))
 
 
 
