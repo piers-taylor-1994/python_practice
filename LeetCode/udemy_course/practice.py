@@ -1026,6 +1026,42 @@ class Solution:
 
         return result
     
+    def isValidBST_BFS(self, root):
+        """
+        :type root: Optional[TreeNode]
+        :rtype: bool
+        """
+        
+        queue = deque([(-float('inf'), root, float('inf'))])
+        
+        while queue:
+            min_val, node, max_val = queue.popleft()
+
+            if not min_val < node.val < max_val:
+                return False
+            
+            if node.left:
+                queue.append((min_val, node.left, node.val))
+            if node.right:
+                queue.append((node.val, node.right, max_val))
+        
+        return True
+    
+    def isValidBST_DFS(self, root):
+        """
+        :type root: Optional[TreeNode]
+        :rtype: bool
+        """
+        def dfs(min_val, node, max_val):
+            if not node:
+                return True
+            if not min_val < node.val < max_val:
+                return False
+            
+            return dfs(min_val, node.left, node.val) and dfs(node.val, node.right, max_val)
+        
+        return dfs(-float('inf'), root, float('inf'))
+    
 solution = Solution()
 
 # print(solution.twoSum([2,7,11,15], 9))
@@ -1137,7 +1173,12 @@ solution = Solution()
 # l2.next.next = Node(4)
 # print(solution.addTwoNumbers(l1, l2))
 
-
+root = TreeNode(2)
+left_node = TreeNode(1)
+right_node = TreeNode(3)
+root.left = left_node
+root.right = right_node
+print(solution.isValidBST_DFS(root))
 
 
 
