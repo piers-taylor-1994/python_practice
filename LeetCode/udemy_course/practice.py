@@ -980,6 +980,52 @@ class Solution:
         
         return head.next.val
     
+    def rightSideView_BFS(self, root):
+        """
+        :type root: Optional[TreeNode]
+        :rtype: List[int]
+        """
+        if not root:
+            return []
+
+        result = []
+        queue = deque([root])
+
+        while queue:
+            result.append(queue[0].val)
+            for _ in range(len(queue)):
+                node = queue.popleft()
+
+                if node.right:
+                    queue.append(node.right)
+                if node.left:
+                    queue.append(node.left)
+        
+        return result
+    
+    def rightSideView_DFS(self, root):
+        """
+        :type root: Optional[TreeNode]
+        :rtype: List[int]
+        """
+        if not root:
+            return []
+
+        result = []
+        
+        def dfs(node, level):
+            if not node:
+                return
+            if len(result) <= level:
+                result.append(node.val)
+            
+            dfs(node.right, level + 1)
+            dfs(node.left, level + 1)
+        
+        dfs(root, 0)
+
+        return result
+    
 solution = Solution()
 
 # print(solution.twoSum([2,7,11,15], 9))
@@ -1083,13 +1129,13 @@ solution = Solution()
 
 # print(solution.topKFrequent([1,1,1,2,2,3], 2))
 
-l1 = Node(2)
-l1.next = Node(4)
-l1.next.next = Node(3)
-l2 = Node(5)
-l2.next = Node(6)
-l2.next.next = Node(4)
-print(solution.addTwoNumbers(l1, l2))
+# l1 = Node(2)
+# l1.next = Node(4)
+# l1.next.next = Node(3)
+# l2 = Node(5)
+# l2.next = Node(6)
+# l2.next.next = Node(4)
+# print(solution.addTwoNumbers(l1, l2))
 
 
 
