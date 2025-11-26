@@ -1132,6 +1132,60 @@ class Solution:
                     dfs(row, col, 0, valid_atlantic)
 
         return list(valid_atlantic & valid_pacific)
+
+    def walls_gates_BFS(self, matrix):
+        DIRECTIONS = [
+            (-1,0),
+            (0,1),
+            (1,0),
+            (0,-1)
+        ]
+
+        queue = deque()
+
+        for row in range(len(matrix)):
+            for col in range(len(matrix[row])):
+                if matrix[row][col] == 0:
+                    queue.append((row, col, 0))
+        
+        while queue:
+            r, c, step = queue.popleft()
+
+            if step < matrix[r][c] :
+                matrix[r][c] = step
+            
+            for dr, dc in DIRECTIONS:
+                new_row = dr + r
+                new_col = dc + c
+
+                if 0 <= new_row < len(matrix) and 0 <= new_col < len(matrix[0]) and step < matrix[new_row][new_col]:
+                    queue.append((new_row, new_col, step + 1))
+        
+        return matrix
+    
+    def walls_gates_DFS(self, matrix):
+        DIRECTIONS = [
+            (-1,0),
+            (0,1),
+            (1,0),
+            (0,-1)
+        ]
+
+        def dfs(row, col, step):
+            if row < 0 or row >= len(matrix) or col < 0 or col >= len(matrix[0]) or step > matrix[row][col]:
+                return
+            
+            matrix[row][col] = step
+
+            for dr, dc in DIRECTIONS:
+                dfs(dr + row, dc + col, step + 1)
+
+        for row in range(len(matrix)):
+            for col in range(len(matrix[row])):
+                if matrix[row][col] == 0:
+                    dfs(row, col, 0)
+        
+        return matrix
     
 solution = Solution()
 
@@ -1251,9 +1305,20 @@ solution = Solution()
 # root.right = right_node
 # print(solution.isValidBST_DFS(root))
 
-print(solution.pacificAtlantic_BFS([[1,2,2,3,5],[3,2,3,4,4],[2,4,5,3,1],[6,7,1,4,5],[5,1,1,2,4]]))
+# print(solution.pacificAtlantic_BFS([[1,2,2,3,5],[3,2,3,4,4],[2,4,5,3,1],[6,7,1,4,5],[5,1,1,2,4]]))
 
-
+print(solution.walls_gates_BFS([
+    [float('inf'), -1, 0, float('inf')],
+    [float('inf'), float('inf'), float('inf'), 1],
+    [float('inf'), -1, float('inf'), -1],
+    [0, -1, float('inf'), float('inf')]
+]))
+print(solution.walls_gates_DFS([
+    [float('inf'), -1, 0, float('inf')],
+    [float('inf'), float('inf'), float('inf'), 1],
+    [float('inf'), -1, float('inf'), -1],
+    [0, -1, float('inf'), float('inf')]
+]))
 
 
 
