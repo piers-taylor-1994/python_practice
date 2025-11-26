@@ -1061,6 +1061,77 @@ class Solution:
             return dfs(min_val, node.left, node.val) and dfs(node.val, node.right, max_val)
         
         return dfs(-float('inf'), root, float('inf'))
+
+    def pacificAtlantic_BFS(self, heights):
+        """
+        :type heights: List[List[int]]
+        :rtype: List[List[int]]
+        """
+        DIRECTIONS = [
+            (-1,0),
+            (0,1),
+            (1,0),
+            (0,-1)
+        ]
+
+        valid_pacific = set()
+        valid_atlantic = set()
+
+        queue = deque()
+
+        for row in range(len(heights)):
+            for col in range(len(heights[row])):
+                if row == 0 or col == 0:
+                    queue.append((row, col, valid_pacific))
+                if row == len(heights) - 1 or col == len(heights[0]) - 1:
+                    queue.append((row, col, valid_atlantic))
+        
+        while queue:
+            r, c, array = queue.popleft()
+
+            array.add((r, c))
+
+            for dr, dc in DIRECTIONS:
+                new_row = dr + r
+                new_col = dc + c
+
+                if 0 <= new_row < len(heights) and 0 <= new_col < len(heights[0]) and (new_row, new_col) not in array and heights[new_row][new_col] >= heights[r][c]:
+                    queue.append((new_row, new_col, array))
+
+        return list(valid_atlantic & valid_pacific)
+    
+    def pacificAtlantic_DFS(self, heights):
+        """
+        :type heights: List[List[int]]
+        :rtype: List[List[int]]
+        """
+        DIRECTIONS = [
+            (-1,0),
+            (0,1),
+            (1,0),
+            (0,-1)
+        ]
+
+        valid_pacific = set()
+        valid_atlantic = set()
+
+        def dfs(r, c, prev_value, array):
+            if r < 0 or r >= len(heights) or c < 0 or c >= len(heights[0]) or (r, c) in array or heights[r][c] < prev_value:
+                return
+            
+            array.add((r, c))
+
+            for dr, dc in DIRECTIONS:
+                dfs(dr + r, dc + c, heights[r][c], array)
+
+        for row in range(len(heights)):
+            for col in range(len(heights[row])):
+                if row == 0 or col == 0:
+                    dfs(row, col, 0, valid_pacific)
+                if row == len(heights) - 1 or col == len(heights[0]) - 1:
+                    dfs(row, col, 0, valid_atlantic)
+
+        return list(valid_atlantic & valid_pacific)
     
 solution = Solution()
 
@@ -1173,12 +1244,14 @@ solution = Solution()
 # l2.next.next = Node(4)
 # print(solution.addTwoNumbers(l1, l2))
 
-root = TreeNode(2)
-left_node = TreeNode(1)
-right_node = TreeNode(3)
-root.left = left_node
-root.right = right_node
-print(solution.isValidBST_DFS(root))
+# root = TreeNode(2)
+# left_node = TreeNode(1)
+# right_node = TreeNode(3)
+# root.left = left_node
+# root.right = right_node
+# print(solution.isValidBST_DFS(root))
+
+print(solution.pacificAtlantic_BFS([[1,2,2,3,5],[3,2,3,4,4],[2,4,5,3,1],[6,7,1,4,5],[5,1,1,2,4]]))
 
 
 
