@@ -1186,6 +1186,52 @@ class Solution:
                     dfs(row, col, 0)
         
         return matrix
+
+    def orangesRotting(self, grid):
+        """
+        :type grid: List[List[int]]
+        :rtype: int
+        """
+        if not grid or not grid[0]:
+            return 0
+        
+        DIRECTIONS = [
+            (-1, 0),
+            (0, 1),
+            (1, 0),
+            (0, -1),
+        ]
+        
+        queue = deque()
+        fresh_oranges = 0
+        
+        for i in range(len(grid)):
+            for j in range(len(grid[0])):
+                if grid[i][j] == 1:
+                    fresh_oranges += 1
+                elif grid[i][j] == 2:
+                    queue.append((i, j))
+        
+        if not fresh_oranges:
+            return 0
+        
+        minutes_taken = -1
+
+        while queue:
+            for _ in range(len(queue)):
+                row, col = queue.popleft()
+
+                for dr, dc in DIRECTIONS:
+                    new_row = dr + row
+                    new_col = dc + col
+
+                    if 0 <= new_row < len(grid) and 0 <= new_col < len(grid[0]) and grid[new_row][new_col] == 1:
+                        queue.append((new_row, new_col))
+                        grid[new_row][new_col] = 2
+                        fresh_oranges -= 1
+            minutes_taken += 1
+        
+        return minutes_taken if not fresh_oranges else -1
     
 solution = Solution()
 
