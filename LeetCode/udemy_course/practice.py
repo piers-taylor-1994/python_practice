@@ -1233,6 +1233,72 @@ class Solution:
         
         return minutes_taken if not fresh_oranges else -1
     
+    def isSameTree(self, p, q):
+        """
+        :type p: Optional[TreeNode]
+        :type q: Optional[TreeNode]
+        :rtype: bool
+        """
+        if not p and not q:
+            return True
+        if not p and q or p and not q:
+            return False
+        if p.val != q.val:
+            return False
+        
+        return (self.isSameTree(p.left, q.left) and self.isSameTree(p.right, q.right))
+    
+    def numOfMinutes_BFS(self, n, headID, manager, informTime):
+        """
+        :type n: int
+        :type headID: int
+        :type manager: List[int]
+        :type informTime: List[int]
+        :rtype: int
+        """
+        graph = {i:[] for i in range(n)}
+
+        for employee in range(len(manager)):
+            if manager[employee] != -1:
+                graph[manager[employee]].append(employee)
+        
+        total_minutes = 0
+        queue = deque([(headID, 0)])
+
+        while queue:
+            node, minutes = queue.popleft()
+
+            current_minutes = minutes + informTime[node]
+
+            total_minutes = max(total_minutes, current_minutes)
+
+            for edge in graph[node]:
+                queue.append((edge, current_minutes))
+        
+        return total_minutes
+    
+    def numOfMinutes_DFS(self, n, headID, manager, informTime):
+        """
+        :type n: int
+        :type headID: int
+        :type manager: List[int]
+        :type informTime: List[int]
+        :rtype: int
+        """
+        graph = {i:[] for i in range(n)}
+
+        for employee in range(len(manager)):
+            if manager[employee] != -1:
+                graph[manager[employee]].append(employee)
+        
+        def dfs(node):
+            if not graph[node]:
+                return 0
+
+            return informTime[node] + max([dfs(edge) for edge in graph[node]])
+        
+        return dfs(headID)
+    
 solution = Solution()
 
 # print(solution.twoSum([2,7,11,15], 9))
@@ -1353,21 +1419,35 @@ solution = Solution()
 
 # print(solution.pacificAtlantic_BFS([[1,2,2,3,5],[3,2,3,4,4],[2,4,5,3,1],[6,7,1,4,5],[5,1,1,2,4]]))
 
-print(solution.walls_gates_BFS([
-    [float('inf'), -1, 0, float('inf')],
-    [float('inf'), float('inf'), float('inf'), 1],
-    [float('inf'), -1, float('inf'), -1],
-    [0, -1, float('inf'), float('inf')]
-]))
-print(solution.walls_gates_DFS([
-    [float('inf'), -1, 0, float('inf')],
-    [float('inf'), float('inf'), float('inf'), 1],
-    [float('inf'), -1, float('inf'), -1],
-    [0, -1, float('inf'), float('inf')]
-]))
+# print(solution.walls_gates_BFS([
+#     [float('inf'), -1, 0, float('inf')],
+#     [float('inf'), float('inf'), float('inf'), 1],
+#     [float('inf'), -1, float('inf'), -1],
+#     [0, -1, float('inf'), float('inf')]
+# ]))
+# print(solution.walls_gates_DFS([
+#     [float('inf'), -1, 0, float('inf')],
+#     [float('inf'), float('inf'), float('inf'), 1],
+#     [float('inf'), -1, float('inf'), -1],
+#     [0, -1, float('inf'), float('inf')]
+# ]))
 
+# root = TreeNode(1)
+# node_1 = TreeNode(2)
+# node_2 = TreeNode(3)
+# root.left = node_1
+# root.right = node_2
 
+# node_3 = TreeNode(1)
+# node_4 = TreeNode(3)
+# node_5 = TreeNode(2)
+# node_3.left = node_4
+# node_3.right = node_5
 
+# print(solution.isSameTree(root, node_3))
+
+print(solution.numOfMinutes_BFS(11, 4, [5,9,6,10,-1,8,9,1,9,3,4], [0,213,0,253,686,170,975,0,261,309,337]))
+print(solution.numOfMinutes_DFS(11, 4, [5,9,6,10,-1,8,9,1,9,3,4], [0,213,0,253,686,170,975,0,261,309,337]))
 
 
 
