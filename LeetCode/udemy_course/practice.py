@@ -1,10 +1,7 @@
 from collections import Counter, defaultdict, deque
-import decimal
-import math
 from operator import indexOf
 import random
 import heapq
-import bisect
  
 class Node(object):
     def __init__(self, val = 0, prev = None, next = None, child = None):
@@ -1359,6 +1356,18 @@ class Solution:
         
         return gas_station if total_gas >= 0 else -1
     
+    def quick_sort(self, nums):
+        if len(nums) <= 1:
+            return nums
+        
+        pivot = random.choice(nums)
+
+        left = [num for num in nums if num < pivot]
+        middle = [num for num in nums if num == pivot]
+        right = [num for num in nums if num > pivot]
+        
+        return self.quick_sort(left) + middle + self.quick_sort(right)
+    
 solution = Solution()
 
 # print(solution.twoSum([2,7,11,15], 9))
@@ -1513,9 +1522,9 @@ solution = Solution()
 
 # print(solution.jump([2,3,1,1,4]))
 
-print(solution.canCompleteCircuit([1,2,3,4,5], [3,4,5,1,2]))
+# print(solution.canCompleteCircuit([1,2,3,4,5], [3,4,5,1,2]))
 
-
+print(solution.quick_sort([5,10,2,3,56,78,1,23,4]))
 
 
 
