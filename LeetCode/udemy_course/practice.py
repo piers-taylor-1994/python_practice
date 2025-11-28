@@ -1337,6 +1337,28 @@ class Solution:
         
         return jumps
     
+    def canCompleteCircuit(self, gas, cost):
+        """
+        :type gas: List[int]
+        :type cost: List[int]
+        :rtype: int
+        """
+        total_gas = 0
+        current_gas = 0
+        gas_station = 0
+
+        for i in range(len(gas)):
+            gas_cost_difference = gas[i] - cost[i]
+
+            current_gas += gas_cost_difference
+            total_gas += gas_cost_difference
+
+            if current_gas < 0:
+                current_gas = 0
+                gas_station = i + 1
+        
+        return gas_station if total_gas >= 0 else -1
+    
 solution = Solution()
 
 # print(solution.twoSum([2,7,11,15], 9))
@@ -1484,8 +1506,14 @@ solution = Solution()
 
 # print(solution.isSameTree(root, node_3))
 
-print(solution.numOfMinutes_BFS(11, 4, [5,9,6,10,-1,8,9,1,9,3,4], [0,213,0,253,686,170,975,0,261,309,337]))
-print(solution.numOfMinutes_DFS(11, 4, [5,9,6,10,-1,8,9,1,9,3,4], [0,213,0,253,686,170,975,0,261,309,337]))
+# print(solution.numOfMinutes_BFS(11, 4, [5,9,6,10,-1,8,9,1,9,3,4], [0,213,0,253,686,170,975,0,261,309,337]))
+# print(solution.numOfMinutes_DFS(11, 4, [5,9,6,10,-1,8,9,1,9,3,4], [0,213,0,253,686,170,975,0,261,309,337]))
+
+# print(solution.canJump([2,3,1,1,4]))
+
+# print(solution.jump([2,3,1,1,4]))
+
+print(solution.canCompleteCircuit([1,2,3,4,5], [3,4,5,1,2]))
 
 
 
