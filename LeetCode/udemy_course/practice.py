@@ -1368,6 +1368,20 @@ class Solution:
         
         return self.quick_sort(left) + middle + self.quick_sort(right)
     
+    def find_min(self, nums):
+        left = 0
+        right = len(nums) - 1
+
+        while left < right:
+            middle = (left + right) // 2
+
+            if nums[middle] > nums[right]:
+                left = middle + 1
+            else:
+                right = middle
+        
+        return nums[left]
+    
 solution = Solution()
 
 # print(solution.twoSum([2,7,11,15], 9))
@@ -1524,9 +1538,9 @@ solution = Solution()
 
 # print(solution.canCompleteCircuit([1,2,3,4,5], [3,4,5,1,2]))
 
-print(solution.quick_sort([5,10,2,3,56,78,1,23,4]))
+# print(solution.quick_sort([5,10,2,3,56,78,1,23,4]))
 
-
+print(solution.find_min([5,1,2,3,4]))
 
 
 
