@@ -1299,6 +1299,44 @@ class Solution:
         
         return dfs(headID)
     
+    def canJump(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: bool
+        """
+        
+        current_jump = nums[0]
+        max_jump = nums[0]
+
+        for i in range(len(nums)):
+            if i > max_jump:
+                return False
+            
+            max_jump = max(max_jump, i + nums[i])
+
+            if i == current_jump:
+                current_jump = max_jump
+            
+        return True
+    
+    def jump(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        jumps = 0
+        current_jump = -float('inf')
+        max_jump = -float('inf')
+
+        for i in range(len(nums) - 1):
+            max_jump = max(max_jump, i + nums[i])
+
+            if i >= current_jump:
+                jumps += 1
+                current_jump = max_jump
+        
+        return jumps
+    
 solution = Solution()
 
 # print(solution.twoSum([2,7,11,15], 9))
