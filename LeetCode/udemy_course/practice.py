@@ -1382,6 +1382,71 @@ class Solution:
         
         return nums[left]
     
+    def flatten(self, head):
+        """
+        :type head: Node
+        :rtype: Node
+        """
+        if not head:
+            return None
+        
+        node = head
+
+        while node:
+            if node.child:
+                child = node.child
+                next = node.next
+
+                node.next = child
+                child.prev = node
+
+                if next:
+                    while child.next:
+                        child = child.next
+
+                    child.next = next
+                    next.prev = child
+                node.child = None
+
+            node = node.next
+        
+        return head
+    
+    def reverseBetween(self, head, left, right):
+        """
+        :type head: Optional[ListNode]
+        :type left: int
+        :type right: int
+        :rtype: Optional[ListNode]
+        """
+        if not head or not head.next:
+            return head
+
+        node_before_reverse = head
+        node = head
+        pos = 1
+
+        while pos < left:
+            node_before_reverse = node
+            node = node.next
+            pos += 1
+        
+        reversed_list_tail = node
+        reversed_list = None
+
+        while left <= pos <= right:
+            node_next = node.next
+            node.next = reversed_list
+            reversed_list = node
+            node = node_next
+
+            pos += 1
+        
+        node_before_reverse.next = reversed_list
+        reversed_list_tail.next = node
+        
+        return head if left > 1 else reversed_list
+    
 solution = Solution()
 
 # print(solution.twoSum([2,7,11,15], 9))
@@ -1540,13 +1605,19 @@ solution = Solution()
 
 # print(solution.quick_sort([5,10,2,3,56,78,1,23,4]))
 
-print(solution.find_min([5,1,2,3,4]))
+# print(solution.find_min([5,1,2,3,4]))
 
+head = Node(1)
+node_1 = Node(2)
+node_2 = Node(3)
+node_3 = Node(4)
+node_4 = Node(5)
+head.next = node_1
+node_1.next = node_2
+node_2.next = node_3
+node_3.next = node_4
 
-
-
-
-
+print(solution.reverseBetween(head, 2, 4))
 
 
 
