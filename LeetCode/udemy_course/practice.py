@@ -1463,7 +1463,26 @@ class Solution:
             memo[step] = cost[step] + min(rec(step - 1), rec(step - 2))
             return memo[step]
         
-        return min(rec(len(cost) - 1), rec(len(cost) - 2)) 
+        return min(rec(len(cost) - 1), rec(len(cost) - 2))
+    
+    def knapsack(self, capacity, profits, weights):
+        memo = {}
+
+        def rec(index, current_weight):
+            if current_weight > capacity:
+                return -float('inf')
+            if index >= len(profits):
+                return 0
+            if (index, current_weight) in memo:
+                return memo[(index, current_weight)]
+
+            take = profits[index] + rec(index + 1, current_weight + weights[index])
+            skip = rec(index + 1, current_weight)
+
+            memo[(index, current_weight)] = max(skip, take)
+            return memo[(index, current_weight)]
+        
+        return rec(0, 0)
     
 solution = Solution()
 
@@ -1637,9 +1656,10 @@ solution = Solution()
 
 # print(solution.reverseBetween(head, 2, 4))
 
-print(solution.minCostClimbingStairs([1,100,1,1,1,100,1,1,100,1]))
+# print(solution.minCostClimbingStairs([1,100,1,1,1,100,1,1,100,1]))
 
-
+print(solution.knapsack(4, [1,2,3], [4,5,1]))
+print(solution.knapsack(3, [1,2,3], [4,5,6]))
 
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))
