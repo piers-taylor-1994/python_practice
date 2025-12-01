@@ -12,8 +12,22 @@
 - When binary searching over a range, you can split up 2 binary searchs and specify which is left centric or right centric
 - You can set a current result, and then let it keep binary searching even after it's found the target to see if there's any others further down
 
+- With binary search, we don't always do left = middle + 1 / right = middle - 1, if we include middle in the search:
+    -- if nums[middle] > nums[right]:
+    --      left = middle + 1 # We've compared missed, so it can't be middle
+    -- else:
+    --      right = middle # The value we're looking for could be middle
+
 - When tackling linked lists, you can initialise a value (head = ListNode()) before you use another value (tail = head) to venture down lists, to eventually return the result at the beginning (return head/head.next)
 - Quite often the tricky part is working out what to return
+
+- With certain linked list problems, you need to keep track of the node before and the positions. This can be achieved by:
+    -- before_node = head
+    -- node = head
+    -- while something:
+    --      before_node = node
+    --      node = node.next
+    --      i += 1
 
 - To clone a graph / matrix / binary tree, you utilise a dictionary in the form of {original_node: clone_node} -> {node: Node(node.val)} and then use a queue like normal. You then use the cloned values to populate the cloned_nodes.neighbors etc
 
