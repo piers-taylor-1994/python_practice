@@ -1484,6 +1484,18 @@ class Solution:
         
         return rec(0, 0)
     
+    def firstRepeatedChar(self, word):
+        seen_chars = set()
+        earliest_repeated_char = float('inf')
+
+        for i in range(len(word) - 1, -1, -1):
+            if word[i] not in seen_chars:
+                seen_chars.add(word[i])
+            else:
+                earliest_repeated_char = i
+        
+        return word[earliest_repeated_char] if earliest_repeated_char != float('inf') else None
+    
 solution = Solution()
 
 # print(solution.twoSum([2,7,11,15], 9))
@@ -1658,8 +1670,13 @@ solution = Solution()
 
 # print(solution.minCostClimbingStairs([1,100,1,1,1,100,1,1,100,1]))
 
-print(solution.knapsack(4, [1,2,3], [4,5,1]))
-print(solution.knapsack(3, [1,2,3], [4,5,6]))
+# print(solution.knapsack(4, [1,2,3], [4,5,1]))
+# print(solution.knapsack(3, [1,2,3], [4,5,6]))
+
+print(solution.firstRepeatedChar("abcadgdae"))
+print(solution.firstRepeatedChar("abcd"))
+print(solution.firstRepeatedChar("sbdbds"))
+print(solution.firstRepeatedChar("szbdbdz"))
 
 # print(random.choice([]))
 # print(random.choice(["typed-out-strings"]))

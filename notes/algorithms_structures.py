@@ -106,11 +106,11 @@ def sliding_window(s):
         char_right = s[right]
         char_counter[char_right] += 1
 
-    while char_counter[char_right] > 1:
-        char_left = s[left]
-        char_counter[char_left] -= 1
-        left += 1
-        longest_sub = max(longest_sub, right - left + 1)
+        while char_counter[char_right] > 1:
+            char_left = s[left]
+            char_counter[char_left] -= 1
+            left += 1
+            longest_sub = max(longest_sub, right - left + 1)
         
     return longest_sub
 
